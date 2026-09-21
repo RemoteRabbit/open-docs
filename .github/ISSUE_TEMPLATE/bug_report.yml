@@ -1,0 +1,113 @@
+name: Bug report
+description: Report a reproducible problem with open-doc
+title: "[Bug]: "
+labels:
+  - bug
+assignees:
+  - RemoteRabbit
+body:
+  - type: markdown
+    attributes:
+      value: Thanks for helping improve open-doc. Please include enough detail to reproduce the problem.
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Affected area
+      options:
+        - CLI
+        - Configuration
+        - Module inspection
+        - Markdown rendering
+        - Output writing or injection
+        - Provider schema enrichment
+        - Build or development tooling
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual-behavior
+    attributes:
+      label: Actual behavior
+      description: What happened?
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: Expected behavior
+      description: What did you expect to happen instead?
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to reproduce
+      description: Include the command, relevant configuration, and a minimal Terraform/OpenTofu module when possible.
+      placeholder: |
+        1. Run `open-doc ...`
+        2. Use this `.open-doc.hcl` configuration: ...
+        3. Observe ...
+    validations:
+      required: true
+
+  - type: dropdown
+    id: reproducibility
+    attributes:
+      label: Reproducibility
+      options:
+        - Every time
+        - Intermittently
+        - Once
+    validations:
+      required: true
+
+  - type: textarea
+    id: output
+    attributes:
+      label: Output or error
+      description: Paste the generated output, error message, or logs. Remove sensitive information first.
+      render: shell
+
+  - type: input
+    id: version
+    attributes:
+      label: open-doc version or commit
+      placeholder: v0.1.0 or commit SHA
+    validations:
+      required: true
+
+  - type: dropdown
+    id: operating-system
+    attributes:
+      label: Operating system
+      options:
+        - Linux
+        - macOS
+        - Windows
+        - Other
+    validations:
+      required: true
+
+  - type: input
+    id: tofu-terraform-version
+    attributes:
+      label: OpenTofu or Terraform version
+      description: Required only when the problem involves schema enrichment.
+
+  - type: textarea
+    id: additional-context
+    attributes:
+      label: Additional context
+      description: Add anything else that may help diagnose the problem.
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Pre-submission checks
+      options:
+        - label: I searched existing issues for this problem.
+          required: true
