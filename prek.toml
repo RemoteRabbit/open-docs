@@ -1,0 +1,18 @@
+minimum_prek_version = "0.5.0"
+
+[[repos]]
+repo = "builtin"
+hooks = [
+  { id = "check-added-large-files" },
+  { id = "check-merge-conflict" },
+  { id = "end-of-file-fixer" },
+  { id = "trailing-whitespace" },
+]
+
+[[repos]]
+repo = "local"
+hooks = [
+  { id = "gofmt", name = "gofmt", entry = "gofmt -w", language = "system", types = ["go"] },
+  { id = "go-vet", name = "go vet", entry = "go vet ./...", language = "system", types = ["go"], pass_filenames = false },
+  { id = "go-test", name = "go test", entry = "go test ./...", language = "system", types = ["go"], pass_filenames = false },
+]
