@@ -11,8 +11,7 @@ structured types).
 > **Status: early / proof-of-concept.** Today open-doc emits a verbose,
 > debug-oriented dump of everything the inspector parses. The curated,
 > reader-facing output and the workflow features below are planned. See the
-> [feature checklist](#features) for what works now vs. what is coming, and
-> [`ROADMAP.md`](./ROADMAP.md) for the phased plan.
+> [feature checklist](#features) for what works now vs. what is coming.
 
 ## Why open-doc
 
@@ -174,9 +173,6 @@ presentation only.
 - [`main.go`](./main.go): CLI flag parsing, calls `inspector.Inspect`, writes output.
 - [`markdown.go`](./markdown.go): renders a `*model.Module` to Markdown.
 - [`examples/`](./examples): sample modules and their generated `README.md`.
-- [`ROADMAP.md`](./ROADMAP.md): phased delivery plan and design decisions.
-- [`INSPECTOR_WISHLIST.md`](./INSPECTOR_WISHLIST.md): capabilities open-doc
-  wants from open-inspector (and what has shipped).
 
 ## Related
 

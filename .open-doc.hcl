@@ -1,4 +1,4 @@
 file {
-  file = "test-1.md"
+  file = "README.md"
   mode = "replace"
 }
