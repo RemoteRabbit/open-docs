@@ -3,7 +3,7 @@
 // Decoding is static (Level 1): the file is parsed with a nil evaluation
 // context, so no variables or functions are available yet. The dynamic eval
 // context (for/conditionals reacting to the inspected module) is a later
-// phase; see ROADMAP.md.
+// phase.
 package config
 
 import (
