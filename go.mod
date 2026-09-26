@@ -4,7 +4,7 @@ go 1.26.4
 
 require (
 	github.com/hashicorp/hcl/v2 v2.24.0
-	github.com/remoterabbit/open-inspector v0.7.0
+	github.com/remoterabbit/open-inspector v0.7.1
 )
 
 require (
