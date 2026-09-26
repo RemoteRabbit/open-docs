@@ -3,7 +3,7 @@
 {
   languages.go = {
     enable = true;
-    version = "1.26.4";
+    version = "1.27.1";
   };
 
   packages = with pkgs; [

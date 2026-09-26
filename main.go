@@ -50,6 +50,7 @@ func main() {
 	}
 }
 
+// run [TODO:description]
 func run(dir, outFlag, configFlag string, useSchema bool) error {
 	cfg, err := loadConfig(dir, configFlag)
 	if err != nil {
@@ -66,7 +67,7 @@ func run(dir, outFlag, configFlag string, useSchema bool) error {
 		return err
 	}
 
-	doc := render.Markdown(mod)
+	doc := render.Markdown(mod, file)
 
 	if err := output.Write(os.Stdout, file, mode, doc); err != nil {
 		return err

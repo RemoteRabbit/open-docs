@@ -8,6 +8,7 @@ package render
 
 import (
 	"fmt"
+	"net/url"
 	"path/filepath"
 	"sort"
 	"strings"
@@ -15,13 +16,24 @@ import (
 	"github.com/remoterabbit/open-inspector/pkg/model"
 )
 
-// Markdown renders a module as a verbose Markdown reference document.
+// Markdown renders a module as a verbose Markdown reference document. Source
+// links are made relative to outputFile, or to the module directory when the
+// document is written to stdout.
 //
 // This is a debug-oriented view: every field of every block type is rendered,
 // including the full source position (filename + start/end line:column:byte),
 // so the output doubles as a visualization of what the inspector parsed.
-func Markdown(m *model.Module) string {
+func Markdown(m *model.Module, outputFile string) string {
 	var b strings.Builder
+	linkBase := m.Path
+	if outputFile != "" {
+		if absoluteOutput, err := filepath.Abs(outputFile); err == nil {
+			linkBase = filepath.Dir(absoluteOutput)
+		}
+	}
+	pos := func(p model.Position) string {
+		return position(p, linkBase)
+	}
 
 	title := filepath.Base(m.Path)
 	fmt.Fprintf(&b, "# Module `%s`\n\n", title)
@@ -31,26 +43,26 @@ func Markdown(m *model.Module) string {
 	}
 	b.WriteString("\n")
 
-	renderRequiredProviders(&b, m.RequiredProviders)
-	renderProviders(&b, m.Providers)
-	renderVariables(&b, m.Variables)
-	renderOutputs(&b, m.Outputs)
-	renderLocals(&b, m.Locals)
-	renderResources(&b, "Managed Resources", m.ManagedResources)
-	renderResources(&b, "Data Resources", m.DataResources)
-	renderEphemeralResources(&b, m.EphemeralResources)
-	renderModuleCalls(&b, m.ModuleCalls)
-	renderMoved(&b, m.Moved)
-	renderImports(&b, m.Imports)
-	renderRemoved(&b, m.Removed)
-	renderChecks(&b, m.Checks)
-	renderSchemaFindings(&b, m)
-	renderDiagnostics(&b, m.Diagnostics)
+	renderRequiredProviders(&b, m.RequiredProviders, pos)
+	renderProviders(&b, m.Providers, pos)
+	renderVariables(&b, m.Variables, pos)
+	renderOutputs(&b, m.Outputs, pos)
+	renderLocals(&b, m.Locals, pos)
+	renderResources(&b, "Managed Resources", m.ManagedResources, pos)
+	renderResources(&b, "Data Resources", m.DataResources, pos)
+	renderEphemeralResources(&b, m.EphemeralResources, pos)
+	renderModuleCalls(&b, m.ModuleCalls, pos)
+	renderMoved(&b, m.Moved, pos)
+	renderImports(&b, m.Imports, pos)
+	renderRemoved(&b, m.Removed, pos)
+	renderChecks(&b, m.Checks, pos)
+	renderSchemaFindings(&b, m, pos)
+	renderDiagnostics(&b, m.Diagnostics, pos)
 
 	return b.String()
 }
 
-func renderRequiredProviders(b *strings.Builder, reqs map[string]model.ProviderRequirement) {
+func renderRequiredProviders(b *strings.Builder, reqs map[string]model.ProviderRequirement, pos func(model.Position) string) {
 	if len(reqs) == 0 {
 		return
 	}
@@ -69,7 +81,7 @@ func renderRequiredProviders(b *strings.Builder, reqs map[string]model.ProviderR
 	b.WriteString("\n")
 }
 
-func renderProviders(b *strings.Builder, providers []model.ProviderConfig) {
+func renderProviders(b *strings.Builder, providers []model.ProviderConfig, pos func(model.Position) string) {
 	if len(providers) == 0 {
 		return
 	}
@@ -83,7 +95,7 @@ func renderProviders(b *strings.Builder, providers []model.ProviderConfig) {
 	b.WriteString("\n")
 }
 
-func renderVariables(b *strings.Builder, vars []model.Variable) {
+func renderVariables(b *strings.Builder, vars []model.Variable, pos func(model.Position) string) {
 	if len(vars) == 0 {
 		return
 	}
@@ -111,7 +123,7 @@ func renderVariables(b *strings.Builder, vars []model.Variable) {
 	b.WriteString("\n")
 }
 
-func renderOutputs(b *strings.Builder, outs []model.Output) {
+func renderOutputs(b *strings.Builder, outs []model.Output, pos func(model.Position) string) {
 	if len(outs) == 0 {
 		return
 	}
@@ -133,7 +145,7 @@ func renderOutputs(b *strings.Builder, outs []model.Output) {
 	b.WriteString("\n")
 }
 
-func renderLocals(b *strings.Builder, locals []model.Local) {
+func renderLocals(b *strings.Builder, locals []model.Local, pos func(model.Position) string) {
 	if len(locals) == 0 {
 		return
 	}
@@ -147,7 +159,7 @@ func renderLocals(b *strings.Builder, locals []model.Local) {
 	b.WriteString("\n")
 }
 
-func renderResources(b *strings.Builder, heading string, resources []model.Resource) {
+func renderResources(b *strings.Builder, heading string, resources []model.Resource, pos func(model.Position) string) {
 	if len(resources) == 0 {
 		return
 	}
@@ -171,7 +183,7 @@ func renderResources(b *strings.Builder, heading string, resources []model.Resou
 	b.WriteString("\n")
 }
 
-func renderEphemeralResources(b *strings.Builder, resources []model.EphemeralResource) {
+func renderEphemeralResources(b *strings.Builder, resources []model.EphemeralResource, pos func(model.Position) string) {
 	if len(resources) == 0 {
 		return
 	}
@@ -194,7 +206,7 @@ func renderEphemeralResources(b *strings.Builder, resources []model.EphemeralRes
 	b.WriteString("\n")
 }
 
-func renderModuleCalls(b *strings.Builder, calls []model.ModuleCall) {
+func renderModuleCalls(b *strings.Builder, calls []model.ModuleCall, pos func(model.Position) string) {
 	if len(calls) == 0 {
 		return
 	}
@@ -217,7 +229,7 @@ func renderModuleCalls(b *strings.Builder, calls []model.ModuleCall) {
 	b.WriteString("\n")
 }
 
-func renderMoved(b *strings.Builder, blocks []model.MovedBlock) {
+func renderMoved(b *strings.Builder, blocks []model.MovedBlock, pos func(model.Position) string) {
 	if len(blocks) == 0 {
 		return
 	}
@@ -230,7 +242,7 @@ func renderMoved(b *strings.Builder, blocks []model.MovedBlock) {
 	b.WriteString("\n")
 }
 
-func renderImports(b *strings.Builder, blocks []model.ImportBlock) {
+func renderImports(b *strings.Builder, blocks []model.ImportBlock, pos func(model.Position) string) {
 	if len(blocks) == 0 {
 		return
 	}
@@ -244,7 +256,7 @@ func renderImports(b *strings.Builder, blocks []model.ImportBlock) {
 	b.WriteString("\n")
 }
 
-func renderRemoved(b *strings.Builder, blocks []model.RemovedBlock) {
+func renderRemoved(b *strings.Builder, blocks []model.RemovedBlock, pos func(model.Position) string) {
 	if len(blocks) == 0 {
 		return
 	}
@@ -258,7 +270,7 @@ func renderRemoved(b *strings.Builder, blocks []model.RemovedBlock) {
 	b.WriteString("\n")
 }
 
-func renderChecks(b *strings.Builder, blocks []model.CheckBlock) {
+func renderChecks(b *strings.Builder, blocks []model.CheckBlock, pos func(model.Position) string) {
 	if len(blocks) == 0 {
 		return
 	}
@@ -276,7 +288,7 @@ func renderChecks(b *strings.Builder, blocks []model.CheckBlock) {
 	b.WriteString("\n")
 }
 
-func renderSchemaFindings(b *strings.Builder, m *model.Module) {
+func renderSchemaFindings(b *strings.Builder, m *model.Module, pos func(model.Position) string) {
 	type row struct{ addr, kind, attr, message, rng string }
 	var rows []row
 	collect := func(addr string, f *model.SchemaFindings) {
@@ -312,7 +324,7 @@ func renderSchemaFindings(b *strings.Builder, m *model.Module) {
 	b.WriteString("\n")
 }
 
-func renderDiagnostics(b *strings.Builder, diags model.Diagnostics) {
+func renderDiagnostics(b *strings.Builder, diags model.Diagnostics, pos func(model.Position) string) {
 	if len(diags) == 0 {
 		return
 	}
@@ -324,26 +336,41 @@ func renderDiagnostics(b *strings.Builder, diags model.Diagnostics) {
 			string(d.Severity),
 			oneLine(d.Summary),
 			oneLine(d.Detail),
-			posPtr(d.Subject),
-			posPtr(d.Context))
+			posPtr(d.Subject, pos),
+			posPtr(d.Context, pos))
 	}
 	b.WriteString("\n")
 }
 
 // --- cell helpers ---
 
-// pos formats a source Position as `file.tf [L:C:B -> L:C:B]` (line:column:byte).
-func pos(p model.Position) string {
+// position formats a source Position as a document-relative source link followed
+// by its line:column:byte range.
+func position(p model.Position, linkBase string) string {
 	if p.Filename == "" {
 		return ""
 	}
-	return fmt.Sprintf("`%s` [%d:%d:%d -> %d:%d:%d]",
-		p.Filename,
+	target, err := filepath.Rel(linkBase, filepath.FromSlash(p.Filename))
+	if err != nil {
+		target = p.Filename
+	} else if !strings.HasPrefix(target, ".") {
+		target = "./" + target
+	}
+	target = filepath.ToSlash(target)
+	href := (&url.URL{Path: target}).EscapedPath()
+	if p.Start.Line > 0 {
+		href += fmt.Sprintf("#L%d", p.Start.Line)
+		if p.End.Line > p.Start.Line {
+			href += fmt.Sprintf("-L%d", p.End.Line)
+		}
+	}
+	return fmt.Sprintf("[`%s`](%s) [%d:%d:%d -> %d:%d:%d]",
+		target, href,
 		p.Start.Line, p.Start.Column, p.Start.Byte,
 		p.End.Line, p.End.Column, p.End.Byte)
 }
 
-func posPtr(p *model.Position) string {
+func posPtr(p *model.Position, pos func(model.Position) string) string {
 	if p == nil {
 		return "-"
 	}
