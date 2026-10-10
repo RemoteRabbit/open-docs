@@ -15,4 +15,5 @@ hooks = [
   { id = "gofmt", name = "gofmt", entry = "gofmt -w", language = "system", types = ["go"] },
   { id = "go-vet", name = "go vet", entry = "go vet ./...", language = "system", types = ["go"], pass_filenames = false },
   { id = "go-test", name = "go test", entry = "go test ./...", language = "system", types = ["go"], pass_filenames = false },
+  { id = "readme-defaults", name = "sync defaults.hcl into README", language = "system", files = '^(README\.md|internal/config/defaults\.hcl)$', pass_filenames = false, entry = '''perl -0pi -e 'BEGIN{local $/; open F,"<","internal/config/defaults.hcl" or die $!; $d=<F>} s/(<!-- DEFAULTS-START -->\n).*?(<!-- DEFAULTS-END -->)/$1```hcl\n$d```\n$2/s' README.md''' },
 ]
