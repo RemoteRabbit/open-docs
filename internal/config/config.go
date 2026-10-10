@@ -7,6 +7,7 @@
 package config
 
 import (
+	_ "embed"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -25,8 +26,8 @@ const (
 )
 
 // Config is the decoded .open-docs.hcl file. All blocks are optional so an
-// empty or absent file is valid and yields zero values (defaults applied by
-// the caller).
+// empty or absent file is valid; anything it leaves unset keeps the value
+// from defaults.hcl.
 type Config struct {
 	Main *MainConfig `hcl:"main,block"`
 }
@@ -37,9 +38,16 @@ type MainConfig struct {
 	Mode       string `hcl:"mode,optional"`
 }
 
-// Default returns a Config with the built-in defaults (stdout output).
+//go:embed defaults.hcl
+var defaultsHCL []byte
+
+// Default returns a Config with the built-in defaults from defaults.hcl.
 func Default() *Config {
-	return &Config{}
+	var cfg Config
+	if err := hclsimple.Decode("defaults.hcl", defaultsHCL, nil, &cfg); err != nil {
+		panic(fmt.Sprintf("config: invalid embedded defaults.hcl: %v", err))
+	}
+	return &cfg
 }
 
 // Find returns the path to a .open-docs.hcl file, searching the module
@@ -58,16 +66,17 @@ func Find(moduleDir string) (string, bool) {
 	return "", false
 }
 
-// Load reads and decodes the config file at path.
+// Load reads and decodes the config file at path on top of Default(), so
+// attributes the file omits keep their default values.
 func Load(path string) (*Config, error) {
-	var cfg Config
-	if err := hclsimple.DecodeFile(path, nil, &cfg); err != nil {
+	cfg := Default()
+	if err := hclsimple.DecodeFile(path, nil, cfg); err != nil {
 		return nil, fmt.Errorf("config %s: %w", path, err)
 	}
 	if err := cfg.validate(); err != nil {
 		return nil, fmt.Errorf("config %s: %w", path, err)
 	}
-	return &cfg, nil
+	return cfg, nil
 }
 
 func (c *Config) validate() error {
