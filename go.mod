@@ -3,8 +3,8 @@ module github.com/remoterabbit/open-docs
 go 1.27.1
 
 require (
-	github.com/hashicorp/hcl/v2 v2.24.0
 	github.com/remoterabbit/open-inspector v0.8.0
+	github.com/hashicorp/hcl/v2 v2.25.0
 )
 
 require (
