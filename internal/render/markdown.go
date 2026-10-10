@@ -36,6 +36,7 @@ func Markdown(m *model.Module, outputFile string) string {
 	}
 
 	title := filepath.Base(m.Path)
+	// TODO: Make these two lines an optional flag in the config
 	fmt.Fprintf(&b, "# Module `%s`\n\n", title)
 	fmt.Fprintf(&b, "- **Path:** %s\n", code(m.Path))
 	if len(m.RequiredCore) > 0 {

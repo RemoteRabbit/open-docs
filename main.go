@@ -30,8 +30,8 @@ import (
 
 func main() {
 	outFlag := flag.String("o", "", "write output to this file in replace mode (overrides config)")
-	configFlag := flag.String("config", "", "path to config file (default: discover "+config.DefaultFilename+")")
-	useSchema := flag.Bool("schema", false, "enrich with provider schema via tofu/terraform")
+	cfgFlag := flag.String("config", "", "path to config file (default: discover "+config.DefaultFilename+")")
+	schemaFlag := flag.Bool("schema", false, "enrich with provider schema via tofu/terraform")
 	flag.Usage = func() {
 		fmt.Fprintf(os.Stderr, "Usage: open-docs [flags] <module-dir>\n\n")
 		flag.PrintDefaults()
@@ -44,7 +44,7 @@ func main() {
 	}
 	dir := flag.Arg(0)
 
-	if err := run(dir, *outFlag, *configFlag, *useSchema); err != nil {
+	if err := run(dir, *outFlag, *cfgFlag, *schemaFlag); err != nil {
 		fmt.Fprintf(os.Stderr, "open-docs: %v\n", err)
 		os.Exit(1)
 	}
@@ -98,12 +98,13 @@ func loadConfig(dir, configFlag string) (*config.Config, error) {
 // directory). Config file paths resolve relative to the module directory.
 func resolveOutput(cfg *config.Config, dir, outFlag string) (file, mode string) {
 	mode = config.ModeStdout
-	if cfg.Output != nil && cfg.Output.File != "" {
-		file = cfg.Output.File
+	if cfg.Main != nil && cfg.Main.DocsFile != "" {
+		file = cfg.Main.DocsFile
 		if !filepath.IsAbs(file) {
 			file = filepath.Join(dir, file)
 		}
-		mode = cfg.Output.Mode
+
+		mode = cfg.Main.Mode
 		if mode == "" {
 			mode = config.ModeReplace
 		}

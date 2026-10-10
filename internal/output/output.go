@@ -9,7 +9,7 @@ import (
 	"os"
 	"strings"
 
-	"github.com/remoterabbit/open-doc/internal/config"
+	"github.com/remoterabbit/open-docs/internal/config"
 )
 
 // Markers delimit the open-doc managed region in inject mode. Everything
