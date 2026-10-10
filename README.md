@@ -1,4 +1,4 @@
-# open-doc
+# open-docs
 
 A documentation generator for Terraform/OpenTofu modules, built on
 [open-inspector](https://github.com/RemoteRabbit/open-inspector).
@@ -8,15 +8,15 @@ workflow, then goes further using data the inspector captures that
 `terraform-docs` discards (source ranges, schema findings, reference graphs,
 structured types).
 
-> **Status: early / proof-of-concept.** Today open-doc emits a verbose,
+> **Status: early / proof-of-concept.** Today open-docs emits a verbose,
 > debug-oriented dump of everything the inspector parses. The curated,
 > reader-facing output and the workflow features below are planned. See the
 > [feature checklist](#features) for what works now vs. what is coming.
 
-## Why open-doc
+## Why open-docs
 
 `terraform-docs` renders the fields it understands and throws the rest away.
-open-inspector keeps the parts that make docs actionable, and open-doc turns
+open-inspector keeps the parts that make docs actionable, and open-docs turns
 them into output:
 
 - **Source permalinks.** Every block carries `filename` + start/end
@@ -58,7 +58,7 @@ Legend: `[x]` available now &nbsp;·&nbsp; `[~]` partial / debug-only
 - [x] **README injection** between `<!-- BEGIN_OPEN_DOC -->` /
       `<!-- END_OPEN_DOC -->` markers instead of overwriting the file
       (`output { mode = "inject" }`).
-- [~] **Config file** (`.open-doc.hcl`): `output { file, mode }` works today;
+- [~] **Config file** (`.open-docs.hcl`): `output { file, mode }` works today;
       formatter, sections, sort, and header/footer source are planned.
 - [x] **prek hooks** for file hygiene, gofmt, `go vet`, and `go test`.
 - [ ] **GitHub Action** wrapper.
@@ -94,23 +94,23 @@ Legend: `[x]` available now &nbsp;·&nbsp; `[~]` partial / debug-only
 ## Usage
 
 ```bash
-go build -o open-doc .
+go build -o open-docs .
 
 # print to stdout
-./open-doc ./examples/vpc
+./open-docs ./examples/vpc
 
 # write to a file (replace mode)
-./open-doc -o ./examples/vpc/README.md ./examples/vpc
+./open-docs -o ./examples/vpc/README.md ./examples/vpc
 
 # enrich with provider schema (deprecated / missing-required findings)
 # requires `tofu` or `terraform` available and the module initialized
-./open-doc -schema ./examples/vpc
+./open-docs -schema ./examples/vpc
 ```
 
-### Configuration (`.open-doc.hcl`)
+### Configuration (`.open-docs.hcl`)
 
-Drop a `.open-doc.hcl` in the module directory (or pass `-config <file>`) to
-control output. open-doc looks for it in the module directory, then the current
+Drop a `.open-docs.hcl` in the module directory (or pass `-config <file>`) to
+control output. open-docs looks for it in the module directory, then the current
 working directory.
 
 ```hcl
@@ -120,7 +120,7 @@ output {
 }
 ```
 
-In `inject` mode, open-doc replaces the text between the markers and leaves the
+In `inject` mode, open-docs replaces the text between the markers and leaves the
 rest of the file untouched (creating the region if it is missing):
 
 ```markdown
@@ -154,7 +154,7 @@ direnv allow
 The shell installs the prek Git shim. Common commands are:
 
 ```bash
-build                 # compile ./open-doc
+build                 # compile ./open-docs
 format                # format all Go files
 verify                # format check, build, vet, test, and smoke test
 prek run --all-files  # run every repository hook
@@ -163,9 +163,9 @@ devenv test           # run the complete devenv verification
 
 ## How it works
 
-open-doc calls `inspector.Inspect(dir)` to parse the module into a
+open-docs calls `inspector.Inspect(dir)` to parse the module into a
 `*model.Module`, then walks that struct in [markdown.go](./markdown.go) to
-render Markdown tables. All HCL parsing lives in open-inspector; open-doc owns
+render Markdown tables. All HCL parsing lives in open-inspector; open-docs owns
 presentation only.
 
 ## Project layout
@@ -177,9 +177,9 @@ presentation only.
 ## Related
 
 - [open-inspector](https://github.com/RemoteRabbit/open-inspector): the HCL
-  inspection engine open-doc is built on.
+  inspection engine open-docs is built on.
 - [terraform-docs](https://github.com/terraform-docs/terraform-docs): the
-  incumbent open-doc aims to match, then surpass.
+  incumbent open-docs aims to match, then surpass.
 </content>
 
 </invoke>

@@ -13,7 +13,7 @@
   ];
 
   scripts = {
-    build.exec = "go build -o open-doc .";
+    build.exec = "go build -o open-docs .";
     format.exec = ''
       find . -type f -name '*.go' -not -path './.devenv/*' -exec gofmt -w {} +
     '';
@@ -33,7 +33,7 @@
 
       smoke_output="$(mktemp)"
       trap 'rm -f "$smoke_output"' EXIT
-      ./open-doc -o "$smoke_output" ./examples/vpc
+      ./open-docs -o "$smoke_output" ./examples/vpc
       test -s "$smoke_output"
     '';
   };
@@ -43,7 +43,7 @@
       prek install >/dev/null
     fi
 
-    echo "open-doc development environment"
+    echo "open-docs development environment"
     echo "  $(go version)"
     echo "  $(tofu version | head -n 1)"
     echo "  $(prek --version)"
