@@ -28,18 +28,13 @@ const (
 // empty or absent file is valid and yields zero values (defaults applied by
 // the caller).
 type Config struct {
-	// TODO: Expand this to handle more blocks of differing types also would need to update main.tf
-	Output *OutputConfig `hcl:"file,block"`
+	Main *MainConfig `hcl:"main,block"`
 }
 
-// OutputConfig controls where and how rendered docs are written.
-type OutputConfig struct {
-	// File is the target path. Relative paths resolve against the module
-	// directory. Empty means stdout.
-	File string `hcl:"file,optional"`
-	// Mode is one of "stdout", "replace", or "inject". Empty defaults to
-	// "replace" when File is set, otherwise "stdout".
-	Mode string `hcl:"mode,optional"`
+type MainConfig struct {
+	ConfigPath string `hcl:"configpath,optional"`
+	DocsFile   string `hcl:"docsfile,optional"`
+	Mode       string `hcl:"mode,optional"`
 }
 
 // Default returns a Config with the built-in defaults (stdout output).
@@ -76,14 +71,15 @@ func Load(path string) (*Config, error) {
 }
 
 func (c *Config) validate() error {
-	if c.Output == nil {
+	if c.Main == nil {
 		return nil
 	}
-	switch c.Output.Mode {
+
+	switch c.Main.Mode {
 	case "", ModeStdout, ModeReplace, ModeInject:
 		return nil
 	default:
 		return fmt.Errorf("output.mode %q is invalid (want %q, %q, or %q)",
-			c.Output.Mode, ModeStdout, ModeReplace, ModeInject)
+			c.Main.Mode, ModeStdout, ModeReplace, ModeInject)
 	}
 }

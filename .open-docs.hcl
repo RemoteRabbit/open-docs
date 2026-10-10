@@ -1,4 +1,4 @@
-file {
-  file = "README.md"
+main {
+  configpath = "README.md"
   mode = "replace"
 }
