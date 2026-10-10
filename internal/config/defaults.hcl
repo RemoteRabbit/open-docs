@@ -3,4 +3,5 @@
 main {
   docsfile = "README.md"
   mode     = "stdout"
+  header   = true
 }

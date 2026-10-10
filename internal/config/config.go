@@ -33,9 +33,9 @@ type Config struct {
 }
 
 type MainConfig struct {
-	ConfigPath string `hcl:"configpath,optional"`
-	DocsFile   string `hcl:"docsfile,optional"`
-	Mode       string `hcl:"mode,optional"`
+	DocsFile string `hcl:"docsfile,optional"` // file to write docs to
+	Mode     string `hcl:"mode,optional"`     // one of three mode options: stdout, inject, or replace
+	Header   bool   `hcl:"header,optional"`   // render the module title
 }
 
 //go:embed defaults.hcl
@@ -50,20 +50,29 @@ func Default() *Config {
 	return &cfg
 }
 
-// Find returns the path to a .open-docs.hcl file, searching the module
-// directory first and then the current working directory. The second return
-// value reports whether a file was found.
+// Find returns the path to the nearest .open-docs.hcl file, searching the
+// module directory and then each parent up to the repository root (the first
+// directory containing .git) or the filesystem root. The second return value
+// reports whether a file was found.
 func Find(moduleDir string) (string, bool) {
-	candidates := []string{
-		filepath.Join(moduleDir, DefaultFilename),
-		DefaultFilename, // current working directory
+	dir, err := filepath.Abs(moduleDir)
+	if err != nil {
+		return "", false
 	}
-	for _, path := range candidates {
+	for {
+		path := filepath.Join(dir, DefaultFilename)
 		if info, err := os.Stat(path); err == nil && !info.IsDir() {
 			return path, true
 		}
+		if _, err := os.Stat(filepath.Join(dir, ".git")); err == nil {
+			return "", false
+		}
+		parent := filepath.Dir(dir)
+		if parent == dir {
+			return "", false
+		}
+		dir = parent
 	}
-	return "", false
 }
 
 // Load reads and decodes the config file at path on top of Default(), so
@@ -88,7 +97,7 @@ func (c *Config) validate() error {
 	case "", ModeStdout, ModeReplace, ModeInject:
 		return nil
 	default:
-		return fmt.Errorf("output.mode %q is invalid (want %q, %q, or %q)",
+		return fmt.Errorf("main.mode %q is invalid (want %q, %q, or %q)",
 			c.Main.Mode, ModeStdout, ModeReplace, ModeInject)
 	}
 }

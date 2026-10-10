@@ -23,7 +23,8 @@ import (
 // This is a debug-oriented view: every field of every block type is rendered,
 // including the full source position (filename + start/end line:column:byte),
 // so the output doubles as a visualization of what the inspector parsed.
-func Markdown(m *model.Module, outputFile string) string {
+// header controls whether the module title and path lines are rendered.
+func Markdown(m *model.Module, outputFile string, header bool) string {
 	var b strings.Builder
 	linkBase := m.Path
 	if outputFile != "" {
@@ -35,10 +36,9 @@ func Markdown(m *model.Module, outputFile string) string {
 		return position(p, linkBase)
 	}
 
-	title := filepath.Base(m.Path)
-	// TODO: Make these two lines an optional flag in the config
-	fmt.Fprintf(&b, "# Module `%s`\n\n", title)
-	fmt.Fprintf(&b, "- **Path:** %s\n", code(m.Path))
+	if header {
+		fmt.Fprintf(&b, "# Module `%s`\n\n", filepath.Base(m.Path))
+	}
 	if len(m.RequiredCore) > 0 {
 		fmt.Fprintf(&b, "- **Required core:** %s\n", code(strings.Join(m.RequiredCore, ", ")))
 	}
