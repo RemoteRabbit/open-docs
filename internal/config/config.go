@@ -1,4 +1,4 @@
-// Package config loads the optional .open-doc.hcl configuration file.
+// Package config loads the optional .open-docs.hcl configuration file.
 //
 // Decoding is static (Level 1): the file is parsed with a nil evaluation
 // context, so no variables or functions are available yet. The dynamic eval
@@ -14,8 +14,8 @@ import (
 	"github.com/hashicorp/hcl/v2/hclsimple"
 )
 
-// DefaultFilename is the config file name open-doc looks for.
-const DefaultFilename = ".open-doc.hcl"
+// DefaultFilename is the config file name open-docs looks for.
+const DefaultFilename = ".open-docs.hcl"
 
 // Output modes.
 const (
@@ -24,7 +24,7 @@ const (
 	ModeInject  = "inject"  // replace content between markers in the target file
 )
 
-// Config is the decoded .open-doc.hcl file. All blocks are optional so an
+// Config is the decoded .open-docs.hcl file. All blocks are optional so an
 // empty or absent file is valid and yields zero values (defaults applied by
 // the caller).
 type Config struct {
@@ -47,7 +47,7 @@ func Default() *Config {
 	return &Config{}
 }
 
-// Find returns the path to a .open-doc.hcl file, searching the module
+// Find returns the path to a .open-docs.hcl file, searching the module
 // directory first and then the current working directory. The second return
 // value reports whether a file was found.
 func Find(moduleDir string) (string, bool) {

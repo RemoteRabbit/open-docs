@@ -1,18 +1,18 @@
-// Command open-doc generates documentation for a Terraform/OpenTofu module by
+// Command open-docs generates documentation for a Terraform/OpenTofu module by
 // inspecting it with open-inspector.
 //
 // Usage:
 //
-//	open-doc [flags] <module-dir>
+//	open-docs [flags] <module-dir>
 //
 // Flags:
 //
 //	-o <file>       Write output to a file (replace mode); overrides config.
-//	-config <file>  Use this config file instead of discovering .open-doc.hcl.
+//	-config <file>  Use this config file instead of discovering .open-docs.hcl.
 //	-schema         Enrich with provider schema (shells out to tofu/terraform).
 //
 // Output destination and mode default to stdout, and can be set in
-// .open-doc.hcl via an output { file, mode } block. The -o flag is a shortcut
+// .open-docs.hcl via an output { file, mode } block. The -o flag is a shortcut
 // for replace mode to the given file and takes precedence over config.
 package main
 
@@ -22,9 +22,9 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/remoterabbit/open-doc/internal/config"
-	"github.com/remoterabbit/open-doc/internal/output"
-	"github.com/remoterabbit/open-doc/internal/render"
+	"github.com/remoterabbit/open-docs/internal/config"
+	"github.com/remoterabbit/open-docs/internal/output"
+	"github.com/remoterabbit/open-docs/internal/render"
 	"github.com/remoterabbit/open-inspector/pkg/inspector"
 )
 
@@ -33,7 +33,7 @@ func main() {
 	configFlag := flag.String("config", "", "path to config file (default: discover "+config.DefaultFilename+")")
 	useSchema := flag.Bool("schema", false, "enrich with provider schema via tofu/terraform")
 	flag.Usage = func() {
-		fmt.Fprintf(os.Stderr, "Usage: open-doc [flags] <module-dir>\n\n")
+		fmt.Fprintf(os.Stderr, "Usage: open-docs [flags] <module-dir>\n\n")
 		flag.PrintDefaults()
 	}
 	flag.Parse()
@@ -45,7 +45,7 @@ func main() {
 	dir := flag.Arg(0)
 
 	if err := run(dir, *outFlag, *configFlag, *useSchema); err != nil {
-		fmt.Fprintf(os.Stderr, "open-doc: %v\n", err)
+		fmt.Fprintf(os.Stderr, "open-docs: %v\n", err)
 		os.Exit(1)
 	}
 }
@@ -78,7 +78,7 @@ func run(dir, outFlag, configFlag string, useSchema bool) error {
 	return nil
 }
 
-// loadConfig loads the explicit config file, or discovers .open-doc.hcl near
+// loadConfig loads the explicit config file, or discovers .open-docs.hcl near
 // the module, falling back to defaults when none exists.
 func loadConfig(dir, configFlag string) (*config.Config, error) {
 	path := configFlag

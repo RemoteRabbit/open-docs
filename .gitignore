@@ -8,6 +8,7 @@ devenv.local.yaml
 
 # Build output
 open-doc
+open-docs
 *.md
 !README.md
 
