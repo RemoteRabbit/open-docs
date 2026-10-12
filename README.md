@@ -8,6 +8,10 @@ workflow, then goes further using data the inspector captures that
 `terraform-docs` discards (source ranges, schema findings, reference graphs,
 structured types).
 
+<!-- VERSION-START -->
+This documentation was generated with [open-docs v0.1.0](https://github.com/RemoteRabbit/open-docs)
+<!-- VERSION-END -->
+
 > **Status: early / proof-of-concept.** Today open-docs emits a verbose,
 > debug-oriented dump of everything the inspector parses. The curated,
 > reader-facing output and the workflow features below are planned. See the
