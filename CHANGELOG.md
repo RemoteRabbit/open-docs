@@ -1,5 +1,18 @@
 # Changelog
 
+## [0.2.0](https://github.com/RemoteRabbit/open-docs/compare/v0.1.0...v0.2.0) (2026-10-12)
+
+
+### Features
+
+* setup defaults config ([#17](https://github.com/RemoteRabbit/open-docs/issues/17)) ([422eae6](https://github.com/RemoteRabbit/open-docs/commit/422eae63be7dbc138d5d3db414f5165c39fc49a0))
+
+
+### Dependencies
+
+* **github.com/hashicorp/hcl/v2:** update module github.com/hashicorp/hcl/v2 to v2.25.0 ([#12](https://github.com/RemoteRabbit/open-docs/issues/12)) ([31b9614](https://github.com/RemoteRabbit/open-docs/commit/31b961476520ab986a2b067e03d6a86feff90fed))
+* **github.com/remoterabbit/open-inspector:** update module github.com/remoterabbit/open-inspector to v0.8.0 ([#15](https://github.com/RemoteRabbit/open-docs/issues/15)) ([78eb6b9](https://github.com/RemoteRabbit/open-docs/commit/78eb6b9493724fcb03b7ea4063ad41a0d4668119))
+
 ## [0.1.0](https://github.com/RemoteRabbit/open-docs/compare/v0.0.1...v0.1.0) (2026-09-27)
 
 
