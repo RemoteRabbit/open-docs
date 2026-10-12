@@ -7,6 +7,7 @@
 package config
 
 import (
+	_ "embed"
 	"fmt"
 	"os"
 	"path/filepath"
@@ -25,49 +26,66 @@ const (
 )
 
 // Config is the decoded .open-docs.hcl file. All blocks are optional so an
-// empty or absent file is valid and yields zero values (defaults applied by
-// the caller).
+// empty or absent file is valid; anything it leaves unset keeps the value
+// from defaults.hcl.
 type Config struct {
 	Main *MainConfig `hcl:"main,block"`
 }
 
 type MainConfig struct {
-	ConfigPath string `hcl:"configpath,optional"`
-	DocsFile   string `hcl:"docsfile,optional"`
-	Mode       string `hcl:"mode,optional"`
+	DocsFile string `hcl:"docsfile,optional"` // file to write docs to
+	Mode     string `hcl:"mode,optional"`     // one of three mode options: stdout, inject, or replace
+	Header   bool   `hcl:"header,optional"`   // render the module title
 }
 
-// Default returns a Config with the built-in defaults (stdout output).
+//go:embed defaults.hcl
+var defaultsHCL []byte
+
+// Default returns a Config with the built-in defaults from defaults.hcl.
 func Default() *Config {
-	return &Config{}
+	var cfg Config
+	if err := hclsimple.Decode("defaults.hcl", defaultsHCL, nil, &cfg); err != nil {
+		panic(fmt.Sprintf("config: invalid embedded defaults.hcl: %v", err))
+	}
+	return &cfg
 }
 
-// Find returns the path to a .open-docs.hcl file, searching the module
-// directory first and then the current working directory. The second return
-// value reports whether a file was found.
+// Find returns the path to the nearest .open-docs.hcl file, searching the
+// module directory and then each parent up to the repository root (the first
+// directory containing .git) or the filesystem root. The second return value
+// reports whether a file was found.
 func Find(moduleDir string) (string, bool) {
-	candidates := []string{
-		filepath.Join(moduleDir, DefaultFilename),
-		DefaultFilename, // current working directory
+	dir, err := filepath.Abs(moduleDir)
+	if err != nil {
+		return "", false
 	}
-	for _, path := range candidates {
+	for {
+		path := filepath.Join(dir, DefaultFilename)
 		if info, err := os.Stat(path); err == nil && !info.IsDir() {
 			return path, true
 		}
+		if _, err := os.Stat(filepath.Join(dir, ".git")); err == nil {
+			return "", false
+		}
+		parent := filepath.Dir(dir)
+		if parent == dir {
+			return "", false
+		}
+		dir = parent
 	}
-	return "", false
 }
 
-// Load reads and decodes the config file at path.
+// Load reads and decodes the config file at path on top of Default(), so
+// attributes the file omits keep their default values.
 func Load(path string) (*Config, error) {
-	var cfg Config
-	if err := hclsimple.DecodeFile(path, nil, &cfg); err != nil {
+	cfg := Default()
+	if err := hclsimple.DecodeFile(path, nil, cfg); err != nil {
 		return nil, fmt.Errorf("config %s: %w", path, err)
 	}
 	if err := cfg.validate(); err != nil {
 		return nil, fmt.Errorf("config %s: %w", path, err)
 	}
-	return &cfg, nil
+	return cfg, nil
 }
 
 func (c *Config) validate() error {
@@ -79,7 +97,7 @@ func (c *Config) validate() error {
 	case "", ModeStdout, ModeReplace, ModeInject:
 		return nil
 	default:
-		return fmt.Errorf("output.mode %q is invalid (want %q, %q, or %q)",
+		return fmt.Errorf("main.mode %q is invalid (want %q, %q, or %q)",
 			c.Main.Mode, ModeStdout, ModeReplace, ModeInject)
 	}
 }

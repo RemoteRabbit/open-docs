@@ -1,6 +1,5 @@
 # Module `vpc`
 
-- **Path:** `/home/remoterabbit/Projects/open-docs/examples/vpc`
 - **Required core:** `>= 1.5`
 
 ## Required Providers

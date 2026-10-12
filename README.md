@@ -108,15 +108,26 @@ go build -o open-docs .
 ```
 
 ### Configuration (`.open-docs.hcl`)
-
-Drop a `.open-docs.hcl` in the module directory (or pass `-config <file>`) to
-control output. open-docs looks for it in the module directory, then the current
-working directory.
+<!-- DEFAULTS-START -->
+```hcl
+# Built-in defaults for open-docs. A user's .open-docs.hcl is decoded on top
+# of these values, so any attribute set there overrides the one here.
+main {
+  docsfile = "README.md"
+  mode     = "stdout"
+  header   = true
+}
+```
+<!-- DEFAULTS-END -->
+Drop a `.open-docs.hcl` in the module directory or the repository root (or pass
+`-config <file>`) to control output. open-docs uses the nearest one, searching
+from the module directory up to the repository root.
 
 ```hcl
-output {
-  file = "README.md"  # relative to the module directory
+main {
+  docsfile = "README.md"  # relative to the module directory
   mode = "inject"     # "stdout" (default) | "replace" | "inject"
+  header = false      # omit the module title and path lines (default: true)
 }
 ```
 
