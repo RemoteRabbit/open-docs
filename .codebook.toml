@@ -1,0 +1,5 @@
+dictionaries = ["en_us"]
+words = [
+"hcl"
+]
+ignore_paths = [".git/**/*"]
