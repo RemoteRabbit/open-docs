@@ -121,6 +121,38 @@ main {
   mode     = "stdout"
   header   = true
 }
+
+required {
+  render = true
+  name = true
+  source = true
+  version = true
+  alias = false
+  position = true
+}
+
+providers {
+  render = true
+  name = true
+  alias = false
+  for_each = false
+  position = true
+}
+
+variables {
+  render = true
+  name = true
+  type = true
+  default = true
+  required = true
+  description = true
+  comment = true
+  sensitive = true
+  nullable = true
+  ephemeral = true
+  validation = true
+  position = true
+}
 ```
 <!-- DEFAULTS-END -->
 Drop a `.open-docs.hcl` in the module directory or the repository root (or pass

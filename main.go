@@ -67,7 +67,7 @@ func run(dir, outFlag, configFlag string, useSchema bool) error {
 		return err
 	}
 
-	doc := render.Markdown(mod, file, cfg.Main != nil && cfg.Main.Header)
+	doc := render.Markdown(mod, file, cfg, "1")
 
 	if err := output.Write(os.Stdout, file, mode, doc); err != nil {
 		return err

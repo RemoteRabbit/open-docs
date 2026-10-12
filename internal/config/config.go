@@ -29,13 +29,48 @@ const (
 // empty or absent file is valid; anything it leaves unset keeps the value
 // from defaults.hcl.
 type Config struct {
-	Main *MainConfig `hcl:"main,block"`
+	Main      *MainConfig      `hcl:"main,block"`
+	Required  *RequiredConfig  `hcl:"required,block"`
+	Providers *ProvidersConfig `hcl:"providers,block"`
+	Variables *VariablesConfig `hcl:"variables,block"`
 }
 
 type MainConfig struct {
 	DocsFile string `hcl:"docsfile,optional"` // file to write docs to
 	Mode     string `hcl:"mode,optional"`     // one of three mode options: stdout, inject, or replace
 	Header   bool   `hcl:"header,optional"`   // render the module title
+}
+
+type RequiredConfig struct {
+	Render   bool `hcl:"render,optional"`
+	Name     bool `hcl:"name,optional"`
+	Source   bool `hcl:"source,optional"`
+	Version  bool `hcl:"version,optional"`
+	Alias    bool `hcl:"alias,optional"`
+	Position bool `hcl:"position,optional"`
+}
+
+type ProvidersConfig struct {
+	Render   bool `hcl:"render,optional"`
+	Name     bool `hcl:"name,optional"`
+	Alias    bool `hcl:"alias,optional"`
+	ForEach  bool `hcl:"for_each,optional"`
+	Position bool `hcl:"position,optional"`
+}
+
+type VariablesConfig struct {
+	Render      bool `hcl:"render,optional"`
+	Name        bool `hcl:"name,optional"`
+	Type        bool `hcl:"type,optional"`
+	Default     bool `hcl:"default,optional"`
+	Required    bool `hcl:"required,optional"`
+	Description bool `hcl:"description,optional"`
+	Comment     bool `hcl:"comment,optional"`
+	Sensitive   bool `hcl:"sensitive,optional"`
+	Nullable    bool `hcl:"nullable,optional"`
+	Ephemeral   bool `hcl:"ephemeral,optional"`
+	Validation  bool `hcl:"validation,optional"`
+	Position    bool `hcl:"position,optional"`
 }
 
 //go:embed defaults.hcl

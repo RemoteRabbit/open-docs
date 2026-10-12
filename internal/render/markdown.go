@@ -13,18 +13,47 @@ import (
 	"sort"
 	"strings"
 
+	"github.com/remoterabbit/open-docs/internal/config"
 	"github.com/remoterabbit/open-inspector/pkg/model"
 )
+
+type column[T any] struct {
+	header  string
+	align   string
+	enabled bool
+	cell    func(T) string
+}
+
+func writeTable[T any](b *strings.Builder, cols []column[T], rows []T) {
+	var active []column[T]
+	for _, c := range cols {
+		if c.enabled {
+			active = append(active, c)
+		}
+	}
+	if len(active) == 0 {
+		return
+	}
+	headers := make([]string, len(active))
+	seps := make([]string, len(active))
+	for i, c := range active {
+		headers[i], seps[i] = c.header, c.align
+	}
+	fmt.Fprintf(b, "| %s |\n|%s|\n", strings.Join(headers, " | "), strings.Join(seps, "|"))
+	for _, r := range rows {
+		cells := make([]string, len(active))
+		for i, c := range active {
+			cells[i] = c.cell(r)
+		}
+		fmt.Fprintf(b, "| %s |\n", strings.Join(cells, " | "))
+	}
+	b.WriteString("\n")
+}
 
 // Markdown renders a module as a verbose Markdown reference document. Source
 // links are made relative to outputFile, or to the module directory when the
 // document is written to stdout.
-//
-// This is a debug-oriented view: every field of every block type is rendered,
-// including the full source position (filename + start/end line:column:byte),
-// so the output doubles as a visualization of what the inspector parsed.
-// header controls whether the module title and path lines are rendered.
-func Markdown(m *model.Module, outputFile string, header bool) string {
+func Markdown(m *model.Module, outputFile string, cfg *config.Config, version string) string {
 	var b strings.Builder
 	linkBase := m.Path
 	if outputFile != "" {
@@ -35,18 +64,23 @@ func Markdown(m *model.Module, outputFile string, header bool) string {
 	pos := func(p model.Position) string {
 		return position(p, linkBase)
 	}
-
-	if header {
+	if cfg.Main.Header {
 		fmt.Fprintf(&b, "# Module `%s`\n\n", filepath.Base(m.Path))
 	}
+
+	// Add version information
+	if version != "" {
+		fmt.Fprintf(&b, "<!-- VERSION-START -->\nThis documentation was generated with [open-docs v%s](https://github.com/RemoteRabbit/open-docs)\n<!-- VERSION-END -->\n\n", version)
+	}
+
 	if len(m.RequiredCore) > 0 {
 		fmt.Fprintf(&b, "- **Required core:** %s\n", code(strings.Join(m.RequiredCore, ", ")))
 	}
 	b.WriteString("\n")
 
-	renderRequiredProviders(&b, m.RequiredProviders, pos)
-	renderProviders(&b, m.Providers, pos)
-	renderVariables(&b, m.Variables, pos)
+	renderRequiredProviders(&b, cfg.Required, m.RequiredProviders, pos)
+	renderProviders(&b, cfg.Providers, m.Providers, pos)
+	renderVariables(&b, cfg.Variables, m.Variables, pos)
 	renderOutputs(&b, m.Outputs, pos)
 	renderLocals(&b, m.Locals, pos)
 	renderResources(&b, "Managed Resources", m.ManagedResources, pos)
@@ -63,65 +97,83 @@ func Markdown(m *model.Module, outputFile string, header bool) string {
 	return b.String()
 }
 
-func renderRequiredProviders(b *strings.Builder, reqs map[string]model.ProviderRequirement, pos func(model.Position) string) {
-	if len(reqs) == 0 {
+func renderRequiredProviders(b *strings.Builder, cfg *config.RequiredConfig, reqs map[string]model.ProviderRequirement, pos func(model.Position) string) {
+	if len(reqs) == 0 || !cfg.Render {
+		// TODO: add logging output
 		return
 	}
-	b.WriteString("## Required Providers\n\n")
-	b.WriteString("| Name | Source | Version Constraints | Configuration Aliases | Position |\n")
-	b.WriteString("|------|--------|---------------------|-----------------------|----------|\n")
-	for _, name := range sortedKeys(reqs) {
-		r := reqs[name]
-		fmt.Fprintf(b, "| %s | %s | %s | %s | %s |\n",
-			code(name),
-			code(r.Source),
-			code(strings.Join(r.VersionConstraints, ", ")),
-			code(strings.Join(r.ConfigurationAliases, ", ")),
-			pos(r.Position))
+	type reqRow struct {
+		name string
+		model.ProviderRequirement
 	}
-	b.WriteString("\n")
+	rows := make([]reqRow, 0, len(reqs))
+	for _, name := range sortedKeys(reqs) {
+		rows = append(rows, reqRow{name, reqs[name]})
+	}
+	b.WriteString("## Required Providers\n\n")
+	writeTable(b, []column[reqRow]{
+		{"Name", "------", cfg.Name, func(r reqRow) string { return code(r.name) }},
+		{"Source", "--------", cfg.Source, func(r reqRow) string { return code(r.Source) }},
+		{"Version", "---------", cfg.Version, func(r reqRow) string { return code(strings.Join(r.VersionConstraints, ", ")) }},
+		{"Alias", "-------", cfg.Alias, func(r reqRow) string { return code(strings.Join(r.ConfigurationAliases, ", ")) }},
+		{"Position", "----------", cfg.Position, func(r reqRow) string { return pos(r.Position) }},
+	}, rows)
 }
 
-func renderProviders(b *strings.Builder, providers []model.ProviderConfig, pos func(model.Position) string) {
-	if len(providers) == 0 {
+func renderProviders(b *strings.Builder, cfg *config.ProvidersConfig, providers []model.ProviderConfig, pos func(model.Position) string) {
+	if len(providers) == 0 || !cfg.Render {
+		// TODO: add logging output
 		return
 	}
 	b.WriteString("## Providers\n\n")
-	b.WriteString("| Name | Alias | For Each | Position |\n")
-	b.WriteString("|------|-------|----------|----------|\n")
-	for _, p := range providers {
-		fmt.Fprintf(b, "| %s | %s | %s | %s |\n",
-			code(p.Name), code(p.Alias), exprCell(p.ForEach), pos(p.Position))
-	}
-	b.WriteString("\n")
+	writeTable(b, []column[model.ProviderConfig]{
+		{"Name", "------", cfg.Name, func(p model.ProviderConfig) string { return code(p.Name) }},
+		{"Alias", "-------", cfg.Alias, func(p model.ProviderConfig) string { return code(p.Alias) }},
+		{"For Each", "----------", cfg.ForEach, func(p model.ProviderConfig) string { return exprCell(p.ForEach) }},
+		{"Position", "----------", cfg.Position, func(p model.ProviderConfig) string { return pos(p.Position) }},
+	}, providers)
 }
 
-func renderVariables(b *strings.Builder, vars []model.Variable, pos func(model.Position) string) {
-	if len(vars) == 0 {
+func renderVariables(b *strings.Builder, cfg *config.VariablesConfig, vars []model.Variable, pos func(model.Position) string) {
+	if len(vars) == 0 || !cfg.Render {
 		return
 	}
 	b.WriteString("## Inputs\n\n")
-	b.WriteString("| Name | Type | Default | Required | Description | Comment | Sensitive | Nullable | Ephemeral | Validations | Position |\n")
-	b.WriteString("|------|------|---------|:--------:|-------------|---------|:---------:|:--------:|:---------:|:-----------:|----------|\n")
-	for _, v := range vars {
-		required := "yes"
-		if v.Default != nil {
-			required = "no"
-		}
-		fmt.Fprintf(b, "| %s | %s | %s | %s | %s | %s | %s | %s | %s | %d | %s |\n",
-			code(v.Name),
-			typeCell(v.Type, v.TypeSpec),
-			defaultCell(v.Default, v.DefaultValue),
-			required,
-			oneLine(v.Description),
-			oneLine(v.Comment),
-			boolCell(v.Sensitive),
-			boolPtrCell(v.Nullable),
-			boolCell(v.Ephemeral),
-			len(v.Validations),
-			pos(v.Position))
-	}
-	b.WriteString("\n")
+	writeTable(b, []column[model.Variable]{
+		{"Name", "----", cfg.Name, func(p model.Variable) string {
+			return code(p.Name)
+		}},
+		// {"Type"},
+		// {"Default"},
+		// {"Required"},
+		// {"Description"},
+		// {"Comment"},
+		// {"Sensitive"},
+		// {"Nullable"},
+		// {"Ephemeral"},
+		// {"Validation"},
+		// {"Position"},
+	}, vars)
+
+	// for _, v := range vars {
+	// 	required := "yes"
+	// 	if v.Default != nil {
+	// 		required = "no"
+	// 	}
+	// 	fmt.Fprintf(b, "| %s | %s | %s | %s | %s | %s | %s | %s | %s | %d | %s |\n",
+	// 		code(v.Name),
+	// 		typeCell(v.Type, v.TypeSpec),
+	// 		defaultCell(v.Default, v.DefaultValue),
+	// 		required,
+	// 		oneLine(v.Description),
+	// 		oneLine(v.Comment),
+	// 		boolCell(v.Sensitive),
+	// 		boolPtrCell(v.Nullable),
+	// 		boolCell(v.Ephemeral),
+	// 		len(v.Validations),
+	// 		pos(v.Position))
+	// }
+	// b.WriteString("\n")
 }
 
 func renderOutputs(b *strings.Builder, outs []model.Output, pos func(model.Position) string) {
