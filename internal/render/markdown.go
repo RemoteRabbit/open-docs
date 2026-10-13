@@ -1,9 +1,4 @@
 // Package render turns an inspected *model.Module into documentation output.
-//
-// The current renderer is a verbose, debug-oriented view that dumps every
-// field of every block type. It is meant for development and troubleshooting;
-// the curated, reader-facing layout is a separate renderer (planned). See
-// ROADMAP.md.
 package render
 
 import (
@@ -81,8 +76,8 @@ func Markdown(m *model.Module, outputFile string, cfg *config.Config, version st
 	renderRequiredProviders(&b, cfg.Required, m.RequiredProviders, pos)
 	renderProviders(&b, cfg.Providers, m.Providers, pos)
 	renderVariables(&b, cfg.Variables, m.Variables, pos)
-	renderOutputs(&b, m.Outputs, pos)
-	renderLocals(&b, m.Locals, pos)
+	renderOutputs(&b, cfg.Outputs, m.Outputs, pos)
+	renderLocals(&b, cfg.Locals, m.Locals, pos)
 	renderResources(&b, "Managed Resources", m.ManagedResources, pos)
 	renderResources(&b, "Data Resources", m.DataResources, pos)
 	renderEphemeralResources(&b, m.EphemeralResources, pos)
@@ -112,11 +107,46 @@ func renderRequiredProviders(b *strings.Builder, cfg *config.RequiredConfig, req
 	}
 	b.WriteString("## Required Providers\n\n")
 	writeTable(b, []column[reqRow]{
-		{"Name", "------", cfg.Name, func(r reqRow) string { return code(r.name) }},
-		{"Source", "--------", cfg.Source, func(r reqRow) string { return code(r.Source) }},
-		{"Version", "---------", cfg.Version, func(r reqRow) string { return code(strings.Join(r.VersionConstraints, ", ")) }},
-		{"Alias", "-------", cfg.Alias, func(r reqRow) string { return code(strings.Join(r.ConfigurationAliases, ", ")) }},
-		{"Position", "----------", cfg.Position, func(r reqRow) string { return pos(r.Position) }},
+		{
+			"Name",
+			"---",
+			cfg.Name,
+			func(r reqRow) string {
+				return code(r.name)
+			},
+		},
+		{
+			"Source",
+			"---",
+			cfg.Source,
+			func(r reqRow) string {
+				return code(r.Source)
+			},
+		},
+		{
+			"Version",
+			"---",
+			cfg.Version,
+			func(r reqRow) string {
+				return code(strings.Join(r.VersionConstraints, ", "))
+			},
+		},
+		{
+			"Alias",
+			"---",
+			cfg.Alias,
+			func(r reqRow) string {
+				return code(strings.Join(r.ConfigurationAliases, ", "))
+			},
+		},
+		{
+			"Position",
+			"---",
+			cfg.Position,
+			func(r reqRow) string {
+				return pos(r.Position)
+			},
+		},
 	}, rows)
 }
 
@@ -127,27 +157,97 @@ func renderProviders(b *strings.Builder, cfg *config.ProvidersConfig, providers 
 	}
 	b.WriteString("## Providers\n\n")
 	writeTable(b, []column[model.ProviderConfig]{
-		{"Name", "------", cfg.Name, func(p model.ProviderConfig) string { return code(p.Name) }},
-		{"Alias", "-------", cfg.Alias, func(p model.ProviderConfig) string { return code(p.Alias) }},
-		{"For Each", "----------", cfg.ForEach, func(p model.ProviderConfig) string { return exprCell(p.ForEach) }},
-		{"Position", "----------", cfg.Position, func(p model.ProviderConfig) string { return pos(p.Position) }},
+		{
+			"Name",
+			"---",
+			cfg.Name,
+			func(p model.ProviderConfig) string {
+				return code(p.Name)
+			},
+		},
+		{
+			"Alias",
+			"---",
+			cfg.Alias,
+			func(p model.ProviderConfig) string {
+				return code(p.Alias)
+			},
+		},
+		{
+			"For Each",
+			"---",
+			cfg.ForEach,
+			func(p model.ProviderConfig) string {
+				return exprCell(p.ForEach)
+			},
+		},
+		{
+			"Position",
+			"---",
+			cfg.Position,
+			func(p model.ProviderConfig) string {
+				return pos(p.Position)
+			},
+		},
 	}, providers)
 }
 
 func renderVariables(b *strings.Builder, cfg *config.VariablesConfig, vars []model.Variable, pos func(model.Position) string) {
 	if len(vars) == 0 || !cfg.Render {
+		// TODO: add logging output
 		return
 	}
 	b.WriteString("## Inputs\n\n")
 	writeTable(b, []column[model.Variable]{
-		{"Name", "----", cfg.Name, func(p model.Variable) string {
-			return code(p.Name)
-		}},
-		// {"Type"},
-		// {"Default"},
-		// {"Required"},
-		// {"Description"},
-		// {"Comment"},
+		{
+			"Name",
+			"---",
+			cfg.Name,
+			func(p model.Variable) string {
+				return code(p.Name)
+			},
+		},
+		{
+			"Type",
+			"---",
+			cfg.Type,
+			func(p model.Variable) string {
+				return typeCell(p.Type, p.TypeSpec)
+			},
+		},
+		{
+			"Default",
+			"---",
+			cfg.Default,
+			func(p model.Variable) string {
+				return exprCell(p.Default)
+			},
+		},
+		{
+			"Description",
+			"---",
+			cfg.Description,
+			func(v model.Variable) string {
+				return code(v.Description)
+			},
+		},
+		{
+			// TODO: auto hide column if no comments found
+			"Comment",
+			"---",
+			cfg.Comment,
+			func(v model.Variable) string {
+				return code(v.Comment)
+			},
+		},
+		{
+			"Sensitive",
+			"---",
+			cfg.Sensitive,
+			func(v model.Variable) string {
+				return boolCell(v.Sensitive)
+			},
+		},
 		// {"Sensitive"},
 		// {"Nullable"},
 		// {"Ephemeral"},
@@ -176,8 +276,9 @@ func renderVariables(b *strings.Builder, cfg *config.VariablesConfig, vars []mod
 	// b.WriteString("\n")
 }
 
-func renderOutputs(b *strings.Builder, outs []model.Output, pos func(model.Position) string) {
-	if len(outs) == 0 {
+func renderOutputs(b *strings.Builder, cfg *config.OutputsConfig, outs []model.Output, pos func(model.Position) string) {
+	if len(outs) == 0 || !cfg.Render {
+		// TODO: add logging output
 		return
 	}
 	b.WriteString("## Outputs\n\n")
@@ -198,8 +299,9 @@ func renderOutputs(b *strings.Builder, outs []model.Output, pos func(model.Posit
 	b.WriteString("\n")
 }
 
-func renderLocals(b *strings.Builder, locals []model.Local, pos func(model.Position) string) {
-	if len(locals) == 0 {
+func renderLocals(b *strings.Builder, cfg *config.LocalsConfig, locals []model.Local, pos func(model.Position) string) {
+	if len(locals) == 0 || !cfg.Render {
+		// TODO: add logging output
 		return
 	}
 	b.WriteString("## Locals\n\n")
@@ -214,6 +316,7 @@ func renderLocals(b *strings.Builder, locals []model.Local, pos func(model.Posit
 
 func renderResources(b *strings.Builder, heading string, resources []model.Resource, pos func(model.Position) string) {
 	if len(resources) == 0 {
+		// TODO: add logging output
 		return
 	}
 	fmt.Fprintf(b, "## %s\n\n", heading)
@@ -238,6 +341,7 @@ func renderResources(b *strings.Builder, heading string, resources []model.Resou
 
 func renderEphemeralResources(b *strings.Builder, resources []model.EphemeralResource, pos func(model.Position) string) {
 	if len(resources) == 0 {
+		// TODO: add logging output
 		return
 	}
 	b.WriteString("## Ephemeral Resources\n\n")
@@ -261,6 +365,7 @@ func renderEphemeralResources(b *strings.Builder, resources []model.EphemeralRes
 
 func renderModuleCalls(b *strings.Builder, calls []model.ModuleCall, pos func(model.Position) string) {
 	if len(calls) == 0 {
+		// TODO: add logging output
 		return
 	}
 	b.WriteString("## Module Calls\n\n")
@@ -284,6 +389,7 @@ func renderModuleCalls(b *strings.Builder, calls []model.ModuleCall, pos func(mo
 
 func renderMoved(b *strings.Builder, blocks []model.MovedBlock, pos func(model.Position) string) {
 	if len(blocks) == 0 {
+		// TODO: add logging output
 		return
 	}
 	b.WriteString("## Moved\n\n")
@@ -297,6 +403,7 @@ func renderMoved(b *strings.Builder, blocks []model.MovedBlock, pos func(model.P
 
 func renderImports(b *strings.Builder, blocks []model.ImportBlock, pos func(model.Position) string) {
 	if len(blocks) == 0 {
+		// TODO: add logging output
 		return
 	}
 	b.WriteString("## Imports\n\n")
@@ -311,6 +418,7 @@ func renderImports(b *strings.Builder, blocks []model.ImportBlock, pos func(mode
 
 func renderRemoved(b *strings.Builder, blocks []model.RemovedBlock, pos func(model.Position) string) {
 	if len(blocks) == 0 {
+		// TODO: add logging output
 		return
 	}
 	b.WriteString("## Removed\n\n")
@@ -325,6 +433,7 @@ func renderRemoved(b *strings.Builder, blocks []model.RemovedBlock, pos func(mod
 
 func renderChecks(b *strings.Builder, blocks []model.CheckBlock, pos func(model.Position) string) {
 	if len(blocks) == 0 {
+		// TODO: add logging output
 		return
 	}
 	b.WriteString("## Checks\n\n")

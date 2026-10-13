@@ -144,7 +144,6 @@ variables {
   name = true
   type = true
   default = true
-  required = true
   description = true
   comment = true
   sensitive = true
@@ -152,6 +151,46 @@ variables {
   ephemeral = true
   validation = true
   position = true
+}
+
+outputs {
+  render = false
+}
+
+locals {
+  render = false
+}
+
+resources {
+  render = false
+}
+
+data {
+  render = false
+}
+
+ephemeral {
+  render = false
+}
+
+module {
+  render = false
+}
+
+moved {
+  render = false
+}
+
+imports {
+  render = false
+}
+
+removed {
+  render = false
+}
+
+checks {
+  render = false
 }
 ```
 <!-- DEFAULTS-END -->

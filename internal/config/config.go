@@ -33,6 +33,16 @@ type Config struct {
 	Required  *RequiredConfig  `hcl:"required,block"`
 	Providers *ProvidersConfig `hcl:"providers,block"`
 	Variables *VariablesConfig `hcl:"variables,block"`
+	Outputs   *OutputsConfig   `hcl:"outputs,block"`
+	Locals    *LocalsConfig    `hcl:"locals,block"`
+	Resources *ResourcesConfig `hcl:"resources,block"`
+	Data      *DataConfig      `hcl:"data,block"`
+	Ephemeral *EphemeralConfig `hcl:"ephemeral,block"`
+	Module    *ModuleConfig    `hcl:"module,block"`
+	Moved     *MovedConfig     `hcl:"moved,block"`
+	Imports   *ImportsConfig   `hcl:"imports,block"`
+	Removed   *RemovedConfig   `hcl:"removed,block"`
+	Checks    *ChecksConfig    `hcl:"checks,block"`
 }
 
 type MainConfig struct {
@@ -63,7 +73,6 @@ type VariablesConfig struct {
 	Name        bool `hcl:"name,optional"`
 	Type        bool `hcl:"type,optional"`
 	Default     bool `hcl:"default,optional"`
-	Required    bool `hcl:"required,optional"`
 	Description bool `hcl:"description,optional"`
 	Comment     bool `hcl:"comment,optional"`
 	Sensitive   bool `hcl:"sensitive,optional"`
@@ -71,6 +80,46 @@ type VariablesConfig struct {
 	Ephemeral   bool `hcl:"ephemeral,optional"`
 	Validation  bool `hcl:"validation,optional"`
 	Position    bool `hcl:"position,optional"`
+}
+
+type OutputsConfig struct {
+	Render bool `hcl:"render,optional"`
+}
+
+type LocalsConfig struct {
+	Render bool `hcl:"render,optional"`
+}
+
+type ResourcesConfig struct {
+	Render bool `hcl:"render,optional"`
+}
+
+type DataConfig struct {
+	Render bool `hcl:"render,optional"`
+}
+
+type EphemeralConfig struct {
+	Render bool `hcl:"render,optional"`
+}
+
+type ModuleConfig struct {
+	Render bool `hcl:"render,optional"`
+}
+
+type MovedConfig struct {
+	Render bool `hcl:"render,optional"`
+}
+
+type ImportsConfig struct {
+	Render bool `hcl:"render,optional"`
+}
+
+type RemovedConfig struct {
+	Render bool `hcl:"render,optional"`
+}
+
+type ChecksConfig struct {
+	Render bool `hcl:"render,optional"`
 }
 
 //go:embed defaults.hcl
