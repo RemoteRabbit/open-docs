@@ -24,6 +24,27 @@ type column[T any] struct {
 	cell    func(T) string
 }
 
+// col builds a left-aligned column; chain .center() for other alignment.
+func col[T any](header string, enabled bool, cell func(T) string) column[T] {
+	return column[T]{header: header, enabled: enabled, cell: cell}
+}
+
+func (c column[T]) center() column[T] { c.align = "center"; return c }
+
+// sepFor returns a delimiter cell as wide as the rendered header cell
+// (" Name " = len+2), with optional alignment colons.
+func sepFor(header, align string) string {
+	n := len(header) + 2
+	switch align {
+	case "center":
+		return ":" + strings.Repeat("-", n-2) + ":"
+	case "right":
+		return strings.Repeat("-", n-1) + ":"
+	default:
+		return strings.Repeat("-", n)
+	}
+}
+
 func writeTable[T any](b *strings.Builder, cols []column[T], rows []T) {
 	var active []column[T]
 	for _, c := range cols {
@@ -37,7 +58,7 @@ func writeTable[T any](b *strings.Builder, cols []column[T], rows []T) {
 	headers := make([]string, len(active))
 	seps := make([]string, len(active))
 	for i, c := range active {
-		headers[i], seps[i] = c.header, c.align
+		headers[i], seps[i] = c.header, sepFor(c.header, c.align)
 	}
 	fmt.Fprintf(b, "| %s |\n|%s|\n", strings.Join(headers, " | "), strings.Join(seps, "|"))
 	for _, r := range rows {
@@ -112,11 +133,11 @@ func renderRequiredProviders(b *strings.Builder, cfg *config.RequiredConfig, req
 	}
 	b.WriteString("## Required Providers\n\n")
 	writeTable(b, []column[reqRow]{
-		{"Name", "------", cfg.Name, func(r reqRow) string { return code(r.name) }},
-		{"Source", "--------", cfg.Source, func(r reqRow) string { return code(r.Source) }},
-		{"Version", "---------", cfg.Version, func(r reqRow) string { return code(strings.Join(r.VersionConstraints, ", ")) }},
-		{"Alias", "-------", cfg.Alias, func(r reqRow) string { return code(strings.Join(r.ConfigurationAliases, ", ")) }},
-		{"Position", "----------", cfg.Position, func(r reqRow) string { return pos(r.Position) }},
+		col("Name", cfg.Name, func(r reqRow) string { return code(r.name) }),
+		col("Source", cfg.Source, func(r reqRow) string { return code(r.Source) }),
+		col("Version", cfg.Version, func(r reqRow) string { return code(strings.Join(r.VersionConstraints, ", ")) }),
+		col("Alias", cfg.Alias, func(r reqRow) string { return code(strings.Join(r.ConfigurationAliases, ", ")) }),
+		col("Position", cfg.Position, func(r reqRow) string { return pos(r.Position) }),
 	}, rows)
 }
 
@@ -127,10 +148,10 @@ func renderProviders(b *strings.Builder, cfg *config.ProvidersConfig, providers 
 	}
 	b.WriteString("## Providers\n\n")
 	writeTable(b, []column[model.ProviderConfig]{
-		{"Name", "------", cfg.Name, func(p model.ProviderConfig) string { return code(p.Name) }},
-		{"Alias", "-------", cfg.Alias, func(p model.ProviderConfig) string { return code(p.Alias) }},
-		{"For Each", "----------", cfg.ForEach, func(p model.ProviderConfig) string { return exprCell(p.ForEach) }},
-		{"Position", "----------", cfg.Position, func(p model.ProviderConfig) string { return pos(p.Position) }},
+		col("Name", cfg.Name, func(p model.ProviderConfig) string { return code(p.Name) }),
+		col("Alias", cfg.Alias, func(p model.ProviderConfig) string { return code(p.Alias) }),
+		col("For Each", cfg.ForEach, func(p model.ProviderConfig) string { return exprCell(p.ForEach) }),
+		col("Position", cfg.Position, func(p model.ProviderConfig) string { return pos(p.Position) }),
 	}, providers)
 }
 
@@ -140,40 +161,40 @@ func renderVariables(b *strings.Builder, cfg *config.VariablesConfig, vars []mod
 	}
 	b.WriteString("## Inputs\n\n")
 	writeTable(b, []column[model.Variable]{
-		{"Name", "----", cfg.Name, func(p model.Variable) string {
+		col("Name", cfg.Name, func(p model.Variable) string {
 			return code(p.Name)
-		}},
-		// {"Type"},
-		// {"Default"},
-		// {"Required"},
-		// {"Description"},
-		// {"Comment"},
-		// {"Sensitive"},
-		// {"Nullable"},
-		// {"Ephemeral"},
+		}),
+		col("Type", cfg.Type, func(p model.Variable) string {
+			return typeCell(p.Type, p.TypeSpec)
+		}),
+		col("Default", cfg.Default, func(p model.Variable) string {
+			return defaultCell(p.Default, p.DefaultValue)
+		}),
+		col("Description", cfg.Description, func(p model.Variable) string {
+			return p.Description
+		}),
+		// TODO: should make this configurable if there are comments or not as well
+		col("Comment", cfg.Comment, func(p model.Variable) string {
+			return p.Comment
+		}),
+		col("Sensitive", cfg.Sensitive, func(p model.Variable) string {
+			return boolCell(p.Sensitive)
+		}),
+		col("Nullable", cfg.Nullable, func(p model.Variable) string {
+			return boolPtrCell(p.Nullable)
+		}),
+		col("Ephemeral", cfg.Ephemeral, func(p model.Variable) string {
+			return boolCell(p.Ephemeral)
+		}),
+		// TODO: render out some or all validations, thinking on how this should be formatted
+		col("Validation Count", cfg.Validation, func(p model.Variable) string {
+			return fmt.Sprintf("%d", len(p.Validations))
+		}),
 		// {"Validation"},
-		// {"Position"},
+		col("Position", cfg.Position, func(p model.Variable) string {
+			return pos(p.Position)
+		}),
 	}, vars)
-
-	// for _, v := range vars {
-	// 	required := "yes"
-	// 	if v.Default != nil {
-	// 		required = "no"
-	// 	}
-	// 	fmt.Fprintf(b, "| %s | %s | %s | %s | %s | %s | %s | %s | %s | %d | %s |\n",
-	// 		code(v.Name),
-	// 		typeCell(v.Type, v.TypeSpec),
-	// 		defaultCell(v.Default, v.DefaultValue),
-	// 		required,
-	// 		oneLine(v.Description),
-	// 		oneLine(v.Comment),
-	// 		boolCell(v.Sensitive),
-	// 		boolPtrCell(v.Nullable),
-	// 		boolCell(v.Ephemeral),
-	// 		len(v.Validations),
-	// 		pos(v.Position))
-	// }
-	// b.WriteString("\n")
 }
 
 func renderOutputs(b *strings.Builder, outs []model.Output, pos func(model.Position) string) {
