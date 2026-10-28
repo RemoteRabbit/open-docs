@@ -37,3 +37,16 @@ variables {
   validation = true
   position = true
 }
+
+outputs {
+  render = true
+  name = true
+  value = true
+  references = true
+  description = true
+  comment = true
+  sensitive = true
+  ephemeral = true
+  depends_on = true
+  position = true
+}
