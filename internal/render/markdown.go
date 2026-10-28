@@ -183,17 +183,17 @@ func renderVariables(b *strings.Builder, cfg *config.VariablesConfig, vars []mod
 		}),
 		col("Sensitive", cfg.Sensitive, func(p model.Variable) string {
 			return boolCell(p.Sensitive)
-		}),
+		}).center(),
 		col("Nullable", cfg.Nullable, func(p model.Variable) string {
 			return boolPtrCell(p.Nullable)
-		}),
+		}).center(),
 		col("Ephemeral", cfg.Ephemeral, func(p model.Variable) string {
 			return boolCell(p.Ephemeral)
-		}),
+		}).center(),
 		// TODO: render out some or all validations, thinking on how this should be formatted
 		col("Validation Count", cfg.Validation, func(p model.Variable) string {
 			return fmt.Sprintf("%d", len(p.Validations))
-		}),
+		}).center(),
 		// {"Validation"},
 		col("Position", cfg.Position, func(p model.Variable) string {
 			return pos(p.Position)
@@ -224,10 +224,10 @@ func renderOutputs(b *strings.Builder, cfg *config.OutputsConfig, outs []model.O
 		}),
 		col("Sensitive", cfg.Sensitive, func(p model.Output) string {
 			return boolCell(p.Sensitive)
-		}),
+		}).center(),
 		col("Ephemeral", cfg.Ephemeral, func(p model.Output) string {
 			return boolCell(p.Ephemeral)
-		}),
+		}).center(),
 		col("Depends On", cfg.DependsOn, func(p model.Output) string {
 			return code(strings.Join(p.DependsOn, ", "))
 		}),
