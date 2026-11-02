@@ -81,7 +81,11 @@ func injectInto(existing, body string) (string, error) {
 		return out + region(body) + "\n", nil
 	}
 	if begin == -1 || end == -1 || end < begin {
-		return "", fmt.Errorf("malformed open-doc markers: need %q before %q", BeginMarker, EndMarker)
+		return "", fmt.Errorf(
+			"malformed open-doc markers: need %q before %q",
+			BeginMarker,
+			EndMarker,
+		)
 	}
 
 	return existing[:begin] + region(body) + existing[end+len(EndMarker):], nil

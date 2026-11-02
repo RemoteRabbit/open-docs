@@ -258,6 +258,3 @@ presentation only.
   inspection engine open-docs is built on.
 - [terraform-docs](https://github.com/terraform-docs/terraform-docs): the
   incumbent open-docs aims to match, then surpass.
-</content>
-
-</invoke>

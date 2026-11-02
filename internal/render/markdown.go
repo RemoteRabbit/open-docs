@@ -91,7 +91,11 @@ func Markdown(m *model.Module, outputFile string, cfg *config.Config, version st
 
 	// Add version information
 	if version != "" {
-		fmt.Fprintf(&b, "<!-- VERSION-START -->\nThis documentation was generated with [open-docs v%s](https://github.com/RemoteRabbit/open-docs)\n<!-- VERSION-END -->\n\n", version)
+		fmt.Fprintf(
+			&b,
+			"<!-- VERSION-START -->\nThis documentation was generated with [open-docs v%s](https://github.com/RemoteRabbit/open-docs)\n<!-- VERSION-END -->\n\n",
+			version,
+		)
 	}
 
 	if len(m.RequiredCore) > 0 {
@@ -118,7 +122,12 @@ func Markdown(m *model.Module, outputFile string, cfg *config.Config, version st
 	return b.String()
 }
 
-func renderRequiredProviders(b *strings.Builder, cfg *config.RequiredConfig, reqs map[string]model.ProviderRequirement, pos func(model.Position) string) {
+func renderRequiredProviders(
+	b *strings.Builder,
+	cfg *config.RequiredConfig,
+	reqs map[string]model.ProviderRequirement,
+	pos func(model.Position) string,
+) {
 	if len(reqs) == 0 || !cfg.Render {
 		// TODO: add logging output
 		return
@@ -135,13 +144,26 @@ func renderRequiredProviders(b *strings.Builder, cfg *config.RequiredConfig, req
 	writeTable(b, []column[reqRow]{
 		col("Name", cfg.Name, func(r reqRow) string { return code(r.name) }),
 		col("Source", cfg.Source, func(r reqRow) string { return code(r.Source) }),
-		col("Version", cfg.Version, func(r reqRow) string { return code(strings.Join(r.VersionConstraints, ", ")) }),
-		col("Alias", cfg.Alias, func(r reqRow) string { return code(strings.Join(r.ConfigurationAliases, ", ")) }),
+		col(
+			"Version",
+			cfg.Version,
+			func(r reqRow) string { return code(strings.Join(r.VersionConstraints, ", ")) },
+		),
+		col(
+			"Alias",
+			cfg.Alias,
+			func(r reqRow) string { return code(strings.Join(r.ConfigurationAliases, ", ")) },
+		),
 		col("Position", cfg.Position, func(r reqRow) string { return pos(r.Position) }),
 	}, rows)
 }
 
-func renderProviders(b *strings.Builder, cfg *config.ProvidersConfig, providers []model.ProviderConfig, pos func(model.Position) string) {
+func renderProviders(
+	b *strings.Builder,
+	cfg *config.ProvidersConfig,
+	providers []model.ProviderConfig,
+	pos func(model.Position) string,
+) {
 	if len(providers) == 0 || !cfg.Render {
 		// TODO: add logging output
 		return
@@ -163,7 +185,12 @@ func renderProviders(b *strings.Builder, cfg *config.ProvidersConfig, providers 
 	}, providers)
 }
 
-func renderVariables(b *strings.Builder, cfg *config.VariablesConfig, vars []model.Variable, pos func(model.Position) string) {
+func renderVariables(
+	b *strings.Builder,
+	cfg *config.VariablesConfig,
+	vars []model.Variable,
+	pos func(model.Position) string,
+) {
 	if len(vars) == 0 || !cfg.Render {
 		return
 	}
@@ -204,7 +231,12 @@ func renderVariables(b *strings.Builder, cfg *config.VariablesConfig, vars []mod
 	}, vars)
 }
 
-func renderOutputs(b *strings.Builder, cfg *config.OutputsConfig, outs []model.Output, pos func(model.Position) string) {
+func renderOutputs(
+	b *strings.Builder,
+	cfg *config.OutputsConfig,
+	outs []model.Output,
+	pos func(model.Position) string,
+) {
 	if len(outs) == 0 || !cfg.Render {
 		return
 	}
@@ -240,7 +272,12 @@ func renderOutputs(b *strings.Builder, cfg *config.OutputsConfig, outs []model.O
 	}, outs)
 }
 
-func renderLocals(b *strings.Builder, cfg *config.LocalsConfig, locals []model.Local, pos func(model.Position) string) {
+func renderLocals(
+	b *strings.Builder,
+	cfg *config.LocalsConfig,
+	locals []model.Local,
+	pos func(model.Position) string,
+) {
 	if len(locals) == 0 || !cfg.Render {
 		return
 	}
@@ -252,13 +289,22 @@ func renderLocals(b *strings.Builder, cfg *config.LocalsConfig, locals []model.L
 	}, locals)
 }
 
-func renderResources(b *strings.Builder, heading string, resources []model.Resource, pos func(model.Position) string) {
+func renderResources(
+	b *strings.Builder,
+	heading string,
+	resources []model.Resource,
+	pos func(model.Position) string,
+) {
 	if len(resources) == 0 {
 		return
 	}
 	fmt.Fprintf(b, "## %s\n\n", heading)
-	b.WriteString("| Mode | Type | Name | Provider | Count | For Each | Depends On | Attributes | Lifecycle | Comment | Position |\n")
-	b.WriteString("|------|------|------|----------|-------|----------|------------|------------|-----------|---------|----------|\n")
+	b.WriteString(
+		"| Mode | Type | Name | Provider | Count | For Each | Depends On | Attributes | Lifecycle | Comment | Position |\n",
+	)
+	b.WriteString(
+		"|------|------|------|----------|-------|----------|------------|------------|-----------|---------|----------|\n",
+	)
 	for _, r := range resources {
 		fmt.Fprintf(b, "| %s | %s | %s | %s | %s | %s | %s | %s | %s | %s | %s |\n",
 			code(string(r.Mode)),
@@ -276,13 +322,21 @@ func renderResources(b *strings.Builder, heading string, resources []model.Resou
 	b.WriteString("\n")
 }
 
-func renderEphemeralResources(b *strings.Builder, resources []model.EphemeralResource, pos func(model.Position) string) {
+func renderEphemeralResources(
+	b *strings.Builder,
+	resources []model.EphemeralResource,
+	pos func(model.Position) string,
+) {
 	if len(resources) == 0 {
 		return
 	}
 	b.WriteString("## Ephemeral Resources\n\n")
-	b.WriteString("| Type | Name | Provider | Count | For Each | Depends On | Attributes | Lifecycle | Comment | Position |\n")
-	b.WriteString("|------|------|----------|-------|----------|------------|------------|-----------|---------|----------|\n")
+	b.WriteString(
+		"| Type | Name | Provider | Count | For Each | Depends On | Attributes | Lifecycle | Comment | Position |\n",
+	)
+	b.WriteString(
+		"|------|------|----------|-------|----------|------------|------------|-----------|---------|----------|\n",
+	)
 	for _, r := range resources {
 		fmt.Fprintf(b, "| %s | %s | %s | %s | %s | %s | %s | %s | %s | %s |\n",
 			code(r.Type),
@@ -299,13 +353,21 @@ func renderEphemeralResources(b *strings.Builder, resources []model.EphemeralRes
 	b.WriteString("\n")
 }
 
-func renderModuleCalls(b *strings.Builder, calls []model.ModuleCall, pos func(model.Position) string) {
+func renderModuleCalls(
+	b *strings.Builder,
+	calls []model.ModuleCall,
+	pos func(model.Position) string,
+) {
 	if len(calls) == 0 {
 		return
 	}
 	b.WriteString("## Module Calls\n\n")
-	b.WriteString("| Name | Source | Version | Count | For Each | Depends On | Providers | Inputs | Comment | Position |\n")
-	b.WriteString("|------|--------|---------|-------|----------|------------|-----------|--------|---------|----------|\n")
+	b.WriteString(
+		"| Name | Source | Version | Count | For Each | Depends On | Providers | Inputs | Comment | Position |\n",
+	)
+	b.WriteString(
+		"|------|--------|---------|-------|----------|------------|-----------|--------|---------|----------|\n",
+	)
 	for _, c := range calls {
 		fmt.Fprintf(b, "| %s | %s | %s | %s | %s | %s | %s | %s | %s | %s |\n",
 			code(c.Name),
@@ -335,7 +397,11 @@ func renderMoved(b *strings.Builder, blocks []model.MovedBlock, pos func(model.P
 	b.WriteString("\n")
 }
 
-func renderImports(b *strings.Builder, blocks []model.ImportBlock, pos func(model.Position) string) {
+func renderImports(
+	b *strings.Builder,
+	blocks []model.ImportBlock,
+	pos func(model.Position) string,
+) {
 	if len(blocks) == 0 {
 		return
 	}
@@ -349,7 +415,11 @@ func renderImports(b *strings.Builder, blocks []model.ImportBlock, pos func(mode
 	b.WriteString("\n")
 }
 
-func renderRemoved(b *strings.Builder, blocks []model.RemovedBlock, pos func(model.Position) string) {
+func renderRemoved(
+	b *strings.Builder,
+	blocks []model.RemovedBlock,
+	pos func(model.Position) string,
+) {
 	if len(blocks) == 0 {
 		return
 	}
@@ -392,7 +462,10 @@ func renderSchemaFindings(b *strings.Builder, m *model.Module, pos func(model.Po
 			rows = append(rows, row{addr, "unknown", a.Name, "", pos(a.Position)})
 		}
 		for _, d := range f.DeprecatedAttrs {
-			rows = append(rows, row{addr, "deprecated", d.Name, oneLine(d.Message), pos(d.Position)})
+			rows = append(
+				rows,
+				row{addr, "deprecated", d.Name, oneLine(d.Message), pos(d.Position)},
+			)
 		}
 		for _, miss := range f.MissingRequired {
 			rows = append(rows, row{addr, "missing required", miss, "", ""})
@@ -417,7 +490,11 @@ func renderSchemaFindings(b *strings.Builder, m *model.Module, pos func(model.Po
 	b.WriteString("\n")
 }
 
-func renderDiagnostics(b *strings.Builder, diags model.Diagnostics, pos func(model.Position) string) {
+func renderDiagnostics(
+	b *strings.Builder,
+	diags model.Diagnostics,
+	pos func(model.Position) string,
+) {
 	if len(diags) == 0 {
 		return
 	}

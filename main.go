@@ -30,7 +30,11 @@ import (
 
 func main() {
 	outFlag := flag.String("o", "", "write output to this file in replace mode (overrides config)")
-	cfgFlag := flag.String("config", "", "path to config file (default: discover "+config.DefaultFilename+")")
+	cfgFlag := flag.String(
+		"config",
+		"",
+		"path to config file (default: discover "+config.DefaultFilename+")",
+	)
 	schemaFlag := flag.Bool("schema", false, "enrich with provider schema via tofu/terraform")
 	flag.Usage = func() {
 		fmt.Fprintf(os.Stderr, "Usage: open-docs [flags] <module-dir>\n\n")

@@ -41,9 +41,10 @@ test:
 vet:
 	go vet $(PKG)
 
-## Format Go sources with gofmt
+## Format Go sources with gofmt and golines
 fmt:
 	gofmt -w $(GO_SRC)
+	golines -w $(GO_SRC)
 
 ## Fail if any Go source needs gofmt
 fmt-check:
