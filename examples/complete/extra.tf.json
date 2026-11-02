@@ -1,0 +1,33 @@
+{
+  "//": "JSON-syntax configuration mixed with native HCL in the same module.",
+  "variable": {
+    "json_variable": {
+      "type": "string",
+      "default": "from-json",
+      "description": "A variable declared in a .tf.json file."
+    },
+    "json_object": {
+      "type": "object({ name = string, size = optional(number, 1) })",
+      "default": { "name": "json" },
+      "description": "An object-typed variable declared in JSON."
+    }
+  },
+  "locals": {
+    "json_local": "${var.json_variable}-local"
+  },
+  "resource": {
+    "null_resource": {
+      "from_json": {
+        "triggers": {
+          "name": "${var.json_variable}"
+        }
+      }
+    }
+  },
+  "output": {
+    "json_output": {
+      "value": "${null_resource.from_json.id}",
+      "description": "An output declared in a .tf.json file."
+    }
+  }
+}

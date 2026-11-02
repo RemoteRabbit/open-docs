@@ -184,8 +184,17 @@ precedence over the config file.
 
 ## Example
 
-See [examples/vpc](./examples/vpc) for a sample module and its generated
-[README.md](./examples/vpc/README.md).
+Each directory under [examples/](./examples) is a module with its generated
+`README.md`, used to check how output renders:
+
+- [vpc](./examples/vpc): a realistic multi-file AWS VPC module with a local
+  child module.
+- [complete](./examples/complete): every block type open-inspector understands
+  (including ephemeral, check, OpenTofu encryption and provider `for_each`,
+  and a `.tf.json` file), plus table edge cases such as pipes, heredocs,
+  Unicode, and long values.
+- [invalid](./examples/invalid): deliberately broken configuration for the
+  diagnostics table.
 
 ## Development
 
