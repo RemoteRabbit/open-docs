@@ -2,5 +2,6 @@ dictionaries = ["en_us"]
 words = [
     "hcl",
     "seps",
+    "vpc",
 ]
 ignore_paths = [".git/**/*"]

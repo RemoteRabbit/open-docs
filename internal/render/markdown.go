@@ -102,8 +102,8 @@ func Markdown(m *model.Module, outputFile string, cfg *config.Config, version st
 	renderRequiredProviders(&b, cfg.Required, m.RequiredProviders, pos)
 	renderProviders(&b, cfg.Providers, m.Providers, pos)
 	renderVariables(&b, cfg.Variables, m.Variables, pos)
-	renderOutputs(&b, m.Outputs, pos)
-	renderLocals(&b, m.Locals, pos)
+	renderOutputs(&b, cfg.Outputs, m.Outputs, pos)
+	renderLocals(&b, cfg.Locals, m.Locals, pos)
 	renderResources(&b, "Managed Resources", m.ManagedResources, pos)
 	renderResources(&b, "Data Resources", m.DataResources, pos)
 	renderEphemeralResources(&b, m.EphemeralResources, pos)
@@ -148,10 +148,18 @@ func renderProviders(b *strings.Builder, cfg *config.ProvidersConfig, providers 
 	}
 	b.WriteString("## Providers\n\n")
 	writeTable(b, []column[model.ProviderConfig]{
-		col("Name", cfg.Name, func(p model.ProviderConfig) string { return code(p.Name) }),
-		col("Alias", cfg.Alias, func(p model.ProviderConfig) string { return code(p.Alias) }),
-		col("For Each", cfg.ForEach, func(p model.ProviderConfig) string { return exprCell(p.ForEach) }),
-		col("Position", cfg.Position, func(p model.ProviderConfig) string { return pos(p.Position) }),
+		col("Name", cfg.Name, func(p model.ProviderConfig) string {
+			return code(p.Name)
+		}),
+		col("Alias", cfg.Alias, func(p model.ProviderConfig) string {
+			return code(p.Alias)
+		}),
+		col("For Each", cfg.ForEach, func(p model.ProviderConfig) string {
+			return exprCell(p.ForEach)
+		}),
+		col("Position", cfg.Position, func(p model.ProviderConfig) string {
+			return pos(p.Position)
+		}),
 	}, providers)
 }
 
@@ -190,47 +198,58 @@ func renderVariables(b *strings.Builder, cfg *config.VariablesConfig, vars []mod
 		col("Validation Count", cfg.Validation, func(p model.Variable) string {
 			return fmt.Sprintf("%d", len(p.Validations))
 		}),
-		// {"Validation"},
 		col("Position", cfg.Position, func(p model.Variable) string {
 			return pos(p.Position)
 		}),
 	}, vars)
 }
 
-func renderOutputs(b *strings.Builder, outs []model.Output, pos func(model.Position) string) {
-	if len(outs) == 0 {
+func renderOutputs(b *strings.Builder, cfg *config.OutputsConfig, outs []model.Output, pos func(model.Position) string) {
+	if len(outs) == 0 || !cfg.Render {
 		return
 	}
 	b.WriteString("## Outputs\n\n")
-	b.WriteString("| Name | Value | References | Description | Comment | Sensitive | Ephemeral | Depends On | Position |\n")
-	b.WriteString("|------|-------|------------|-------------|---------|:---------:|:---------:|------------|----------|\n")
-	for _, o := range outs {
-		fmt.Fprintf(b, "| %s | %s | %s | %s | %s | %s | %s | %s | %s |\n",
-			code(o.Name),
-			exprValueCell(o.Value),
-			refsCell(o.Value.References),
-			oneLine(o.Description),
-			oneLine(o.Comment),
-			boolCell(o.Sensitive),
-			boolCell(o.Ephemeral),
-			code(strings.Join(o.DependsOn, ", ")),
-			pos(o.Position))
-	}
-	b.WriteString("\n")
+	writeTable(b, []column[model.Output]{
+		col("Name", cfg.Name, func(p model.Output) string {
+			return p.Name
+		}),
+		col("Value", cfg.Value, func(p model.Output) string {
+			return exprValueCell(p.Value)
+		}),
+		col("References", cfg.References, func(p model.Output) string {
+			return refsCell(p.Value.References)
+		}),
+		col("Description", cfg.Description, func(p model.Output) string {
+			return p.Description
+		}),
+		col("Comment", cfg.Comment, func(p model.Output) string {
+			return p.Comment
+		}),
+		col("Sensitive", cfg.Sensitive, func(p model.Output) string {
+			return boolCell(p.Sensitive)
+		}),
+		col("Ephemeral", cfg.Ephemeral, func(p model.Output) string {
+			return boolCell(p.Ephemeral)
+		}),
+		col("Depends On", cfg.DependsOn, func(p model.Output) string {
+			return code(strings.Join(p.DependsOn, ", "))
+		}),
+		col("Position", cfg.Position, func(p model.Output) string {
+			return pos(p.Position)
+		}),
+	}, outs)
 }
 
-func renderLocals(b *strings.Builder, locals []model.Local, pos func(model.Position) string) {
-	if len(locals) == 0 {
+func renderLocals(b *strings.Builder, cfg *config.LocalsConfig, locals []model.Local, pos func(model.Position) string) {
+	if len(locals) == 0 || !cfg.Render {
 		return
 	}
 	b.WriteString("## Locals\n\n")
-	b.WriteString("| Name | Value | References | Position |\n")
-	b.WriteString("|------|-------|------------|----------|\n")
-	for _, l := range locals {
-		fmt.Fprintf(b, "| %s | %s | %s | %s |\n",
-			code(l.Name), exprValueCell(l.Value), refsCell(l.Value.References), pos(l.Position))
-	}
-	b.WriteString("\n")
+	writeTable(b, []column[model.Local]{
+		col("Name", cfg.Name, func(p model.Local) string {
+			return p.Name
+		}),
+	}, locals)
 }
 
 func renderResources(b *strings.Builder, heading string, resources []model.Resource, pos func(model.Position) string) {

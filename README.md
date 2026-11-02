@@ -119,6 +119,7 @@ go build -o open-docs .
 main {
   docsfile = "README.md"
   mode     = "stdout"
+  # mode = "replace"
   header   = true
 }
 
@@ -151,6 +152,27 @@ variables {
   nullable = true
   ephemeral = true
   validation = true
+  position = true
+}
+
+outputs {
+  render = true
+  name = true
+  value = true
+  references = true
+  description = true
+  comment = true
+  sensitive = true
+  ephemeral = true
+  depends_on = true
+  position = true
+}
+
+locals {
+  render = true
+  name = true
+  value = true
+  references = true
   position = true
 }
 ```

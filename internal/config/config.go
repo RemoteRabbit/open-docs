@@ -33,6 +33,8 @@ type Config struct {
 	Required  *RequiredConfig  `hcl:"required,block"`
 	Providers *ProvidersConfig `hcl:"providers,block"`
 	Variables *VariablesConfig `hcl:"variables,block"`
+	Outputs   *OutputsConfig   `hcl:"outputs,block"`
+	Locals    *LocalsConfig    `hcl:"locals,block"`
 }
 
 type MainConfig struct {
@@ -71,6 +73,27 @@ type VariablesConfig struct {
 	Ephemeral   bool `hcl:"ephemeral,optional"`
 	Validation  bool `hcl:"validation,optional"`
 	Position    bool `hcl:"position,optional"`
+}
+
+type OutputsConfig struct {
+	Render      bool `hcl:"render,optional"`
+	Name        bool `hcl:"name,optional"`
+	Value       bool `hcl:"value,optional"`
+	References  bool `hcl:"references,optional"`
+	Description bool `hcl:"description,optional"`
+	Comment     bool `hcl:"comment,optional"`
+	Sensitive   bool `hcl:"sensitive,optional"`
+	Ephemeral   bool `hcl:"ephemeral,optional"`
+	DependsOn   bool `hcl:"depends_on,optional"`
+	Position    bool `hcl:"position,optional"`
+}
+
+type LocalsConfig struct {
+	Render     bool `hcl:"render,optional"`
+	Name       bool `hcl:"name,optional"`
+	Value      bool `hcl:"value,optional"`
+	References bool `hcl:"references,optional"`
+	Position   bool `hcl:"position,optional"`
 }
 
 //go:embed defaults.hcl
