@@ -8,10 +8,6 @@ workflow, then goes further using data the inspector captures that
 `terraform-docs` discards (source ranges, schema findings, reference graphs,
 structured types).
 
-<!-- VERSION-START -->
-This documentation was generated with [open-docs v0.1.0](https://github.com/RemoteRabbit/open-docs)
-<!-- VERSION-END -->
-
 > **Status: early / proof-of-concept.** Today open-docs emits a verbose,
 > debug-oriented dump of everything the inspector parses. The curated,
 > reader-facing output and the workflow features below are planned. See the
@@ -39,9 +35,6 @@ them into output:
 
 ## Features
 
-Legend: `[x]` available now &nbsp;·&nbsp; `[~]` partial / debug-only
-&nbsp;·&nbsp; `[ ]` planned.
-
 ### Core rendering
 
 - [x] Inspect a module directory and render Markdown for every block type
@@ -53,8 +46,8 @@ Legend: `[x]` available now &nbsp;·&nbsp; `[~]` partial / debug-only
 - [~] Curated, reader-facing default layout. *Today the output is the verbose
       all-columns debug view; a clean default with `--verbose` as the opt-in
       debug mode is planned.*
-- [ ] Section toggles (show/hide) and sort order (by name or source position).
-- [ ] Deterministic, diff-stable output across runs and platforms.
+- [~ ] Section toggles (show/hide) and sort order (by name or source position).
+- [~ ] Deterministic, diff-stable output across runs and platforms.
 
 ### Workflow / terraform-docs parity (table stakes)
 
