@@ -135,7 +135,7 @@ required {
 providers {
   render = true
   name = true
-  alias = false
+  alias = true
   for_each = false
   position = true
 }
@@ -174,6 +174,21 @@ locals {
   value = true
   references = true
   position = true
+}
+
+resources {
+  render    = true
+	name      = true
+	mode      = false
+	type      = true
+	provider  = false
+	count     = true
+	for_each   = true
+	depends_on = true
+	nested_body= true
+	lifecycle = true
+	comment   = true
+	position  = true
 }
 ```
 <!-- DEFAULTS-END -->

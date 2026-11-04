@@ -2,8 +2,7 @@
 //
 // The current renderer is a verbose, debug-oriented view that dumps every
 // field of every block type. It is meant for development and troubleshooting;
-// the curated, reader-facing layout is a separate renderer (planned). See
-// ROADMAP.md.
+// the curated, reader-facing layout is a separate renderer (planned).
 package render
 
 import (
@@ -108,15 +107,15 @@ func Markdown(m *model.Module, outputFile string, cfg *config.Config, version st
 	renderVariables(&b, cfg.Variables, m.Variables, pos)
 	renderOutputs(&b, cfg.Outputs, m.Outputs, pos)
 	renderLocals(&b, cfg.Locals, m.Locals, pos)
-	renderResources(&b, "Managed Resources", m.ManagedResources, pos)
-	renderResources(&b, "Data Resources", m.DataResources, pos)
-	renderEphemeralResources(&b, m.EphemeralResources, pos)
-	renderModuleCalls(&b, m.ModuleCalls, pos)
-	renderMoved(&b, m.Moved, pos)
-	renderImports(&b, m.Imports, pos)
-	renderRemoved(&b, m.Removed, pos)
-	renderChecks(&b, m.Checks, pos)
-	renderSchemaFindings(&b, m, pos)
+	renderResources(&b, cfg.Resources, m.ManagedResources, pos)
+	// renderResources(&b, "Data Resources", m.DataResources, pos)
+	// renderEphemeralResources(&b, m.EphemeralResources, pos)
+	// renderModuleCalls(&b, m.ModuleCalls, pos)
+	// renderMoved(&b, m.Moved, pos)
+	// renderImports(&b, m.Imports, pos)
+	// renderRemoved(&b, m.Removed, pos)
+	// renderChecks(&b, m.Checks, pos)
+	// renderSchemaFindings(&b, m, pos)
 	renderDiagnostics(&b, m.Diagnostics, pos)
 
 	return b.String()
@@ -286,209 +285,234 @@ func renderLocals(
 		col("Name", cfg.Name, func(p model.Local) string {
 			return p.Name
 		}),
+		col("Value", cfg.Value, func(p model.Local) string {
+			return exprValueCell(p.Value)
+		}),
+		col("References", cfg.References, func(p model.Local) string {
+			return refsCell(p.Value.References)
+		}),
+		col("Position", cfg.Position, func(p model.Local) string {
+			return pos(p.Position)
+		}),
 	}, locals)
 }
 
 func renderResources(
 	b *strings.Builder,
-	heading string,
+	cfg *config.ResourcesConfig,
 	resources []model.Resource,
 	pos func(model.Position) string,
 ) {
-	if len(resources) == 0 {
+	if len(resources) == 0 || !cfg.Render {
 		return
 	}
-	fmt.Fprintf(b, "## %s\n\n", heading)
-	b.WriteString(
-		"| Mode | Type | Name | Provider | Count | For Each | Depends On | Attributes | Lifecycle | Comment | Position |\n",
-	)
-	b.WriteString(
-		"|------|------|------|----------|-------|----------|------------|------------|-----------|---------|----------|\n",
-	)
-	for _, r := range resources {
-		fmt.Fprintf(b, "| %s | %s | %s | %s | %s | %s | %s | %s | %s | %s | %s |\n",
-			code(string(r.Mode)),
-			code(r.Type),
-			code(r.Name),
-			code(r.Provider),
-			exprCell(r.Count),
-			exprCell(r.ForEach),
-			code(strings.Join(r.DependsOn, ", ")),
-			attrNamesCell(r.NestedBody),
-			lifecycleCell(r.Lifecycle),
-			oneLine(r.Comment),
-			pos(r.Position))
-	}
-	b.WriteString("\n")
+	b.WriteString("## Managed Resources\n\n")
+	writeTable(b, []column[model.Resource]{
+		col("Name", cfg.Name, func(p model.Resource) string {
+			return p.Name
+		}),
+		col("Mode", cfg.Mode, func(p model.Resource) string {
+			return string(p.Mode)
+		}),
+		col("Type", cfg.Type, func(p model.Resource) string {
+			return code(p.Type)
+		}),
+		col("Provider", cfg.Provider, func(p model.Resource) string {
+			return p.Provider
+		}),
+		// TODO: look into having a merged column for count and for_each since you would only have one
+		// or the other, but also make each toggle.
+		col("Count", cfg.Count, func(p model.Resource) string {
+			return exprCell(p.Count)
+		}),
+		col("For Each", cfg.ForEach, func(p model.Resource) string {
+			return exprCell(p.ForEach)
+		}),
+		col("Depends On", cfg.DependsOn, func(p model.Resource) string {
+			return strings.Join(p.DependsOn, ", ")
+		}),
+		col("Nested Body", cfg.NestedBody, func(p model.Resource) string {
+			return attrNamesCell(p.NestedBody)
+		}),
+		col("LifeCycle", cfg.Lifecycle, func(p model.Resource) string {
+			return lifecycleCell(p.Lifecycle)
+		}),
+		col("Comment", cfg.Comment, func(p model.Resource) string {
+			return p.Comment
+		}),
+		col("Position", cfg.Position, func(p model.Resource) string {
+			return pos(p.Position)
+		}),
+	}, resources)
 }
 
-func renderEphemeralResources(
-	b *strings.Builder,
-	resources []model.EphemeralResource,
-	pos func(model.Position) string,
-) {
-	if len(resources) == 0 {
-		return
-	}
-	b.WriteString("## Ephemeral Resources\n\n")
-	b.WriteString(
-		"| Type | Name | Provider | Count | For Each | Depends On | Attributes | Lifecycle | Comment | Position |\n",
-	)
-	b.WriteString(
-		"|------|------|----------|-------|----------|------------|------------|-----------|---------|----------|\n",
-	)
-	for _, r := range resources {
-		fmt.Fprintf(b, "| %s | %s | %s | %s | %s | %s | %s | %s | %s | %s |\n",
-			code(r.Type),
-			code(r.Name),
-			code(r.Provider),
-			exprCell(r.Count),
-			exprCell(r.ForEach),
-			code(strings.Join(r.DependsOn, ", ")),
-			attrNamesCell(r.NestedBody),
-			lifecycleCell(r.Lifecycle),
-			oneLine(r.Comment),
-			pos(r.Position))
-	}
-	b.WriteString("\n")
-}
-
-func renderModuleCalls(
-	b *strings.Builder,
-	calls []model.ModuleCall,
-	pos func(model.Position) string,
-) {
-	if len(calls) == 0 {
-		return
-	}
-	b.WriteString("## Module Calls\n\n")
-	b.WriteString(
-		"| Name | Source | Version | Count | For Each | Depends On | Providers | Inputs | Comment | Position |\n",
-	)
-	b.WriteString(
-		"|------|--------|---------|-------|----------|------------|-----------|--------|---------|----------|\n",
-	)
-	for _, c := range calls {
-		fmt.Fprintf(b, "| %s | %s | %s | %s | %s | %s | %s | %s | %s | %s |\n",
-			code(c.Name),
-			code(c.Source),
-			code(c.Version),
-			exprCell(c.Count),
-			exprCell(c.ForEach),
-			code(strings.Join(c.DependsOn, ", ")),
-			mapCell(c.Providers),
-			inputsCell(c.Inputs),
-			oneLine(c.Comment),
-			pos(c.Position))
-	}
-	b.WriteString("\n")
-}
-
-func renderMoved(b *strings.Builder, blocks []model.MovedBlock, pos func(model.Position) string) {
-	if len(blocks) == 0 {
-		return
-	}
-	b.WriteString("## Moved\n\n")
-	b.WriteString("| From | To | Position |\n")
-	b.WriteString("|------|----|----------|\n")
-	for _, m := range blocks {
-		fmt.Fprintf(b, "| %s | %s | %s |\n", code(m.From), code(m.To), pos(m.Position))
-	}
-	b.WriteString("\n")
-}
-
-func renderImports(
-	b *strings.Builder,
-	blocks []model.ImportBlock,
-	pos func(model.Position) string,
-) {
-	if len(blocks) == 0 {
-		return
-	}
-	b.WriteString("## Imports\n\n")
-	b.WriteString("| To | ID | Provider | Position |\n")
-	b.WriteString("|----|----|----------|----------|\n")
-	for _, im := range blocks {
-		fmt.Fprintf(b, "| %s | %s | %s | %s |\n",
-			code(im.To), exprValueCell(im.ID), code(im.Provider), pos(im.Position))
-	}
-	b.WriteString("\n")
-}
-
-func renderRemoved(
-	b *strings.Builder,
-	blocks []model.RemovedBlock,
-	pos func(model.Position) string,
-) {
-	if len(blocks) == 0 {
-		return
-	}
-	b.WriteString("## Removed\n\n")
-	b.WriteString("| From | Destroy On Drop | Position |\n")
-	b.WriteString("|------|-----------------|----------|\n")
-	for _, r := range blocks {
-		fmt.Fprintf(b, "| %s | %s | %s |\n",
-			code(r.From), boolPtrCell(r.DestroyOnDrop), pos(r.Position))
-	}
-	b.WriteString("\n")
-}
-
-func renderChecks(b *strings.Builder, blocks []model.CheckBlock, pos func(model.Position) string) {
-	if len(blocks) == 0 {
-		return
-	}
-	b.WriteString("## Checks\n\n")
-	b.WriteString("| Name | Data Source | Assertions | Position |\n")
-	b.WriteString("|------|-------------|:----------:|----------|\n")
-	for _, c := range blocks {
-		ds := "-"
-		if c.DataSource != nil {
-			ds = code(c.DataSource.Type + "." + c.DataSource.Name)
-		}
-		fmt.Fprintf(b, "| %s | %s | %d | %s |\n",
-			code(c.Name), ds, len(c.Assertions), pos(c.Position))
-	}
-	b.WriteString("\n")
-}
-
-func renderSchemaFindings(b *strings.Builder, m *model.Module, pos func(model.Position) string) {
-	type row struct{ addr, kind, attr, message, rng string }
-	var rows []row
-	collect := func(addr string, f *model.SchemaFindings) {
-		if f == nil {
-			return
-		}
-		for _, a := range f.UnknownAttrs {
-			rows = append(rows, row{addr, "unknown", a.Name, "", pos(a.Position)})
-		}
-		for _, d := range f.DeprecatedAttrs {
-			rows = append(
-				rows,
-				row{addr, "deprecated", d.Name, oneLine(d.Message), pos(d.Position)},
-			)
-		}
-		for _, miss := range f.MissingRequired {
-			rows = append(rows, row{addr, "missing required", miss, "", ""})
-		}
-	}
-	for _, r := range m.ManagedResources {
-		collect(r.Type+"."+r.Name, r.SchemaFindings)
-	}
-	for _, r := range m.EphemeralResources {
-		collect(r.Type+"."+r.Name, r.SchemaFindings)
-	}
-	if len(rows) == 0 {
-		return
-	}
-	b.WriteString("## Schema Findings\n\n")
-	b.WriteString("| Resource | Kind | Attribute | Message | Position |\n")
-	b.WriteString("|----------|------|-----------|---------|----------|\n")
-	for _, r := range rows {
-		fmt.Fprintf(b, "| %s | %s | %s | %s | %s |\n",
-			code(r.addr), r.kind, code(r.attr), r.message, r.rng)
-	}
-	b.WriteString("\n")
-}
+// func renderEphemeralResources(
+// 	b *strings.Builder,
+// 	resources []model.EphemeralResource,
+// 	pos func(model.Position) string,
+// ) {
+// 	if len(resources) == 0 {
+// 		return
+// 	}
+// 	b.WriteString("## Ephemeral Resources\n\n")
+// 	b.WriteString(
+// 		"| Type | Name | Provider | Count | For Each | Depends On | Attributes | Lifecycle | Comment | Position |\n",
+// 	)
+// 	b.WriteString(
+// 		"|------|------|----------|-------|----------|------------|------------|-----------|---------|----------|\n",
+// 	)
+// 	for _, r := range resources {
+// 		fmt.Fprintf(b, "| %s | %s | %s | %s | %s | %s | %s | %s | %s | %s |\n",
+// 			code(r.Type),
+// 			code(r.Name),
+// 			code(r.Provider),
+// 			exprCell(r.Count),
+// 			exprCell(r.ForEach),
+// 			code(strings.Join(r.DependsOn, ", ")),
+// 			attrNamesCell(r.NestedBody),
+// 			lifecycleCell(r.Lifecycle),
+// 			oneLine(r.Comment),
+// 			pos(r.Position))
+// 	}
+// 	b.WriteString("\n")
+// }
+//
+// func renderModuleCalls(
+// 	b *strings.Builder,
+// 	calls []model.ModuleCall,
+// 	pos func(model.Position) string,
+// ) {
+// 	if len(calls) == 0 {
+// 		return
+// 	}
+// 	b.WriteString("## Module Calls\n\n")
+// 	b.WriteString(
+// 		"| Name | Source | Version | Count | For Each | Depends On | Providers | Inputs | Comment | Position |\n",
+// 	)
+// 	b.WriteString(
+// 		"|------|--------|---------|-------|----------|------------|-----------|--------|---------|----------|\n",
+// 	)
+// 	for _, c := range calls {
+// 		fmt.Fprintf(b, "| %s | %s | %s | %s | %s | %s | %s | %s | %s | %s |\n",
+// 			code(c.Name),
+// 			code(c.Source),
+// 			code(c.Version),
+// 			exprCell(c.Count),
+// 			exprCell(c.ForEach),
+// 			code(strings.Join(c.DependsOn, ", ")),
+// 			mapCell(c.Providers),
+// 			inputsCell(c.Inputs),
+// 			oneLine(c.Comment),
+// 			pos(c.Position))
+// 	}
+// 	b.WriteString("\n")
+// }
+//
+// func renderMoved(b *strings.Builder, blocks []model.MovedBlock, pos func(model.Position) string) {
+// 	if len(blocks) == 0 {
+// 		return
+// 	}
+// 	b.WriteString("## Moved\n\n")
+// 	b.WriteString("| From | To | Position |\n")
+// 	b.WriteString("|------|----|----------|\n")
+// 	for _, m := range blocks {
+// 		fmt.Fprintf(b, "| %s | %s | %s |\n", code(m.From), code(m.To), pos(m.Position))
+// 	}
+// 	b.WriteString("\n")
+// }
+//
+// func renderImports(
+// 	b *strings.Builder,
+// 	blocks []model.ImportBlock,
+// 	pos func(model.Position) string,
+// ) {
+// 	if len(blocks) == 0 {
+// 		return
+// 	}
+// 	b.WriteString("## Imports\n\n")
+// 	b.WriteString("| To | ID | Provider | Position |\n")
+// 	b.WriteString("|----|----|----------|----------|\n")
+// 	for _, im := range blocks {
+// 		fmt.Fprintf(b, "| %s | %s | %s | %s |\n",
+// 			code(im.To), exprValueCell(im.ID), code(im.Provider), pos(im.Position))
+// 	}
+// 	b.WriteString("\n")
+// }
+//
+// func renderRemoved(
+// 	b *strings.Builder,
+// 	blocks []model.RemovedBlock,
+// 	pos func(model.Position) string,
+// ) {
+// 	if len(blocks) == 0 {
+// 		return
+// 	}
+// 	b.WriteString("## Removed\n\n")
+// 	b.WriteString("| From | Destroy On Drop | Position |\n")
+// 	b.WriteString("|------|-----------------|----------|\n")
+// 	for _, r := range blocks {
+// 		fmt.Fprintf(b, "| %s | %s | %s |\n",
+// 			code(r.From), boolPtrCell(r.DestroyOnDrop), pos(r.Position))
+// 	}
+// 	b.WriteString("\n")
+// }
+//
+// func renderChecks(b *strings.Builder, blocks []model.CheckBlock, pos func(model.Position) string) {
+// 	if len(blocks) == 0 {
+// 		return
+// 	}
+// 	b.WriteString("## Checks\n\n")
+// 	b.WriteString("| Name | Data Source | Assertions | Position |\n")
+// 	b.WriteString("|------|-------------|:----------:|----------|\n")
+// 	for _, c := range blocks {
+// 		ds := "-"
+// 		if c.DataSource != nil {
+// 			ds = code(c.DataSource.Type + "." + c.DataSource.Name)
+// 		}
+// 		fmt.Fprintf(b, "| %s | %s | %d | %s |\n",
+// 			code(c.Name), ds, len(c.Assertions), pos(c.Position))
+// 	}
+// 	b.WriteString("\n")
+// }
+//
+// func renderSchemaFindings(b *strings.Builder, m *model.Module, pos func(model.Position) string) {
+// 	type row struct{ addr, kind, attr, message, rng string }
+// 	var rows []row
+// 	collect := func(addr string, f *model.SchemaFindings) {
+// 		if f == nil {
+// 			return
+// 		}
+// 		for _, a := range f.UnknownAttrs {
+// 			rows = append(rows, row{addr, "unknown", a.Name, "", pos(a.Position)})
+// 		}
+// 		for _, d := range f.DeprecatedAttrs {
+// 			rows = append(
+// 				rows,
+// 				row{addr, "deprecated", d.Name, oneLine(d.Message), pos(d.Position)},
+// 			)
+// 		}
+// 		for _, miss := range f.MissingRequired {
+// 			rows = append(rows, row{addr, "missing required", miss, "", ""})
+// 		}
+// 	}
+// 	for _, r := range m.ManagedResources {
+// 		collect(r.Type+"."+r.Name, r.SchemaFindings)
+// 	}
+// 	for _, r := range m.EphemeralResources {
+// 		collect(r.Type+"."+r.Name, r.SchemaFindings)
+// 	}
+// 	if len(rows) == 0 {
+// 		return
+// 	}
+// 	b.WriteString("## Schema Findings\n\n")
+// 	b.WriteString("| Resource | Kind | Attribute | Message | Position |\n")
+// 	b.WriteString("|----------|------|-----------|---------|----------|\n")
+// 	for _, r := range rows {
+// 		fmt.Fprintf(b, "| %s | %s | %s | %s | %s |\n",
+// 			code(r.addr), r.kind, code(r.attr), r.message, r.rng)
+// 	}
+// 	b.WriteString("\n")
+// }
 
 func renderDiagnostics(
 	b *strings.Builder,

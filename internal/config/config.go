@@ -35,6 +35,7 @@ type Config struct {
 	Variables *VariablesConfig `hcl:"variables,block"`
 	Outputs   *OutputsConfig   `hcl:"outputs,block"`
 	Locals    *LocalsConfig    `hcl:"locals,block"`
+	Resources *ResourcesConfig `hcl:"resources,block"`
 }
 
 type MainConfig struct {
@@ -93,6 +94,21 @@ type LocalsConfig struct {
 	Name       bool `hcl:"name,optional"`
 	Value      bool `hcl:"value,optional"`
 	References bool `hcl:"references,optional"`
+	Position   bool `hcl:"position,optional"`
+}
+
+type ResourcesConfig struct {
+	Render     bool `hcl:"render,optional"`
+	Name       bool `hcl:"name,optional"`
+	Mode       bool `hcl:"mode,optional"`
+	Type       bool `hcl:"type,optional"`
+	Provider   bool `hcl:"provider,optional"`
+	Count      bool `hcl:"count,optional"`
+	ForEach    bool `hcl:"for_each,optional"`
+	DependsOn  bool `hcl:"depends_on,optional"`
+	NestedBody bool `hcl:"nested_body,optional"`
+	Lifecycle  bool `hcl:"lifecycle,optional"`
+	Comment    bool `hcl:"comment,optional"`
 	Position   bool `hcl:"position,optional"`
 }
 
