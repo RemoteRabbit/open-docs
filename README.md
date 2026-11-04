@@ -35,9 +35,6 @@ them into output:
 
 ## Features
 
-Legend: `[x]` available now &nbsp;·&nbsp; `[~]` partial / debug-only
-&nbsp;·&nbsp; `[ ]` planned.
-
 ### Core rendering
 
 - [x] Inspect a module directory and render Markdown for every block type
@@ -49,8 +46,8 @@ Legend: `[x]` available now &nbsp;·&nbsp; `[~]` partial / debug-only
 - [~] Curated, reader-facing default layout. *Today the output is the verbose
       all-columns debug view; a clean default with `--verbose` as the opt-in
       debug mode is planned.*
-- [ ] Section toggles (show/hide) and sort order (by name or source position).
-- [ ] Deterministic, diff-stable output across runs and platforms.
+- [~ ] Section toggles (show/hide) and sort order (by name or source position).
+- [~ ] Deterministic, diff-stable output across runs and platforms.
 
 ### Workflow / terraform-docs parity (table stakes)
 
@@ -115,7 +112,76 @@ go build -o open-docs .
 main {
   docsfile = "README.md"
   mode     = "stdout"
+  # mode = "replace"
   header   = true
+}
+
+required {
+  render = true
+  name = true
+  source = true
+  version = true
+  alias = false
+  position = true
+}
+
+providers {
+  render = true
+  name = true
+  alias = true
+  for_each = false
+  position = true
+}
+
+variables {
+  render = true
+  name = true
+  type = true
+  default = true
+  required = true
+  description = true
+  comment = true
+  sensitive = true
+  nullable = true
+  ephemeral = true
+  validation = true
+  position = true
+}
+
+outputs {
+  render = true
+  name = true
+  value = true
+  references = true
+  description = true
+  comment = true
+  sensitive = true
+  ephemeral = true
+  depends_on = true
+  position = true
+}
+
+locals {
+  render = true
+  name = true
+  value = true
+  references = true
+  position = true
+}
+
+resources {
+  render    = true
+	name      = true
+	mode      = false
+	type      = true
+	provider  = false
+	count     = true
+	for_each   = true
+	depends_on = true
+	nested_body= true
+	lifecycle = true
+	comment   = true
+	position  = true
 }
 ```
 <!-- DEFAULTS-END -->
@@ -148,8 +214,17 @@ precedence over the config file.
 
 ## Example
 
-See [examples/vpc](./examples/vpc) for a sample module and its generated
-[README.md](./examples/vpc/README.md).
+Each directory under [examples/](./examples) is a module with its generated
+`README.md`, used to check how output renders:
+
+- [vpc](./examples/vpc): a realistic multi-file AWS VPC module with a local
+  child module.
+- [complete](./examples/complete): every block type open-inspector understands
+  (including ephemeral, check, OpenTofu encryption and provider `for_each`,
+  and a `.tf.json` file), plus table edge cases such as pipes, heredocs,
+  Unicode, and long values.
+- [invalid](./examples/invalid): deliberately broken configuration for the
+  diagnostics table.
 
 ## Development
 
@@ -191,6 +266,3 @@ presentation only.
   inspection engine open-docs is built on.
 - [terraform-docs](https://github.com/terraform-docs/terraform-docs): the
   incumbent open-docs aims to match, then surpass.
-</content>
-
-</invoke>
