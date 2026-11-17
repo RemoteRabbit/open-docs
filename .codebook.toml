@@ -2,7 +2,9 @@ dictionaries = ["en_us"]
 words = [
     "Lifecycle",
     "Postconditions",
+    "direnv",
     "hcl",
+    "heredocs",
     "seps",
     "vpc",
 ]
