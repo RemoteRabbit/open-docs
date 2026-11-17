@@ -1,6 +1,7 @@
 dictionaries = ["en_us"]
 words = [
     "Lifecycle",
+    "Postconditions",
     "hcl",
     "seps",
     "vpc",
