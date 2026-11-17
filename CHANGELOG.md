@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.3.0](https://github.com/RemoteRabbit/open-docs/compare/v0.2.0...v0.3.0) (2026-11-04)
+
+
+### Features
+
+* add configuration support for managed resources ([#21](https://github.com/RemoteRabbit/open-docs/issues/21)) ([441fb5e](https://github.com/RemoteRabbit/open-docs/commit/441fb5eddcbc602bcfb2ad54ff3e1f3dc08690b7))
+
 ## [0.2.0](https://github.com/RemoteRabbit/open-docs/compare/v0.1.0...v0.2.0) (2026-11-02)
 
 
