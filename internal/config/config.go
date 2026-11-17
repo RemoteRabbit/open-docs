@@ -29,13 +29,14 @@ const (
 // empty or absent file is valid; anything it leaves unset keeps the value
 // from defaults.hcl.
 type Config struct {
-	Main      *MainConfig      `hcl:"main,block"`
-	Required  *RequiredConfig  `hcl:"required,block"`
-	Providers *ProvidersConfig `hcl:"providers,block"`
-	Variables *VariablesConfig `hcl:"variables,block"`
-	Outputs   *OutputsConfig   `hcl:"outputs,block"`
-	Locals    *LocalsConfig    `hcl:"locals,block"`
-	Resources *ResourcesConfig `hcl:"resources,block"`
+	Main        *MainConfig        `hcl:"main,block"`
+	Required    *RequiredConfig    `hcl:"required,block"`
+	Providers   *ProvidersConfig   `hcl:"providers,block"`
+	Variables   *VariablesConfig   `hcl:"variables,block"`
+	Outputs     *OutputsConfig     `hcl:"outputs,block"`
+	Locals      *LocalsConfig      `hcl:"locals,block"`
+	Resources   *ResourcesConfig   `hcl:"resources,block"`
+	Diagnostics *DiagnosticsConfig `hcl:"diagnostics,block"`
 }
 
 type MainConfig struct {
@@ -110,6 +111,15 @@ type ResourcesConfig struct {
 	Lifecycle  bool `hcl:"lifecycle,optional"`
 	Comment    bool `hcl:"comment,optional"`
 	Position   bool `hcl:"position,optional"`
+}
+
+type DiagnosticsConfig struct {
+	Render   bool `hcl:"render,optional"`
+	Severity bool `hcl:"severity,optional"`
+	Summary  bool `hcl:"summary,optional"`
+	Detail   bool `hcl:"detail,optional"`
+	Subject  bool `hcl:"subject,optional"`
+	Context  bool `hcl:"context,optional"`
 }
 
 //go:embed defaults.hcl

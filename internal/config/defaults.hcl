@@ -74,3 +74,11 @@ resources {
 	comment   = true
 	position  = true
 }
+
+diagnostics {
+  render = true
+  summary = true
+  detail = true
+  subject = true
+  context = true
+}

@@ -67,7 +67,7 @@ func Markdown(m *model.Module, outputFile string, cfg *config.Config, version st
 	// renderRemoved(&b, m.Removed, pos)
 	// renderChecks(&b, m.Checks, pos)
 	// renderSchemaFindings(&b, m, pos)
-	renderDiagnostics(&b, m.Diagnostics, pos)
+	renderDiagnostics(&b, cfg.Diagnostics, m.Diagnostics, pos)
 
 	return b.String()
 }
@@ -239,25 +239,3 @@ func Markdown(m *model.Module, outputFile string, cfg *config.Config, version st
 // 	}
 // 	b.WriteString("\n")
 // }
-
-func renderDiagnostics(
-	b *strings.Builder,
-	diags model.Diagnostics,
-	pos func(model.Position) string,
-) {
-	if len(diags) == 0 {
-		return
-	}
-	b.WriteString("## Diagnostics\n\n")
-	b.WriteString("| Severity | Summary | Detail | Subject | Context |\n")
-	b.WriteString("|----------|---------|--------|---------|---------|\n")
-	for _, d := range diags {
-		fmt.Fprintf(b, "| %s | %s | %s | %s | %s |\n",
-			string(d.Severity),
-			oneLine(d.Summary),
-			oneLine(d.Detail),
-			posPtr(d.Subject, pos),
-			posPtr(d.Context, pos))
-	}
-	b.WriteString("\n")
-}
