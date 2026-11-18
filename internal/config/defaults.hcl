@@ -128,3 +128,10 @@ diagnostics {
   subject = true
   context = true
 }
+
+moved {
+  render = true
+  from = true
+  to = true
+  position = true
+}

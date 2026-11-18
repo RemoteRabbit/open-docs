@@ -40,6 +40,7 @@ type Config struct {
 	Ephemeral   *ResourcesConfig   `hcl:"ephemeral,block"`
 	Modules     *ModulesConfig     `hcl:"modules,block"`
 	Diagnostics *DiagnosticsConfig `hcl:"diagnostics,block"`
+	Moved       *MovedConfig       `hcl:"moved,block"`
 }
 
 type MainConfig struct {
@@ -139,6 +140,13 @@ type DiagnosticsConfig struct {
 	Detail   bool `hcl:"detail,optional"`
 	Subject  bool `hcl:"subject,optional"`
 	Context  bool `hcl:"context,optional"`
+}
+
+type MovedConfig struct {
+	Render   bool `hcl:"render,optional"`
+	From     bool `hcl:"from,optional"`
+	To       bool `hcl:"to,optional"`
+	Position bool `hcl:"position,optional"`
 }
 
 //go:embed defaults.hcl

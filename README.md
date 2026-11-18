@@ -238,6 +238,13 @@ diagnostics {
   subject = true
   context = true
 }
+
+moved {
+  render = true
+  from = true
+  to = true
+  position = true
+}
 ```
 <!-- DEFAULTS-END -->
 Drop a `.open-docs.hcl` in the module directory or the repository root (or pass

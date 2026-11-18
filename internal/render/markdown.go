@@ -66,7 +66,7 @@ func Markdown(m *model.Module, outputFile string, cfg *config.Config, version st
 	renderResources(&b, "Data", cfg.Resources, m.DataResources, pos)
 	renderResources(&b, "Ephemeral", cfg.Resources, m.EphemeralResources, pos)
 	renderModuleCalls(&b, cfg.Modules, m.ModuleCalls, pos)
-	// renderMoved(&b, m.Moved, pos)
+	renderMoved(&b, cfg.Moved, m.Moved, pos)
 	// renderImports(&b, m.Imports, pos)
 	// renderRemoved(&b, m.Removed, pos)
 	// renderChecks(&b, m.Checks, pos)
@@ -76,20 +76,6 @@ func Markdown(m *model.Module, outputFile string, cfg *config.Config, version st
 	return b.String()
 }
 
-//
-// func renderMoved(b *strings.Builder, blocks []model.MovedBlock, pos func(model.Position) string) {
-// 	if len(blocks) == 0 {
-// 		return
-// 	}
-// 	b.WriteString("## Moved\n\n")
-// 	b.WriteString("| From | To | Position |\n")
-// 	b.WriteString("|------|----|----------|\n")
-// 	for _, m := range blocks {
-// 		fmt.Fprintf(b, "| %s | %s | %s |\n", code(m.From), code(m.To), pos(m.Position))
-// 	}
-// 	b.WriteString("\n")
-// }
-//
 // func renderImports(
 // 	b *strings.Builder,
 // 	blocks []model.ImportBlock,
