@@ -46,10 +46,11 @@ them into output:
 - [~] Curated, reader-facing default layout. *Today the output is the verbose
       all-columns debug view; a clean default with `--verbose` as the opt-in
       debug mode is planned.*
-- [~ ] Section toggles (show/hide) and sort order (by name or source position).
+- [~ ] Section toggles (show/hide)
+- [~] and sort order (by name or source position).
 - [~ ] Deterministic, diff-stable output across runs and platforms.
 
-### Workflow / terraform-docs parity (table stakes)
+### Workflow / terraform-docs parity
 
 - [x] Write to stdout or a file (`-o`).
 - [x] **README injection** between `<!-- BEGIN_OPEN_DOC -->` /
@@ -62,19 +63,19 @@ them into output:
 - [ ] **CI gate**: `--check` (fail if on-disk docs are stale) and
       `--fail-on warning|error`.
 
-### Differentiators (the wedge)
+### Differentiators
 
 - [x] Schema-aware inspection via `-schema` (shells out to `tofu`/`terraform`).
 - [~] **Health section**: render schema findings + missing descriptions as a
       severity checklist. *Findings render as a table today; the curated
       health view is planned.*
-- [ ] **Source permalinks**: ranges -> host links at the right ref/line, with
+- [x] **Source permalinks**: ranges -> host links at the right ref/line, with
       git remote/ref detection and config override.
 - [ ] **Inline Mermaid graph**: module dependency and resource-relationship
       diagrams.
 - [ ] **Cross-references** ("used by"): drive from expression references
       (e.g. which outputs/resources consume `var.x`).
-- [ ] **Lint/quality**: unused variables, unreferenced outputs, undocumented
+- [~ ] **Lint/quality**: unused variables, unreferenced outputs, undocumented
       inputs/outputs, doc-completeness score.
 
 ### Power features (later)
@@ -85,7 +86,7 @@ them into output:
       prose or included files.
 - [ ] **More formats**: Markdown document, `json`, `mdx`, `asciidoc`.
 - [ ] **Recursive / multi-module docs** via the module graph.
-- [ ] **Examples extraction**: include `examples/*/main.tf` snippets.
+- [~] **Examples extraction**: include `examples/*/main.tf` snippets.
 - [ ] Optional static HTML/MDX site output.
 
 ## Usage
