@@ -69,32 +69,13 @@ func Markdown(m *model.Module, outputFile string, cfg *config.Config, version st
 	renderMoved(&b, cfg.Moved, m.Moved, pos)
 	renderImports(&b, cfg.Imports, m.Imports, pos)
 	renderRemoved(&b, cfg.Removed, m.Removed, pos)
-	// renderChecks(&b, m.Checks, pos)
+	renderChecks(&b, cfg.Checks, m.Checks, pos)
 	// renderSchemaFindings(&b, m, pos)
 	renderDiagnostics(&b, cfg.Diagnostics, m.Diagnostics, pos)
 
 	return b.String()
 }
 
-//
-// func renderChecks(b *strings.Builder, blocks []model.CheckBlock, pos func(model.Position) string) {
-// 	if len(blocks) == 0 {
-// 		return
-// 	}
-// 	b.WriteString("## Checks\n\n")
-// 	b.WriteString("| Name | Data Source | Assertions | Position |\n")
-// 	b.WriteString("|------|-------------|:----------:|----------|\n")
-// 	for _, c := range blocks {
-// 		ds := "-"
-// 		if c.DataSource != nil {
-// 			ds = code(c.DataSource.Type + "." + c.DataSource.Name)
-// 		}
-// 		fmt.Fprintf(b, "| %s | %s | %d | %s |\n",
-// 			code(c.Name), ds, len(c.Assertions), pos(c.Position))
-// 	}
-// 	b.WriteString("\n")
-// }
-//
 // func renderSchemaFindings(b *strings.Builder, m *model.Module, pos func(model.Position) string) {
 // 	type row struct{ addr, kind, attr, message, rng string }
 // 	var rows []row

@@ -43,6 +43,7 @@ type Config struct {
 	Moved       *MovedConfig       `hcl:"moved,block"`
 	Imports     *ImportsConfig     `hcl:"imports,block"`
 	Removed     *RemovedConfig     `hcl:"removed,block"`
+	Checks      *ChecksConfig      `hcl:"checks,block"`
 }
 
 type MainConfig struct {
@@ -164,6 +165,14 @@ type RemovedConfig struct {
 	From          bool `hcl:"from,optional"`
 	DestroyOnDrop bool `hcl:"destroy_on_drop,optional"`
 	Position      bool `hcl:"position,optional"`
+}
+
+type ChecksConfig struct {
+	Render     bool `hcl:"render,optional"`
+	Name       bool `hcl:"name,optional"`
+	DataSource bool `hcl:"data_source,optional"`
+	Assertions bool `hcl:"assertions,optional"`
+	Position   bool `hcl:"position,optional"`
 }
 
 //go:embed defaults.hcl

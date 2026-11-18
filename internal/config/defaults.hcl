@@ -149,3 +149,11 @@ removed {
   destroy_on_drop = true
   position = true
 }
+
+checks {
+  render = true
+  name = true
+  data_source = true
+  assertions = true
+  position = true
+}
