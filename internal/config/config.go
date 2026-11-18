@@ -46,6 +46,7 @@ type MainConfig struct {
 	DocsFile string `hcl:"docsfile,optional"` // file to write docs to
 	Mode     string `hcl:"mode,optional"`     // one of three mode options: stdout, inject, or replace
 	Header   bool   `hcl:"header,optional"`   // render the module title
+	Verbose  bool   `hcl:"verbose,optional"`  // render full byte positions
 }
 
 type RequiredConfig struct {

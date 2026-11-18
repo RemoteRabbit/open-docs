@@ -33,7 +33,7 @@ func Markdown(m *model.Module, outputFile string, cfg *config.Config, version st
 		}
 	}
 	pos := func(p model.Position) string {
-		return position(p, linkBase)
+		return position(Position{Position: p, LinkBase: linkBase, Verbose: cfg.Main.Verbose})
 	}
 	if cfg.Main.Header {
 		fmt.Fprintf(&b, "# Module `%s`\n\n", filepath.Base(m.Path))
