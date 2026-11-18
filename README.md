@@ -107,7 +107,7 @@ go build -o open-docs .
 
 ### Configuration (`.open-docs.hcl`)
 
-> [!note] Defaults
+>[!NOTE] Defaults
 > You can find the defaults [here](./internal/config/defaults.hcl).
 
 Drop a `.open-docs.hcl` in the module directory or the repository root (or pass
