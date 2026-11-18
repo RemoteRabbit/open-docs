@@ -50,7 +50,7 @@ func renderResources(
 			return lifecycleCell(p.Lifecycle)
 		}),
 		col("Comment", cfg.Comment, func(p model.Resource) string {
-			return p.Comment
+			return oneLine(p.Comment)
 		}),
 		col("Position", cfg.Position, func(p model.Resource) string {
 			return pos(p.Position)

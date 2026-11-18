@@ -28,10 +28,10 @@ func renderOutputs(
 			return refsCell(p.Value.References)
 		}),
 		col("Description", cfg.Description, func(p model.Output) string {
-			return p.Description
+			return oneLine(p.Description)
 		}),
 		col("Comment", cfg.Comment, func(p model.Output) string {
-			return p.Comment
+			return oneLine(p.Comment)
 		}),
 		col("Sensitive", cfg.Sensitive, func(p model.Output) string {
 			return boolCell(p.Sensitive)

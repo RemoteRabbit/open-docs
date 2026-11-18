@@ -29,11 +29,11 @@ func renderVariables(
 			return defaultCell(p.Default, p.DefaultValue)
 		}),
 		col("Description", cfg.Description, func(p model.Variable) string {
-			return p.Description
+			return oneLine(p.Description)
 		}),
 		// TODO: should make this configurable if there are comments or not as well
 		col("Comment", cfg.Comment, func(p model.Variable) string {
-			return p.Comment
+			return oneLine(p.Comment)
 		}),
 		col("Sensitive", cfg.Sensitive, func(p model.Variable) string {
 			return boolCell(p.Sensitive)

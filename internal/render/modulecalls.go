@@ -43,7 +43,7 @@ func renderModuleCalls(
 			return inputsCell(p.Inputs)
 		}),
 		col("Comment", cfg.Comment, func(p model.ModuleCall) string {
-			return p.Comment
+			return oneLine(p.Comment)
 		}),
 		col("Position", cfg.Position, func(p model.ModuleCall) string {
 			return pos(p.Position)
