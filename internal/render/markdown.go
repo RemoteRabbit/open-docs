@@ -32,20 +32,24 @@ func Markdown(m *model.Module, outputFile string, cfg *config.Config, version st
 			linkBase = filepath.Dir(absoluteOutput)
 		}
 	}
+
 	pos := func(p model.Position) string {
 		return position(Position{Position: p, LinkBase: linkBase, Verbose: cfg.Main.Verbose})
 	}
+
 	if cfg.Main.Header {
 		fmt.Fprintf(&b, "# Module `%s`\n\n", filepath.Base(m.Path))
 	}
 
 	// Add version information
-	if version != "" {
-		fmt.Fprintf(
-			&b,
-			"<!-- VERSION-START -->\nThis documentation was generated with [open-docs v%s](https://github.com/RemoteRabbit/open-docs)\n<!-- VERSION-END -->\n\n",
-			version,
-		)
+	if cfg.Main.Version {
+		if version != "" {
+			fmt.Fprintf(
+				&b,
+				"<!-- VERSION-START -->\nThis documentation was generated with [open-docs v%s](https://github.com/RemoteRabbit/open-docs)\n<!-- VERSION-END -->\n\n",
+				version,
+			)
+		}
 	}
 
 	if len(m.RequiredCore) > 0 {
