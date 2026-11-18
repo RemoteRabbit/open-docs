@@ -135,3 +135,18 @@ moved {
   to = true
   position = true
 }
+
+imports {
+  render = true
+  to = true
+  id = true
+  provider = true
+  position = true
+}
+
+removed {
+  render = true
+  from = true
+  destroy_on_drop = true
+  position = true
+}

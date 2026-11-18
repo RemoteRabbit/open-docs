@@ -245,6 +245,21 @@ moved {
   to = true
   position = true
 }
+
+imports {
+  render = true
+  to = true
+  id = true
+  provider = true
+  position = true
+}
+
+removed {
+  render = true
+  from = true
+  destroy_on_drop = true
+  position = true
+}
 ```
 <!-- DEFAULTS-END -->
 Drop a `.open-docs.hcl` in the module directory or the repository root (or pass

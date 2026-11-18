@@ -41,6 +41,8 @@ type Config struct {
 	Modules     *ModulesConfig     `hcl:"modules,block"`
 	Diagnostics *DiagnosticsConfig `hcl:"diagnostics,block"`
 	Moved       *MovedConfig       `hcl:"moved,block"`
+	Imports     *ImportsConfig     `hcl:"imports,block"`
+	Removed     *RemovedConfig     `hcl:"removed,block"`
 }
 
 type MainConfig struct {
@@ -147,6 +149,21 @@ type MovedConfig struct {
 	From     bool `hcl:"from,optional"`
 	To       bool `hcl:"to,optional"`
 	Position bool `hcl:"position,optional"`
+}
+
+type ImportsConfig struct {
+	Render   bool `hcl:"render,optional"`
+	To       bool `hcl:"to,optional"`
+	Id       bool `hcl:"id,optional"`
+	Provider bool `hcl:"provider,optional"`
+	Position bool `hcl:"position,optional"`
+}
+
+type RemovedConfig struct {
+	Render        bool `hcl:"render,optional"`
+	From          bool `hcl:"from,optional"`
+	DestroyOnDrop bool `hcl:"destroy_on_drop,optional"`
+	Position      bool `hcl:"position,optional"`
 }
 
 //go:embed defaults.hcl

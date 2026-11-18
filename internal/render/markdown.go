@@ -67,8 +67,8 @@ func Markdown(m *model.Module, outputFile string, cfg *config.Config, version st
 	renderResources(&b, "Ephemeral", cfg.Resources, m.EphemeralResources, pos)
 	renderModuleCalls(&b, cfg.Modules, m.ModuleCalls, pos)
 	renderMoved(&b, cfg.Moved, m.Moved, pos)
-	// renderImports(&b, m.Imports, pos)
-	// renderRemoved(&b, m.Removed, pos)
+	renderImports(&b, cfg.Imports, m.Imports, pos)
+	renderRemoved(&b, cfg.Removed, m.Removed, pos)
 	// renderChecks(&b, m.Checks, pos)
 	// renderSchemaFindings(&b, m, pos)
 	renderDiagnostics(&b, cfg.Diagnostics, m.Diagnostics, pos)
@@ -76,41 +76,6 @@ func Markdown(m *model.Module, outputFile string, cfg *config.Config, version st
 	return b.String()
 }
 
-// func renderImports(
-// 	b *strings.Builder,
-// 	blocks []model.ImportBlock,
-// 	pos func(model.Position) string,
-// ) {
-// 	if len(blocks) == 0 {
-// 		return
-// 	}
-// 	b.WriteString("## Imports\n\n")
-// 	b.WriteString("| To | ID | Provider | Position |\n")
-// 	b.WriteString("|----|----|----------|----------|\n")
-// 	for _, im := range blocks {
-// 		fmt.Fprintf(b, "| %s | %s | %s | %s |\n",
-// 			code(im.To), exprValueCell(im.ID), code(im.Provider), pos(im.Position))
-// 	}
-// 	b.WriteString("\n")
-// }
-//
-// func renderRemoved(
-// 	b *strings.Builder,
-// 	blocks []model.RemovedBlock,
-// 	pos func(model.Position) string,
-// ) {
-// 	if len(blocks) == 0 {
-// 		return
-// 	}
-// 	b.WriteString("## Removed\n\n")
-// 	b.WriteString("| From | Destroy On Drop | Position |\n")
-// 	b.WriteString("|------|-----------------|----------|\n")
-// 	for _, r := range blocks {
-// 		fmt.Fprintf(b, "| %s | %s | %s |\n",
-// 			code(r.From), boolPtrCell(r.DestroyOnDrop), pos(r.Position))
-// 	}
-// 	b.WriteString("\n")
-// }
 //
 // func renderChecks(b *strings.Builder, blocks []model.CheckBlock, pos func(model.Position) string) {
 // 	if len(blocks) == 0 {
