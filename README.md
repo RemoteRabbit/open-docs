@@ -215,6 +215,20 @@ ephemeral {
 	position  = true
 }
 
+modules {
+  render = true
+  name = true
+  source = true
+  version = true
+  count = true
+  for_each = true
+  depends_on = true
+  providers = true
+  inputs = true
+  comment = true
+  position = true
+}
+
 diagnostics {
   render = true
   summary = true

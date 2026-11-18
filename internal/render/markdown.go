@@ -61,7 +61,7 @@ func Markdown(m *model.Module, outputFile string, cfg *config.Config, version st
 	renderResources(&b, "Managed", cfg.Resources, m.ManagedResources, pos)
 	renderResources(&b, "Data", cfg.Resources, m.DataResources, pos)
 	renderResources(&b, "Ephemeral", cfg.Resources, m.EphemeralResources, pos)
-	// renderModuleCalls(&b, m.ModuleCalls, pos)
+	renderModuleCalls(&b, cfg.Modules, m.ModuleCalls, pos)
 	// renderMoved(&b, m.Moved, pos)
 	// renderImports(&b, m.Imports, pos)
 	// renderRemoved(&b, m.Removed, pos)
@@ -72,67 +72,6 @@ func Markdown(m *model.Module, outputFile string, cfg *config.Config, version st
 	return b.String()
 }
 
-// func renderEphemeralResources(
-// 	b *strings.Builder,
-// 	resources []model.EphemeralResource,
-// 	pos func(model.Position) string,
-// ) {
-// 	if len(resources) == 0 {
-// 		return
-// 	}
-// 	b.WriteString("## Ephemeral Resources\n\n")
-// 	b.WriteString(
-// 		"| Type | Name | Provider | Count | For Each | Depends On | Attributes | Lifecycle | Comment | Position |\n",
-// 	)
-// 	b.WriteString(
-// 		"|------|------|----------|-------|----------|------------|------------|-----------|---------|----------|\n",
-// 	)
-// 	for _, r := range resources {
-// 		fmt.Fprintf(b, "| %s | %s | %s | %s | %s | %s | %s | %s | %s | %s |\n",
-// 			code(r.Type),
-// 			code(r.Name),
-// 			code(r.Provider),
-// 			exprCell(r.Count),
-// 			exprCell(r.ForEach),
-// 			code(strings.Join(r.DependsOn, ", ")),
-// 			attrNamesCell(r.NestedBody),
-// 			lifecycleCell(r.Lifecycle),
-// 			oneLine(r.Comment),
-// 			pos(r.Position))
-// 	}
-// 	b.WriteString("\n")
-// }
-//
-// func renderModuleCalls(
-// 	b *strings.Builder,
-// 	calls []model.ModuleCall,
-// 	pos func(model.Position) string,
-// ) {
-// 	if len(calls) == 0 {
-// 		return
-// 	}
-// 	b.WriteString("## Module Calls\n\n")
-// 	b.WriteString(
-// 		"| Name | Source | Version | Count | For Each | Depends On | Providers | Inputs | Comment | Position |\n",
-// 	)
-// 	b.WriteString(
-// 		"|------|--------|---------|-------|----------|------------|-----------|--------|---------|----------|\n",
-// 	)
-// 	for _, c := range calls {
-// 		fmt.Fprintf(b, "| %s | %s | %s | %s | %s | %s | %s | %s | %s | %s |\n",
-// 			code(c.Name),
-// 			code(c.Source),
-// 			code(c.Version),
-// 			exprCell(c.Count),
-// 			exprCell(c.ForEach),
-// 			code(strings.Join(c.DependsOn, ", ")),
-// 			mapCell(c.Providers),
-// 			inputsCell(c.Inputs),
-// 			oneLine(c.Comment),
-// 			pos(c.Position))
-// 	}
-// 	b.WriteString("\n")
-// }
 //
 // func renderMoved(b *strings.Builder, blocks []model.MovedBlock, pos func(model.Position) string) {
 // 	if len(blocks) == 0 {
