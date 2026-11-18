@@ -3,6 +3,7 @@ words = [
     "Lifecycle",
     "Postconditions",
     "direnv",
+    "docsfile",
     "hcl",
     "heredocs",
     "seps",

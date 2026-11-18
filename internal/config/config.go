@@ -36,6 +36,8 @@ type Config struct {
 	Outputs     *OutputsConfig     `hcl:"outputs,block"`
 	Locals      *LocalsConfig      `hcl:"locals,block"`
 	Resources   *ResourcesConfig   `hcl:"resources,block"`
+	Data        *ResourcesConfig   `hcl:"data,block"`
+	Ephemeral   *ResourcesConfig   `hcl:"ephemeral,block"`
 	Diagnostics *DiagnosticsConfig `hcl:"diagnostics,block"`
 }
 

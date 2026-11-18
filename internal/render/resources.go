@@ -1,6 +1,7 @@
 package render
 
 import (
+	"fmt"
 	"strings"
 
 	"github.com/remoterabbit/open-docs/internal/config"
@@ -9,6 +10,7 @@ import (
 
 func renderResources(
 	b *strings.Builder,
+	title string,
 	cfg *config.ResourcesConfig,
 	resources []model.Resource,
 	pos func(model.Position) string,
@@ -16,7 +18,7 @@ func renderResources(
 	if len(resources) == 0 || !cfg.Render {
 		return
 	}
-	b.WriteString("## Managed Resources\n\n")
+	b.WriteString(fmt.Sprintf("## %s Resources\n\n", title))
 	writeTable(b, []column[model.Resource]{
 		col("Name", cfg.Name, func(p model.Resource) string {
 			return p.Name
