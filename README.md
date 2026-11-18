@@ -46,10 +46,11 @@ them into output:
 - [~] Curated, reader-facing default layout. *Today the output is the verbose
       all-columns debug view; a clean default with `--verbose` as the opt-in
       debug mode is planned.*
-- [~ ] Section toggles (show/hide) and sort order (by name or source position).
+- [~ ] Section toggles (show/hide)
+- [~] and sort order (by name or source position).
 - [~ ] Deterministic, diff-stable output across runs and platforms.
 
-### Workflow / terraform-docs parity (table stakes)
+### Workflow / terraform-docs parity
 
 - [x] Write to stdout or a file (`-o`).
 - [x] **README injection** between `<!-- BEGIN_OPEN_DOC -->` /
@@ -62,19 +63,19 @@ them into output:
 - [ ] **CI gate**: `--check` (fail if on-disk docs are stale) and
       `--fail-on warning|error`.
 
-### Differentiators (the wedge)
+### Differentiators
 
 - [x] Schema-aware inspection via `-schema` (shells out to `tofu`/`terraform`).
 - [~] **Health section**: render schema findings + missing descriptions as a
       severity checklist. *Findings render as a table today; the curated
       health view is planned.*
-- [ ] **Source permalinks**: ranges -> host links at the right ref/line, with
+- [x] **Source permalinks**: ranges -> host links at the right ref/line, with
       git remote/ref detection and config override.
 - [ ] **Inline Mermaid graph**: module dependency and resource-relationship
       diagrams.
 - [ ] **Cross-references** ("used by"): drive from expression references
       (e.g. which outputs/resources consume `var.x`).
-- [ ] **Lint/quality**: unused variables, unreferenced outputs, undocumented
+- [~ ] **Lint/quality**: unused variables, unreferenced outputs, undocumented
       inputs/outputs, doc-completeness score.
 
 ### Power features (later)
@@ -85,7 +86,7 @@ them into output:
       prose or included files.
 - [ ] **More formats**: Markdown document, `json`, `mdx`, `asciidoc`.
 - [ ] **Recursive / multi-module docs** via the module graph.
-- [ ] **Examples extraction**: include `examples/*/main.tf` snippets.
+- [~] **Examples extraction**: include `examples/*/main.tf` snippets.
 - [ ] Optional static HTML/MDX site output.
 
 ## Usage
@@ -105,139 +106,10 @@ go build -o open-docs .
 ```
 
 ### Configuration (`.open-docs.hcl`)
-<!-- DEFAULTS-START -->
-```hcl
-# Built-in defaults for open-docs. A user's .open-docs.hcl is decoded on top
-# of these values, so any attribute set there overrides the one here.
-main {
-  docsfile = "README.md"
-  mode     = "stdout"
-  # mode = "replace"
-  header   = true
-}
 
-required {
-  render = true
-  name = true
-  source = true
-  version = true
-  alias = false
-  position = true
-}
+> [!note]
+> You can find the defaults [here](./internal/config/defaults.hcl).
 
-providers {
-  render = true
-  name = true
-  alias = true
-  for_each = false
-  position = true
-}
-
-variables {
-  render = true
-  name = true
-  type = true
-  default = true
-  required = true
-  description = true
-  comment = true
-  sensitive = true
-  nullable = true
-  ephemeral = true
-  validation = true
-  position = true
-}
-
-outputs {
-  render = true
-  name = true
-  value = true
-  references = true
-  description = true
-  comment = true
-  sensitive = true
-  ephemeral = true
-  depends_on = true
-  position = true
-}
-
-locals {
-  render = true
-  name = true
-  value = true
-  references = true
-  position = true
-}
-
-resources {
-  render    = true
-	name      = true
-	# mode      = false
-	mode      = true
-	type      = true
-	provider  = false
-	count     = true
-	for_each   = true
-	depends_on = true
-	nested_body= true
-	lifecycle = true
-	comment   = true
-	position  = true
-}
-
-data {
-  render    = true
-	name      = true
-	mode      = true
-	type      = true
-	provider  = false
-	count     = true
-	for_each   = true
-	depends_on = true
-	nested_body= true
-	lifecycle = true
-	comment   = true
-	position  = true
-}
-
-ephemeral {
-  render    = true
-	name      = true
-	mode      = true
-	type      = true
-	provider  = false
-	count     = true
-	for_each   = true
-	depends_on = true
-	nested_body= true
-	lifecycle = true
-	comment   = true
-	position  = true
-}
-
-modules {
-  render = true
-  name = true
-  source = true
-  version = true
-  count = true
-  for_each = true
-  depends_on = true
-  providers = true
-  inputs = true
-  comment = true
-  position = true
-}
-
-diagnostics {
-  render = true
-  summary = true
-  detail = true
-  subject = true
-  context = true
-}
-```
-<!-- DEFAULTS-END -->
 Drop a `.open-docs.hcl` in the module directory or the repository root (or pass
 `-config <file>`) to control output. open-docs uses the nearest one, searching
 from the module directory up to the repository root.

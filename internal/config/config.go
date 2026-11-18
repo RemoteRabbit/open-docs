@@ -40,12 +40,19 @@ type Config struct {
 	Ephemeral   *ResourcesConfig   `hcl:"ephemeral,block"`
 	Modules     *ModulesConfig     `hcl:"modules,block"`
 	Diagnostics *DiagnosticsConfig `hcl:"diagnostics,block"`
+	Moved       *MovedConfig       `hcl:"moved,block"`
+	Imports     *ImportsConfig     `hcl:"imports,block"`
+	Removed     *RemovedConfig     `hcl:"removed,block"`
+	Checks      *ChecksConfig      `hcl:"checks,block"`
+	Schema      *SchemaConfig      `hcl:"schema_findings,block"`
 }
 
 type MainConfig struct {
 	DocsFile string `hcl:"docsfile,optional"` // file to write docs to
 	Mode     string `hcl:"mode,optional"`     // one of three mode options: stdout, inject, or replace
 	Header   bool   `hcl:"header,optional"`   // render the module title
+	Verbose  bool   `hcl:"verbose,optional"`  // render full byte positions
+	Version  bool   `hcl:"version,optional"`
 }
 
 type RequiredConfig struct {
@@ -137,6 +144,45 @@ type DiagnosticsConfig struct {
 	Detail   bool `hcl:"detail,optional"`
 	Subject  bool `hcl:"subject,optional"`
 	Context  bool `hcl:"context,optional"`
+}
+
+type MovedConfig struct {
+	Render   bool `hcl:"render,optional"`
+	From     bool `hcl:"from,optional"`
+	To       bool `hcl:"to,optional"`
+	Position bool `hcl:"position,optional"`
+}
+
+type ImportsConfig struct {
+	Render   bool `hcl:"render,optional"`
+	To       bool `hcl:"to,optional"`
+	Id       bool `hcl:"id,optional"`
+	Provider bool `hcl:"provider,optional"`
+	Position bool `hcl:"position,optional"`
+}
+
+type RemovedConfig struct {
+	Render        bool `hcl:"render,optional"`
+	From          bool `hcl:"from,optional"`
+	DestroyOnDrop bool `hcl:"destroy_on_drop,optional"`
+	Position      bool `hcl:"position,optional"`
+}
+
+type ChecksConfig struct {
+	Render     bool `hcl:"render,optional"`
+	Name       bool `hcl:"name,optional"`
+	DataSource bool `hcl:"data_source,optional"`
+	Assertions bool `hcl:"assertions,optional"`
+	Position   bool `hcl:"position,optional"`
+}
+
+type SchemaConfig struct {
+	Render    bool `hcl:"render,optional"`
+	Resource  bool `hcl:"resource,optional"`
+	Kind      bool `hcl:"kind,optional"`
+	Attribute bool `hcl:"attribute,optional"`
+	Message   bool `hcl:"message,optional"`
+	Position  bool `hcl:"position,optional"`
 }
 
 //go:embed defaults.hcl

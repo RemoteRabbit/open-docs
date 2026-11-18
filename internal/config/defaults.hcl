@@ -1,10 +1,11 @@
 # Built-in defaults for open-docs. A user's .open-docs.hcl is decoded on top
 # of these values, so any attribute set there overrides the one here.
 main {
-  docsfile = "README.md"
-  mode     = "stdout"
-  # mode = "replace"
-  header   = true
+  docsfile = "README.md" # the markdown file to update
+  mode     = "stdout"    # must be `stdout`, `replace`, or `inject`
+  header   = true        # `This documentation was generated with [open-docs v1](https://github.com/RemoteRabbit/open-docs)`
+  verbose = false        # include byte and column locations in position renders
+  version = true         # include the open-docs version header in markdown render
 }
 
 required {
@@ -126,4 +127,43 @@ diagnostics {
   detail = true
   subject = true
   context = true
+}
+
+moved {
+  render = true
+  from = true
+  to = true
+  position = true
+}
+
+imports {
+  render = true
+  to = true
+  id = true
+  provider = true
+  position = true
+}
+
+removed {
+  render = true
+  from = true
+  destroy_on_drop = true
+  position = true
+}
+
+checks {
+  render = true
+  name = true
+  data_source = true
+  assertions = true
+  position = true
+}
+
+schema_findings {
+  render = true
+  resource = true
+  kind = true
+  attribute = true
+  message = true
+  position = true
 }

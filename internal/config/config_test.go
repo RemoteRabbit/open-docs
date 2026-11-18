@@ -52,7 +52,7 @@ func TestLoadOverridesDefaults(t *testing.T) {
 	}
 
 	// mode comes from the user's file; docsfile and header fall back to defaults.hcl.
-	want := MainConfig{DocsFile: "README.md", Mode: ModeInject, Header: true}
+	want := MainConfig{DocsFile: "README.md", Mode: ModeInject, Header: true, Version: true}
 	if cfg.Main == nil || *cfg.Main != want {
 		t.Fatalf("Main = %+v, want %+v", cfg.Main, want)
 	}

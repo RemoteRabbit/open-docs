@@ -32,20 +32,24 @@ func Markdown(m *model.Module, outputFile string, cfg *config.Config, version st
 			linkBase = filepath.Dir(absoluteOutput)
 		}
 	}
+
 	pos := func(p model.Position) string {
-		return position(p, linkBase)
+		return position(Position{Position: p, LinkBase: linkBase, Verbose: cfg.Main.Verbose})
 	}
+
 	if cfg.Main.Header {
 		fmt.Fprintf(&b, "# Module `%s`\n\n", filepath.Base(m.Path))
 	}
 
 	// Add version information
-	if version != "" {
-		fmt.Fprintf(
-			&b,
-			"<!-- VERSION-START -->\nThis documentation was generated with [open-docs v%s](https://github.com/RemoteRabbit/open-docs)\n<!-- VERSION-END -->\n\n",
-			version,
-		)
+	if cfg.Main.Version {
+		if version != "" {
+			fmt.Fprintf(
+				&b,
+				"<!-- VERSION-START -->\nThis documentation was generated with [open-docs v%s](https://github.com/RemoteRabbit/open-docs)\n<!-- VERSION-END -->\n\n",
+				version,
+			)
+		}
 	}
 
 	if len(m.RequiredCore) > 0 {
@@ -62,119 +66,12 @@ func Markdown(m *model.Module, outputFile string, cfg *config.Config, version st
 	renderResources(&b, "Data", cfg.Resources, m.DataResources, pos)
 	renderResources(&b, "Ephemeral", cfg.Resources, m.EphemeralResources, pos)
 	renderModuleCalls(&b, cfg.Modules, m.ModuleCalls, pos)
-	// renderMoved(&b, m.Moved, pos)
-	// renderImports(&b, m.Imports, pos)
-	// renderRemoved(&b, m.Removed, pos)
-	// renderChecks(&b, m.Checks, pos)
-	// renderSchemaFindings(&b, m, pos)
+	renderMoved(&b, cfg.Moved, m.Moved, pos)
+	renderImports(&b, cfg.Imports, m.Imports, pos)
+	renderRemoved(&b, cfg.Removed, m.Removed, pos)
+	renderChecks(&b, cfg.Checks, m.Checks, pos)
+	renderSchemaFindings(&b, cfg.Schema, m, pos)
 	renderDiagnostics(&b, cfg.Diagnostics, m.Diagnostics, pos)
 
 	return b.String()
 }
-
-//
-// func renderMoved(b *strings.Builder, blocks []model.MovedBlock, pos func(model.Position) string) {
-// 	if len(blocks) == 0 {
-// 		return
-// 	}
-// 	b.WriteString("## Moved\n\n")
-// 	b.WriteString("| From | To | Position |\n")
-// 	b.WriteString("|------|----|----------|\n")
-// 	for _, m := range blocks {
-// 		fmt.Fprintf(b, "| %s | %s | %s |\n", code(m.From), code(m.To), pos(m.Position))
-// 	}
-// 	b.WriteString("\n")
-// }
-//
-// func renderImports(
-// 	b *strings.Builder,
-// 	blocks []model.ImportBlock,
-// 	pos func(model.Position) string,
-// ) {
-// 	if len(blocks) == 0 {
-// 		return
-// 	}
-// 	b.WriteString("## Imports\n\n")
-// 	b.WriteString("| To | ID | Provider | Position |\n")
-// 	b.WriteString("|----|----|----------|----------|\n")
-// 	for _, im := range blocks {
-// 		fmt.Fprintf(b, "| %s | %s | %s | %s |\n",
-// 			code(im.To), exprValueCell(im.ID), code(im.Provider), pos(im.Position))
-// 	}
-// 	b.WriteString("\n")
-// }
-//
-// func renderRemoved(
-// 	b *strings.Builder,
-// 	blocks []model.RemovedBlock,
-// 	pos func(model.Position) string,
-// ) {
-// 	if len(blocks) == 0 {
-// 		return
-// 	}
-// 	b.WriteString("## Removed\n\n")
-// 	b.WriteString("| From | Destroy On Drop | Position |\n")
-// 	b.WriteString("|------|-----------------|----------|\n")
-// 	for _, r := range blocks {
-// 		fmt.Fprintf(b, "| %s | %s | %s |\n",
-// 			code(r.From), boolPtrCell(r.DestroyOnDrop), pos(r.Position))
-// 	}
-// 	b.WriteString("\n")
-// }
-//
-// func renderChecks(b *strings.Builder, blocks []model.CheckBlock, pos func(model.Position) string) {
-// 	if len(blocks) == 0 {
-// 		return
-// 	}
-// 	b.WriteString("## Checks\n\n")
-// 	b.WriteString("| Name | Data Source | Assertions | Position |\n")
-// 	b.WriteString("|------|-------------|:----------:|----------|\n")
-// 	for _, c := range blocks {
-// 		ds := "-"
-// 		if c.DataSource != nil {
-// 			ds = code(c.DataSource.Type + "." + c.DataSource.Name)
-// 		}
-// 		fmt.Fprintf(b, "| %s | %s | %d | %s |\n",
-// 			code(c.Name), ds, len(c.Assertions), pos(c.Position))
-// 	}
-// 	b.WriteString("\n")
-// }
-//
-// func renderSchemaFindings(b *strings.Builder, m *model.Module, pos func(model.Position) string) {
-// 	type row struct{ addr, kind, attr, message, rng string }
-// 	var rows []row
-// 	collect := func(addr string, f *model.SchemaFindings) {
-// 		if f == nil {
-// 			return
-// 		}
-// 		for _, a := range f.UnknownAttrs {
-// 			rows = append(rows, row{addr, "unknown", a.Name, "", pos(a.Position)})
-// 		}
-// 		for _, d := range f.DeprecatedAttrs {
-// 			rows = append(
-// 				rows,
-// 				row{addr, "deprecated", d.Name, oneLine(d.Message), pos(d.Position)},
-// 			)
-// 		}
-// 		for _, miss := range f.MissingRequired {
-// 			rows = append(rows, row{addr, "missing required", miss, "", ""})
-// 		}
-// 	}
-// 	for _, r := range m.ManagedResources {
-// 		collect(r.Type+"."+r.Name, r.SchemaFindings)
-// 	}
-// 	for _, r := range m.EphemeralResources {
-// 		collect(r.Type+"."+r.Name, r.SchemaFindings)
-// 	}
-// 	if len(rows) == 0 {
-// 		return
-// 	}
-// 	b.WriteString("## Schema Findings\n\n")
-// 	b.WriteString("| Resource | Kind | Attribute | Message | Position |\n")
-// 	b.WriteString("|----------|------|-----------|---------|----------|\n")
-// 	for _, r := range rows {
-// 		fmt.Fprintf(b, "| %s | %s | %s | %s | %s |\n",
-// 			code(r.addr), r.kind, code(r.attr), r.message, r.rng)
-// 	}
-// 	b.WriteString("\n")
-// }

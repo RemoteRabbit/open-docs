@@ -10,30 +10,43 @@ import (
 	"github.com/remoterabbit/open-inspector/pkg/model"
 )
 
+type Position struct {
+	Position model.Position
+	LinkBase string
+	Verbose  bool
+}
+
 // position formats a source Position as a document-relative source link followed
 // by its line:column:byte range.
-func position(p model.Position, linkBase string) string {
-	if p.Filename == "" {
+func position(opts Position) string {
+	if opts.Position.Filename == "" {
 		return ""
 	}
-	target, err := filepath.Rel(linkBase, filepath.FromSlash(p.Filename))
+
+	target, err := filepath.Rel(opts.LinkBase, filepath.FromSlash(opts.Position.Filename))
 	if err != nil {
-		target = p.Filename
+		target = opts.Position.Filename
 	} else if !strings.HasPrefix(target, ".") {
 		target = "./" + target
 	}
 	target = filepath.ToSlash(target)
 	href := (&url.URL{Path: target}).EscapedPath()
-	if p.Start.Line > 0 {
-		href += fmt.Sprintf("#L%d", p.Start.Line)
-		if p.End.Line > p.Start.Line {
-			href += fmt.Sprintf("-L%d", p.End.Line)
+	if opts.Position.Start.Line > 0 {
+		href += fmt.Sprintf("#L%d", opts.Position.Start.Line)
+		if opts.Position.End.Line > opts.Position.Start.Line {
+			href += fmt.Sprintf("-L%d", opts.Position.End.Line)
 		}
 	}
-	return fmt.Sprintf("[`%s`](%s) [%d:%d:%d -> %d:%d:%d]",
-		target, href,
-		p.Start.Line, p.Start.Column, p.Start.Byte,
-		p.End.Line, p.End.Column, p.End.Byte)
+
+	if opts.Verbose {
+		return fmt.Sprintf("[`%s`](%s) [%d:%d:%d -> %d:%d:%d]",
+			target, href,
+			opts.Position.Start.Line, opts.Position.Start.Column, opts.Position.Start.Byte,
+			opts.Position.End.Line, opts.Position.End.Column, opts.Position.End.Byte)
+	} else {
+		return fmt.Sprintf("[`%s`](%s)",
+			target, href)
+	}
 }
 
 func posPtr(p *model.Position, pos func(model.Position) string) string {
