@@ -44,6 +44,7 @@ type Config struct {
 	Imports     *ImportsConfig     `hcl:"imports,block"`
 	Removed     *RemovedConfig     `hcl:"removed,block"`
 	Checks      *ChecksConfig      `hcl:"checks,block"`
+	Schema      *SchemaConfig      `hcl:"schema_findings,block"`
 }
 
 type MainConfig struct {
@@ -173,6 +174,15 @@ type ChecksConfig struct {
 	DataSource bool `hcl:"data_source,optional"`
 	Assertions bool `hcl:"assertions,optional"`
 	Position   bool `hcl:"position,optional"`
+}
+
+type SchemaConfig struct {
+	Render    bool `hcl:"render,optional"`
+	Resource  bool `hcl:"resource,optional"`
+	Kind      bool `hcl:"kind,optional"`
+	Attribute bool `hcl:"attribute,optional"`
+	Message   bool `hcl:"message,optional"`
+	Position  bool `hcl:"position,optional"`
 }
 
 //go:embed defaults.hcl

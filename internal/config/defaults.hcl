@@ -157,3 +157,12 @@ checks {
   assertions = true
   position = true
 }
+
+schema_findings {
+  render = true
+  resource = true
+  kind = true
+  attribute = true
+  message = true
+  position = true
+}

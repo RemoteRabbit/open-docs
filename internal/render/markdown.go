@@ -70,47 +70,8 @@ func Markdown(m *model.Module, outputFile string, cfg *config.Config, version st
 	renderImports(&b, cfg.Imports, m.Imports, pos)
 	renderRemoved(&b, cfg.Removed, m.Removed, pos)
 	renderChecks(&b, cfg.Checks, m.Checks, pos)
-	// renderSchemaFindings(&b, m, pos)
+	renderSchemaFindings(&b, cfg.Schema, m, pos)
 	renderDiagnostics(&b, cfg.Diagnostics, m.Diagnostics, pos)
 
 	return b.String()
 }
-
-// func renderSchemaFindings(b *strings.Builder, m *model.Module, pos func(model.Position) string) {
-// 	type row struct{ addr, kind, attr, message, rng string }
-// 	var rows []row
-// 	collect := func(addr string, f *model.SchemaFindings) {
-// 		if f == nil {
-// 			return
-// 		}
-// 		for _, a := range f.UnknownAttrs {
-// 			rows = append(rows, row{addr, "unknown", a.Name, "", pos(a.Position)})
-// 		}
-// 		for _, d := range f.DeprecatedAttrs {
-// 			rows = append(
-// 				rows,
-// 				row{addr, "deprecated", d.Name, oneLine(d.Message), pos(d.Position)},
-// 			)
-// 		}
-// 		for _, miss := range f.MissingRequired {
-// 			rows = append(rows, row{addr, "missing required", miss, "", ""})
-// 		}
-// 	}
-// 	for _, r := range m.ManagedResources {
-// 		collect(r.Type+"."+r.Name, r.SchemaFindings)
-// 	}
-// 	for _, r := range m.EphemeralResources {
-// 		collect(r.Type+"."+r.Name, r.SchemaFindings)
-// 	}
-// 	if len(rows) == 0 {
-// 		return
-// 	}
-// 	b.WriteString("## Schema Findings\n\n")
-// 	b.WriteString("| Resource | Kind | Attribute | Message | Position |\n")
-// 	b.WriteString("|----------|------|-----------|---------|----------|\n")
-// 	for _, r := range rows {
-// 		fmt.Fprintf(b, "| %s | %s | %s | %s | %s |\n",
-// 			code(r.addr), r.kind, code(r.attr), r.message, r.rng)
-// 	}
-// 	b.WriteString("\n")
-// }
