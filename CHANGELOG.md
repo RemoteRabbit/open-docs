@@ -1,5 +1,13 @@
 # Changelog
 
+## [0.4.0](https://github.com/RemoteRabbit/open-docs/compare/v0.3.0...v0.4.0) (2026-11-18)
+
+
+### Features
+
+* add base configuration defaults and options ([#27](https://github.com/RemoteRabbit/open-docs/issues/27)) ([90a0183](https://github.com/RemoteRabbit/open-docs/commit/90a0183defa20e3f997860f65d7d39dcc9ad927f))
+* module and resource block configuration ([#25](https://github.com/RemoteRabbit/open-docs/issues/25)) ([323b3a7](https://github.com/RemoteRabbit/open-docs/commit/323b3a735261032797f575f0735d42e3dd5e047a))
+
 ## [0.3.0](https://github.com/RemoteRabbit/open-docs/compare/v0.2.0...v0.3.0) (2026-11-04)
 
 
