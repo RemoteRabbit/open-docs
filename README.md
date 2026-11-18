@@ -24,7 +24,7 @@ them into output:
   GitHub/GitLab/Bitbucket.
 - **Health, not just a field dump.** Schema findings (deprecated, unknown,
   missing-required attributes) and missing descriptions become an actionable
-  checklist with severities.
+  checklist with severity.
 - **Diagrams.** The inspector's module graph (tree/DOT/Mermaid) becomes inline
   dependency and resource diagrams; GitHub renders Mermaid natively.
 - **Richer data.** Leading `# ...` doc-comments, structured variable types
@@ -172,7 +172,8 @@ locals {
 resources {
   render    = true
 	name      = true
-	mode      = false
+	# mode      = false
+	mode      = true
 	type      = true
 	provider  = false
 	count     = true
@@ -182,6 +183,58 @@ resources {
 	lifecycle = true
 	comment   = true
 	position  = true
+}
+
+data {
+  render    = true
+	name      = true
+	mode      = true
+	type      = true
+	provider  = false
+	count     = true
+	for_each   = true
+	depends_on = true
+	nested_body= true
+	lifecycle = true
+	comment   = true
+	position  = true
+}
+
+ephemeral {
+  render    = true
+	name      = true
+	mode      = true
+	type      = true
+	provider  = false
+	count     = true
+	for_each   = true
+	depends_on = true
+	nested_body= true
+	lifecycle = true
+	comment   = true
+	position  = true
+}
+
+modules {
+  render = true
+  name = true
+  source = true
+  version = true
+  count = true
+  for_each = true
+  depends_on = true
+  providers = true
+  inputs = true
+  comment = true
+  position = true
+}
+
+diagnostics {
+  render = true
+  summary = true
+  detail = true
+  subject = true
+  context = true
 }
 ```
 <!-- DEFAULTS-END -->
@@ -228,24 +281,8 @@ Each directory under [examples/](./examples) is a module with its generated
 
 ## Development
 
-The project uses [devenv](https://devenv.sh/) for a pinned Go, OpenTofu, and
-prek toolchain. Enter it directly or allow direnv once:
-
-```bash
-devenv shell
-# or
-direnv allow
-```
-
-The shell installs the prek Git shim. Common commands are:
-
-```bash
-build                 # compile ./open-docs
-format                # format all Go files
-verify                # format check, build, vet, test, and smoke test
-prek run --all-files  # run every repository hook
-devenv test           # run the complete devenv verification
-```
+>[!NOTE]
+> Pulled out direnv for now but will be replacing with something in the future.
 
 ## How it works
 

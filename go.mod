@@ -4,7 +4,7 @@ go 1.27.3
 
 require (
 	github.com/hashicorp/hcl/v2 v2.25.0
-	github.com/remoterabbit/open-inspector v0.8.1
+	github.com/remoterabbit/open-inspector v0.9.0
 )
 
 require (
@@ -15,9 +15,9 @@ require (
 	github.com/hashicorp/go-version v1.9.0 // indirect
 	github.com/hashicorp/terraform-json v0.29.0 // indirect
 	github.com/mitchellh/go-wordwrap v1.0.1 // indirect
-	github.com/zclconf/go-cty v1.19.0 // indirect
-	golang.org/x/mod v0.38.0 // indirect
-	golang.org/x/sync v0.22.0 // indirect
-	golang.org/x/text v0.40.0 // indirect
-	golang.org/x/tools v0.48.0 // indirect
+	github.com/zclconf/go-cty v1.20.0 // indirect
+	golang.org/x/mod v0.43.0 // indirect
+	golang.org/x/sync v0.25.0 // indirect
+	golang.org/x/text v0.44.0 // indirect
+	golang.org/x/tools v0.53.0 // indirect
 )

@@ -29,13 +29,17 @@ const (
 // empty or absent file is valid; anything it leaves unset keeps the value
 // from defaults.hcl.
 type Config struct {
-	Main      *MainConfig      `hcl:"main,block"`
-	Required  *RequiredConfig  `hcl:"required,block"`
-	Providers *ProvidersConfig `hcl:"providers,block"`
-	Variables *VariablesConfig `hcl:"variables,block"`
-	Outputs   *OutputsConfig   `hcl:"outputs,block"`
-	Locals    *LocalsConfig    `hcl:"locals,block"`
-	Resources *ResourcesConfig `hcl:"resources,block"`
+	Main        *MainConfig        `hcl:"main,block"`
+	Required    *RequiredConfig    `hcl:"required,block"`
+	Providers   *ProvidersConfig   `hcl:"providers,block"`
+	Variables   *VariablesConfig   `hcl:"variables,block"`
+	Outputs     *OutputsConfig     `hcl:"outputs,block"`
+	Locals      *LocalsConfig      `hcl:"locals,block"`
+	Resources   *ResourcesConfig   `hcl:"resources,block"`
+	Data        *ResourcesConfig   `hcl:"data,block"`
+	Ephemeral   *ResourcesConfig   `hcl:"ephemeral,block"`
+	Modules     *ModulesConfig     `hcl:"modules,block"`
+	Diagnostics *DiagnosticsConfig `hcl:"diagnostics,block"`
 }
 
 type MainConfig struct {
@@ -110,6 +114,29 @@ type ResourcesConfig struct {
 	Lifecycle  bool `hcl:"lifecycle,optional"`
 	Comment    bool `hcl:"comment,optional"`
 	Position   bool `hcl:"position,optional"`
+}
+
+type ModulesConfig struct {
+	Render    bool `hcl:"render,optional"`
+	Name      bool `hcl:"name,optional"`
+	Source    bool `hcl:"source,optional"`
+	Version   bool `hcl:"version,optional"`
+	Count     bool `hcl:"count,optional"`
+	ForEach   bool `hcl:"for_each,optional"`
+	DependsOn bool `hcl:"depends_on,optional"`
+	Providers bool `hcl:"providers,optional"`
+	Inputs    bool `hcl:"inputs,optional"`
+	Comment   bool `hcl:"comment,optional"`
+	Position  bool `hcl:"position,optional"`
+}
+
+type DiagnosticsConfig struct {
+	Render   bool `hcl:"render,optional"`
+	Severity bool `hcl:"severity,optional"`
+	Summary  bool `hcl:"summary,optional"`
+	Detail   bool `hcl:"detail,optional"`
+	Subject  bool `hcl:"subject,optional"`
+	Context  bool `hcl:"context,optional"`
 }
 
 //go:embed defaults.hcl

@@ -63,7 +63,8 @@ locals {
 resources {
   render    = true
 	name      = true
-	mode      = false
+	# mode      = false
+	mode      = true
 	type      = true
 	provider  = false
 	count     = true
@@ -73,4 +74,56 @@ resources {
 	lifecycle = true
 	comment   = true
 	position  = true
+}
+
+data {
+  render    = true
+	name      = true
+	mode      = true
+	type      = true
+	provider  = false
+	count     = true
+	for_each   = true
+	depends_on = true
+	nested_body= true
+	lifecycle = true
+	comment   = true
+	position  = true
+}
+
+ephemeral {
+  render    = true
+	name      = true
+	mode      = true
+	type      = true
+	provider  = false
+	count     = true
+	for_each   = true
+	depends_on = true
+	nested_body= true
+	lifecycle = true
+	comment   = true
+	position  = true
+}
+
+modules {
+  render = true
+  name = true
+  source = true
+  version = true
+  count = true
+  for_each = true
+  depends_on = true
+  providers = true
+  inputs = true
+  comment = true
+  position = true
+}
+
+diagnostics {
+  render = true
+  summary = true
+  detail = true
+  subject = true
+  context = true
 }
