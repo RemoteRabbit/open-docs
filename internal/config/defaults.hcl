@@ -2,10 +2,10 @@
 # of these values, so any attribute set there overrides the one here.
 main {
   docsfile = "README.md" # the markdown file to update
-  mode     = "stdout" # must be `stdout`, `replace`, or `inject`
-  header   = true # `This documentation was generated with [open-docs v1](https://github.com/RemoteRabbit/open-docs)`
-  verbose = false # include byte and column locations in position renders
-  version = true # include the open-docs version header in markdown render
+  mode     = "stdout"    # must be `stdout`, `replace`, or `inject`
+  header   = true        # `This documentation was generated with [open-docs v1](https://github.com/RemoteRabbit/open-docs)`
+  verbose = false        # include byte and column locations in position renders
+  version = true         # include the open-docs version header in markdown render
 }
 
 required {
@@ -64,8 +64,7 @@ locals {
 resources {
   render    = true
 	name      = true
-	# mode      = false
-	mode      = true
+	mode      = false
 	type      = true
 	provider  = false
 	count     = true
