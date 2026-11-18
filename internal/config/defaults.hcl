@@ -64,7 +64,8 @@ locals {
 resources {
   render    = true
 	name      = true
-	mode      = false
+	# mode      = false
+	mode      = true
 	type      = true
 	provider  = false
 	count     = true
