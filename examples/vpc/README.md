@@ -128,10 +128,10 @@ This documentation was generated with [open-docs dev](https://github.com/RemoteR
 
 | From | To | Position |
 |------|----|----------|
-| aws_subnet.public[0] | aws_subnet.public["us-east-1a"] | [`./refactor.tf`](./refactor.tf#L2) |
-| aws_subnet.public[1] | aws_subnet.public["us-east-1b"] | [`./refactor.tf`](./refactor.tf#L7) |
-| aws_nat_gateway.main | aws_nat_gateway.this[0] | [`./refactor.tf`](./refactor.tf#L12) |
-| module.endpoints_legacy | module.endpoints | [`./refactor.tf`](./refactor.tf#L17) |
+| `aws_subnet.public[0]` | `aws_subnet.public["us-east-1a"]` | [`./refactor.tf`](./refactor.tf#L2) |
+| `aws_subnet.public[1]` | `aws_subnet.public["us-east-1b"]` | [`./refactor.tf`](./refactor.tf#L7) |
+| `aws_nat_gateway.main` | `aws_nat_gateway.this[0]` | [`./refactor.tf`](./refactor.tf#L12) |
+| `module.endpoints_legacy` | `module.endpoints` | [`./refactor.tf`](./refactor.tf#L17) |
 
 ## Imports
 
