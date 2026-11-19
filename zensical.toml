@@ -1,0 +1,84 @@
+# Documentation site, built with Zensical (https://zensical.org).
+# `make docs-serve` previews it locally; `make docs` builds it into site/.
+[project]
+site_name = "open-docs"
+site_description = "A documentation generator for Terraform/OpenTofu modules."
+site_author = "Tristan Jahnke"
+site_url = "https://remoterabbit.github.io/open-docs/"
+repo_url = "https://github.com/RemoteRabbit/open-docs"
+repo_name = "RemoteRabbit/open-docs"
+edit_uri = "edit/main/docs/"
+copyright = "Released under the Mozilla Public License 2.0"
+
+nav = [
+  { "Home" = "index.md" },
+  { "Getting started" = "getting-started.md" },
+  { "Configuration" = "configuration.md" },
+  { "Example gallery" = [
+    "examples/index.md",
+    { "vpc" = "examples/vpc.md" },
+    { "complete" = "examples/complete.md" },
+    { "invalid" = "examples/invalid.md" },
+  ] },
+]
+
+[project.theme]
+language = "en"
+features = [
+  "content.action.edit",
+  "content.code.annotate",
+  "content.code.copy",
+  "content.tabs.link",
+  "navigation.footer",
+  "navigation.indexes",
+  "navigation.instant",
+  "navigation.path",
+  "navigation.sections",
+  "navigation.top",
+  "navigation.tracking",
+  "search.highlight",
+]
+
+[project.theme.icon]
+logo = "lucide/file-text"
+repo = "fontawesome/brands/github"
+
+[[project.theme.palette]]
+scheme = "default"
+toggle.icon = "lucide/sun"
+toggle.name = "Switch to dark mode"
+
+[[project.theme.palette]]
+scheme = "slate"
+toggle.icon = "lucide/moon"
+toggle.name = "Switch to light mode"
+
+[[project.extra.social]]
+icon = "fontawesome/brands/github"
+link = "https://github.com/RemoteRabbit/open-docs"
+
+[project.markdown_extensions.admonition]
+[project.markdown_extensions.attr_list]
+[project.markdown_extensions.md_in_html]
+[project.markdown_extensions.tables]
+[project.markdown_extensions.toc]
+permalink = true
+[project.markdown_extensions.pymdownx.details]
+[project.markdown_extensions.pymdownx.highlight]
+anchor_linenums = true
+line_spans = "__span"
+pygments_lang_class = true
+[project.markdown_extensions.pymdownx.inlinehilite]
+[project.markdown_extensions.pymdownx.snippets]
+# Lets pages include repository files, e.g. the built-in config defaults.
+base_path = ["."]
+check_paths = true
+[project.markdown_extensions.pymdownx.superfences]
+custom_fences = [
+  { name = "mermaid", class = "mermaid", format = "pymdownx.superfences.fence_code_format" }
+]
+[project.markdown_extensions.pymdownx.tabbed]
+alternate_style = true
+combine_header_slug = true
+[project.markdown_extensions.pymdownx.tasklist]
+custom_checkbox = true

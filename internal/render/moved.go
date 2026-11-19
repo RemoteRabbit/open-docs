@@ -14,10 +14,10 @@ func renderMoved(b *strings.Builder, cfg *config.MovedConfig, blocks []model.Mov
 	b.WriteString("## Moved\n\n")
 	writeTable(b, []column[model.MovedBlock]{
 		col("From", cfg.From, func(p model.MovedBlock) string {
-			return oneLine(p.From)
+			return code(p.From)
 		}),
 		col("To", cfg.To, func(p model.MovedBlock) string {
-			return oneLine(p.To)
+			return code(p.To)
 		}),
 		col("Position", cfg.Position, func(p model.MovedBlock) string {
 			return pos(p.Position)

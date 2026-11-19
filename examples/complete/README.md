@@ -175,10 +175,10 @@ This documentation was generated with [open-docs dev](https://github.com/RemoteR
 
 | From | To | Position |
 |------|----|----------|
-| null_resource.old_name | null_resource.empty | [`./blocks.tf`](./blocks.tf#L3) |
-| random_pet.single | random_pet.names[0] | [`./blocks.tf`](./blocks.tf#L8) |
-| module.old_child | module.child | [`./blocks.tf`](./blocks.tf#L13) |
-| module.child.aws_s3_bucket.legacy | module.child.aws_s3_bucket.this | [`./blocks.tf`](./blocks.tf#L18) |
+| `null_resource.old_name` | `null_resource.empty` | [`./blocks.tf`](./blocks.tf#L3) |
+| `random_pet.single` | `random_pet.names[0]` | [`./blocks.tf`](./blocks.tf#L8) |
+| `module.old_child` | `module.child` | [`./blocks.tf`](./blocks.tf#L13) |
+| `module.child.aws_s3_bucket.legacy` | `module.child.aws_s3_bucket.this` | [`./blocks.tf`](./blocks.tf#L18) |
 
 ## Imports
 

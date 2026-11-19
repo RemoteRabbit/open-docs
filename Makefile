@@ -11,14 +11,12 @@ MAKEFLAGS += --warn-undefined-variables --no-builtin-rules
 
 BIN     := bin/open-docs
 PKG     := ./...
-COMPLETE-EX := ./examples/complete
-INVALID-EX := ./examples/invalid
-VPC-EX := ./examples/vpc
-EXAMPLE := $(COMPLETE-EX)
+EXAMPLES := complete invalid vpc
+EXAMPLE := ./examples/complete
 GO_SRC   = $(shell find . -name '*.go' -not -path './.devenv/*' -not -path './.git/*')
 # Go reads GOFLAGS from the environment, e.g. `make build GOFLAGS=-v`.
 
-.PHONY: help all build test vet fmt fmt-check smoke readmes verify tidy clean
+.PHONY: help all build test vet fmt fmt-check smoke readmes gallery docs docs-serve verify tidy clean
 
 ## Show this help
 help:
@@ -60,10 +58,28 @@ smoke: build
 	./$(BIN) -o "$$out" $(EXAMPLE); \
 	test -s "$$out"; echo "smoke: ok"
 
+## Regenerate examples/*/README.md with the current code
 readmes: build
-	./$(BIN) -o $(COMPLETE-EX)/README.md $(COMPLETE-EX)
-	./$(BIN) -o $(INVALID-EX)/README.md $(INVALID-EX)
-	./$(BIN) -o $(VPC-EX)/README.md $(VPC-EX)
+	for ex in $(EXAMPLES); do ./$(BIN) -o examples/$$ex/README.md examples/$$ex; done
+
+# Git ref the gallery's source links point at; the docs workflow passes the tag.
+DOCS_REF ?= main
+REPO_URL := https://github.com/RemoteRabbit/open-docs
+
+## Copy the example READMEs into docs/examples/, linking sources to GitHub
+gallery:
+	@for ex in $(EXAMPLES); do \
+		sed 's#](\./#]($(REPO_URL)/blob/$(DOCS_REF)/examples/'"$$ex"'/#g' \
+			examples/$$ex/README.md > docs/examples/$$ex.md; \
+	done
+
+## Build the documentation site into site/
+docs: gallery
+	zensical build --clean
+
+## Serve the documentation site locally with live reload
+docs-serve: gallery
+	zensical serve
 
 ## Run every check: formatting, vet, tests, and smoke test
 verify: fmt-check vet test smoke
@@ -74,4 +90,4 @@ tidy:
 
 ## Remove build output
 clean:
-	rm -rf $(dir $(BIN))
+	rm -rf $(dir $(BIN)) site/

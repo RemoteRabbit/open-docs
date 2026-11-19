@@ -18,3 +18,8 @@ examples/*.md
 
 # Local notes
 .local/
+
+# Docs site: build output and the gallery copied from examples/ by `make gallery`
+site/
+docs/examples/*.md
+!docs/examples/index.md

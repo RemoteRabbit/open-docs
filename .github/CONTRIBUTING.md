@@ -26,12 +26,13 @@ You need:
 
 Run `make` to list the available targets. The ones you will use most:
 
-| Command        | What it does                                              |
-|----------------|-----------------------------------------------------------|
-| `make verify`  | gofmt check, `go vet`, tests with `-race`, smoke test.    |
-| `make readmes` | Regenerates `examples/*/README.md` with the current code. |
-| `make fmt`     | Formats Go sources with gofmt and golines.                |
-| `make build`   | Builds `bin/open-docs`.                                   |
+| Command           | What it does                                               |
+|-------------------|------------------------------------------------------------|
+| `make verify`     | gofmt check, `go vet`, tests with `-race`, smoke test.     |
+| `make readmes`    | Regenerates `examples/*/README.md` with the current code.  |
+| `make fmt`        | Formats Go sources with gofmt and golines.                 |
+| `make build`      | Builds `bin/open-docs`.                                    |
+| `make docs-serve` | Previews the docs site ([Zensical](https://zensical.org)). |
 
 ## Making a change
 
