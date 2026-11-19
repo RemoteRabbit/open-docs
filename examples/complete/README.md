@@ -1,7 +1,7 @@
 # Module `complete`
 
 <!-- VERSION-START -->
-This documentation was generated with [open-docs v1](https://github.com/RemoteRabbit/open-docs)
+This documentation was generated with [open-docs dev](https://github.com/RemoteRabbit/open-docs)
 <!-- VERSION-END -->
 
 - **Required core:** `>= 1.10.0, != 1.10.1`
@@ -125,38 +125,38 @@ This documentation was generated with [open-docs v1](https://github.com/RemoteRa
 
 ## Managed Resources
 
-| Name | Type | Count | For Each | Depends On | Nested Body | LifeCycle | Comment | Position |
-|------|------|-------|----------|------------|-------------|-----------|---------|----------|
-| from_json | `null_resource` | - | - |  | - | - | - | [`./extra.tf.json`](./extra.tf.json#L20) |
-| empty | `null_resource` | - | - |  | - | - | Minimal resource: no attributes, no meta-arguments. | [`./resources.tf`](./resources.tf#L4) |
-| names | `random_pet` | `3` | - |  | `length, prefix, separator` | - | - | [`./resources.tf`](./resources.tf#L6) |
-| per_key | `random_string` | - | `var.map_of_numbers` |  | `length, special` | - | - | [`./resources.tf`](./resources.tf#L14) |
-| db | `random_password` | - | - |  | `length, override_special, special` | - | - | [`./resources.tf`](./resources.tf#L21) |
-| kitchen_sink | `aws_s3_bucket` | - | `{ for name, cfg in var.map_of_objects : name => cfg if cfg.max_size > 1 }` | random_pet.names, null_resource.empty, module.child | `bucket, force_destroy, tags` | `create_before_destroy=true; prevent_destroy=true; ignore_changes=[tags,force_destroy]; replace_triggered_by=[random_password.db.id,null_resource.empty]; preconditions=2; postconditions=1` | Resource with every meta-argument and a full lifecycle block. | [`./resources.tf`](./resources.tf#L30) |
-| replica | `aws_s3_bucket` | - | - |  | `bucket` | - | - | [`./resources.tf`](./resources.tf#L71) |
-| ignore_all | `aws_iam_role` | - | - |  | `assume_role_policy, name` | `ignore_changes=[all]` | - | [`./resources.tf`](./resources.tf#L76) |
-| nested | `aws_security_group` | - | - |  | `description, name_prefix` | - | Nested blocks, dynamic blocks, and provisioners. | [`./resources.tf`](./resources.tf#L95) |
-| ca | `tls_private_key` | - | - |  | `algorithm, ecdsa_curve` | - | - | [`./resources.tf`](./resources.tf#L138) |
-| rendered | `local_file` | - | - |  | `content, file_permission, filename` | - | - | [`./resources.tf`](./resources.tf#L143) |
-| wait | `time_sleep` | - | - | aws_s3_bucket.kitchen_sink | `create_duration` | - | - | [`./resources.tf`](./resources.tf#L149) |
-| replacement | `terraform_data` | - | - |  | `input, triggers_replace` | - | - | [`./resources.tf`](./resources.tf#L154) |
+| Name | Mode | Type | Count | For Each | Depends On | Nested Body | LifeCycle | Comment | Position |
+|------|------|------|-------|----------|------------|-------------|-----------|---------|----------|
+| from_json | managed | `null_resource` | - | - |  | - | - | - | [`./extra.tf.json`](./extra.tf.json#L20) |
+| empty | managed | `null_resource` | - | - |  | - | - | Minimal resource: no attributes, no meta-arguments. | [`./resources.tf`](./resources.tf#L4) |
+| names | managed | `random_pet` | `3` | - |  | `length, prefix, separator` | - | - | [`./resources.tf`](./resources.tf#L6) |
+| per_key | managed | `random_string` | - | `var.map_of_numbers` |  | `length, special` | - | - | [`./resources.tf`](./resources.tf#L14) |
+| db | managed | `random_password` | - | - |  | `length, override_special, special` | - | - | [`./resources.tf`](./resources.tf#L21) |
+| kitchen_sink | managed | `aws_s3_bucket` | - | `{ for name, cfg in var.map_of_objects : name => cfg if cfg.max_size > 1 }` | random_pet.names, null_resource.empty, module.child | `bucket, force_destroy, tags` | `create_before_destroy=true; prevent_destroy=true; ignore_changes=[tags,force_destroy]; replace_triggered_by=[random_password.db.id,null_resource.empty]; preconditions=2; postconditions=1` | Resource with every meta-argument and a full lifecycle block. | [`./resources.tf`](./resources.tf#L30) |
+| replica | managed | `aws_s3_bucket` | - | - |  | `bucket` | - | - | [`./resources.tf`](./resources.tf#L71) |
+| ignore_all | managed | `aws_iam_role` | - | - |  | `assume_role_policy, name` | `ignore_changes=[all]` | - | [`./resources.tf`](./resources.tf#L76) |
+| nested | managed | `aws_security_group` | - | - |  | `description, name_prefix` | - | Nested blocks, dynamic blocks, and provisioners. | [`./resources.tf`](./resources.tf#L95) |
+| ca | managed | `tls_private_key` | - | - |  | `algorithm, ecdsa_curve` | - | - | [`./resources.tf`](./resources.tf#L138) |
+| rendered | managed | `local_file` | - | - |  | `content, file_permission, filename` | - | - | [`./resources.tf`](./resources.tf#L143) |
+| wait | managed | `time_sleep` | - | - | aws_s3_bucket.kitchen_sink | `create_duration` | - | - | [`./resources.tf`](./resources.tf#L149) |
+| replacement | managed | `terraform_data` | - | - |  | `input, triggers_replace` | - | - | [`./resources.tf`](./resources.tf#L154) |
 
 ## Data Resources
 
-| Name | Type | Count | For Each | Depends On | Nested Body | LifeCycle | Comment | Position |
-|------|------|-------|----------|------------|-------------|-----------|---------|----------|
-| current | `aws_caller_identity` | - | - |  | - | - | - | [`./resources.tf`](./resources.tf#L161) |
-| per_region | `aws_iam_policy_document` | - | `var.regions` |  | - | - | - | [`./resources.tf`](./resources.tf#L163) |
-| health | `http` | `var.bool_true ? 1 : 0` | - |  | `request_headers, url` | `postconditions=1` | - | [`./resources.tf`](./resources.tf#L173) |
-| readme | `local_file` | - | - | local_file.rendered | `filename` | - | - | [`./resources.tf`](./resources.tf#L190) |
+| Name | Mode | Type | Count | For Each | Depends On | Nested Body | LifeCycle | Comment | Position |
+|------|------|------|-------|----------|------------|-------------|-----------|---------|----------|
+| current | data | `aws_caller_identity` | - | - |  | - | - | - | [`./resources.tf`](./resources.tf#L161) |
+| per_region | data | `aws_iam_policy_document` | - | `var.regions` |  | - | - | - | [`./resources.tf`](./resources.tf#L163) |
+| health | data | `http` | `var.bool_true ? 1 : 0` | - |  | `request_headers, url` | `postconditions=1` | - | [`./resources.tf`](./resources.tf#L173) |
+| readme | data | `local_file` | - | - | local_file.rendered | `filename` | - | - | [`./resources.tf`](./resources.tf#L190) |
 
 ## Ephemeral Resources
 
-| Name | Type | Count | For Each | Depends On | Nested Body | LifeCycle | Comment | Position |
-|------|------|-------|----------|------------|-------------|-----------|---------|----------|
-| session | `random_password` | - | - |  | `length, special` | - | - | [`./resources.tf`](./resources.tf#L197) |
-| db | `aws_secretsmanager_secret_version` | `var.bool_true ? 1 : 0` | - | aws_iam_role.ignore_all | `secret_id` | - | - | [`./resources.tf`](./resources.tf#L202) |
-| per_region | `tls_private_key` | - | `var.regions` |  | `algorithm` | - | - | [`./resources.tf`](./resources.tf#L211) |
+| Name | Mode | Type | Count | For Each | Depends On | Nested Body | LifeCycle | Comment | Position |
+|------|------|------|-------|----------|------------|-------------|-----------|---------|----------|
+| session | ephemeral | `random_password` | - | - |  | `length, special` | - | - | [`./resources.tf`](./resources.tf#L197) |
+| db | ephemeral | `aws_secretsmanager_secret_version` | `var.bool_true ? 1 : 0` | - | aws_iam_role.ignore_all | `secret_id` | - | - | [`./resources.tf`](./resources.tf#L202) |
+| per_region | ephemeral | `tls_private_key` | - | `var.regions` |  | `algorithm` | - | - | [`./resources.tf`](./resources.tf#L211) |
 
 ## Module Calls
 

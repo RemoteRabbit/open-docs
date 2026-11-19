@@ -18,7 +18,7 @@ func renderResources(
 	if len(resources) == 0 || !cfg.Render {
 		return
 	}
-	b.WriteString(fmt.Sprintf("## %s Resources\n\n", title))
+	fmt.Fprintf(b, "## %s Resources\n\n", title)
 	writeTable(b, []column[model.Resource]{
 		col("Name", cfg.Name, func(p model.Resource) string {
 			return p.Name

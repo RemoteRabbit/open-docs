@@ -313,6 +313,7 @@ func col[T any](header string, enabled bool, cell func(T) string) column[T] {
 	return column[T]{header: header, enabled: enabled, cell: cell}
 }
 
+//nolint:unused // Kept for column alignment; no table centers a column yet.
 func (c column[T]) center() column[T] { c.align = "center"; return c }
 
 // sepFor returns a delimiter cell as wide as the rendered header cell

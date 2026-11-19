@@ -40,24 +40,27 @@ them into output:
 - [x] Inspect a module directory and render Markdown for every block type
       (providers, inputs, outputs, locals, managed/data/ephemeral resources,
       module calls, moved/import/removed, checks, schema findings, diagnostics).
-- [x] Full source position per row (`` `file.tf` [L:C:B -> L:C:B] ``).
+- [x] Source link per row (`` [`./file.tf`](./file.tf#L4-L7) ``);
+      `main { verbose = true }` adds full `line:column:byte` ranges.
 - [x] Doc-comments, structured types, decoded defaults, and expression
       references surfaced in the table view.
-- [~] Curated, reader-facing default layout. *Today the output is the verbose
-      all-columns debug view; a clean default with `--verbose` as the opt-in
-      debug mode is planned.*
-- [~ ] Section toggles (show/hide)
-- [~] and sort order (by name or source position).
-- [~ ] Deterministic, diff-stable output across runs and platforms.
+- [~] Curated, reader-facing default layout. *Today most columns are on by
+      default and `main { verbose = true }` is the opt-in debug detail; a
+      curated reader-facing layout is planned.*
+- [~] Section and column toggles: each section has a config block with
+      `render` and per-column switches.
+- [ ] Sort order (by name or source position).
+- [~] Deterministic, diff-stable output across runs and platforms.
 
 ### Workflow / terraform-docs parity
 
 - [x] Write to stdout or a file (`-o`).
 - [x] **README injection** between `<!-- BEGIN_OPEN_DOC -->` /
       `<!-- END_OPEN_DOC -->` markers instead of overwriting the file
-      (`output { mode = "inject" }`).
-- [~] **Config file** (`.open-docs.hcl`): `output { file, mode }` works today;
-      formatter, sections, sort, and header/footer source are planned.
+      (`main { mode = "inject" }`).
+- [~] **Config file** (`.open-docs.hcl`): `main { docsfile, mode, header,
+      verbose, version }` and per-section toggles work today; formatter, sort,
+      and header/footer source are planned.
 - [x] **prek hooks** for file hygiene, gofmt, `go vet`, and `go test`.
 - [ ] **GitHub Action** wrapper.
 - [ ] **CI gate**: `--check` (fail if on-disk docs are stale) and
@@ -69,13 +72,14 @@ them into output:
 - [~] **Health section**: render schema findings + missing descriptions as a
       severity checklist. *Findings render as a table today; the curated
       health view is planned.*
-- [x] **Source permalinks**: ranges -> host links at the right ref/line, with
-      git remote/ref detection and config override.
+- [~] **Source permalinks**: rows link to the source file and line range,
+      relative to the output file. *Host permalinks (GitHub/GitLab/Bitbucket
+      at a git ref) with remote detection and a config override are planned.*
 - [ ] **Inline Mermaid graph**: module dependency and resource-relationship
       diagrams.
 - [ ] **Cross-references** ("used by"): drive from expression references
       (e.g. which outputs/resources consume `var.x`).
-- [~ ] **Lint/quality**: unused variables, unreferenced outputs, undocumented
+- [~] **Lint/quality**: unused variables, unreferenced outputs, undocumented
       inputs/outputs, doc-completeness score.
 
 ### Power features (later)
@@ -86,23 +90,34 @@ them into output:
       prose or included files.
 - [ ] **More formats**: Markdown document, `json`, `mdx`, `asciidoc`.
 - [ ] **Recursive / multi-module docs** via the module graph.
-- [~] **Examples extraction**: include `examples/*/main.tf` snippets.
+- [ ] **Examples extraction**: include `examples/*/main.tf` snippets.
 - [ ] Optional static HTML/MDX site output.
+
+## Installation
+
+Download a binary for Linux, macOS, or Windows from the
+[latest release](https://github.com/RemoteRabbit/open-docs/releases/latest),
+or install with Go (the version in [`go.mod`](./go.mod) or newer):
+
+```bash
+go install github.com/remoterabbit/open-docs@latest
+```
+
+To build from source, clone the repository and run `make build`; the binary is
+written to `bin/open-docs`.
 
 ## Usage
 
 ```bash
-go build -o open-docs .
-
 # print to stdout
-./open-docs ./examples/vpc
+open-docs ./examples/vpc
 
 # write to a file (replace mode)
-./open-docs -o ./examples/vpc/README.md ./examples/vpc
+open-docs -o ./examples/vpc/README.md ./examples/vpc
 
 # enrich with provider schema (deprecated / missing-required findings)
 # requires `tofu` or `terraform` available and the module initialized
-./open-docs -schema ./examples/vpc
+open-docs -schema ./examples/vpc
 ```
 
 ### Configuration (`.open-docs.hcl`)
@@ -116,9 +131,21 @@ from the module directory up to the repository root.
 
 ```hcl
 main {
-  docsfile = "README.md"  # relative to the module directory
-  mode = "inject"     # "stdout" (default) | "replace" | "inject"
-  header = false      # omit the module title and path lines (default: true)
+  docsfile = "README.md" # relative to the module directory
+  mode     = "inject"    # "stdout" (default) | "replace" | "inject"
+  header   = false       # omit the module title line (default: true)
+  verbose  = true        # add line:column:byte ranges to positions (default: false)
+  version  = false       # omit the "generated with open-docs" line (default: true)
+}
+
+# Every section has a block with `render` and one switch per column.
+variables {
+  comment  = false
+  position = false
+}
+
+outputs {
+  render = false
 }
 ```
 
@@ -151,23 +178,18 @@ Each directory under [examples/](./examples) is a module with its generated
 - [invalid](./examples/invalid): deliberately broken configuration for the
   diagnostics table.
 
-## Development
-
->[!NOTE]
-> Pulled out direnv for now but will be replacing with something in the future.
-
 ## How it works
 
 open-docs calls `inspector.Inspect(dir)` to parse the module into a
-`*model.Module`, then walks that struct in [markdown.go](./markdown.go) to
-render Markdown tables. All HCL parsing lives in open-inspector; open-docs owns
-presentation only.
+`*model.Module`, then walks that struct in
+[`internal/render`](./internal/render) to render Markdown tables. All HCL
+parsing lives in open-inspector; open-docs owns presentation only.
 
-## Project layout
+## Contributing
 
-- [`main.go`](./main.go): CLI flag parsing, calls `inspector.Inspect`, writes output.
-- [`markdown.go`](./markdown.go): renders a `*model.Module` to Markdown.
-- [`examples/`](./examples): sample modules and their generated `README.md`.
+See [CONTRIBUTING.md](./.github/CONTRIBUTING.md) for setup, the project layout,
+and how pull requests and releases work. Please report security issues
+privately as described in [SECURITY.md](./.github/SECURITY.md).
 
 ## Related
 
@@ -175,3 +197,7 @@ presentation only.
   inspection engine open-docs is built on.
 - [terraform-docs](https://github.com/terraform-docs/terraform-docs): the
   incumbent open-docs aims to match, then surpass.
+
+## License
+
+[Mozilla Public License 2.0](./LICENSE).

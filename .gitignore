@@ -9,7 +9,11 @@ devenv.local.yaml
 # Build output
 open-doc
 open-docs
-*.md
+bin/
+
+# Markdown
+examples/**/*.md
+examples/*.md
 !README.md
 
 # Local notes

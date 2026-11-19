@@ -14,6 +14,7 @@ PKG     := ./...
 COMPLETE-EX := ./examples/complete
 INVALID-EX := ./examples/invalid
 VPC-EX := ./examples/vpc
+EXAMPLE := $(COMPLETE-EX)
 GO_SRC   = $(shell find . -name '*.go' -not -path './.devenv/*' -not -path './.git/*')
 # Go reads GOFLAGS from the environment, e.g. `make build GOFLAGS=-v`.
 
@@ -33,7 +34,7 @@ all: verify build
 ## Build the binary into bin/
 build:
 	@mkdir -p $(dir $(BIN))
-	go build -o $(BIN) .
+	go build -ldflags "-X main.version=dev" -o $(BIN) .
 
 ## Run unit tests with the race detector
 test:

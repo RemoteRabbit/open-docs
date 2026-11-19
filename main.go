@@ -11,9 +11,9 @@
 //	-config <file>  Use this config file instead of discovering .open-docs.hcl.
 //	-schema         Enrich with provider schema (shells out to tofu/terraform).
 //
-// Output destination and mode default to stdout, and can be set in
-// .open-docs.hcl via an output { file, mode } block. The -o flag is a shortcut
-// for replace mode to the given file and takes precedence over config.
+// Output goes to stdout by default. Set the destination and mode in
+// .open-docs.hcl with main { docsfile, mode }. The -o flag is a shortcut for
+// replace mode to the given file and takes precedence over config.
 package main
 
 import (
@@ -21,12 +21,18 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
+	"runtime/debug"
+	"strings"
 
 	"github.com/remoterabbit/open-docs/internal/config"
 	"github.com/remoterabbit/open-docs/internal/output"
 	"github.com/remoterabbit/open-docs/internal/render"
 	"github.com/remoterabbit/open-inspector/pkg/inspector"
 )
+
+// version is set at build time with -ldflags "-X main.version=..." (GoReleaser
+// does this for releases, and the Makefile sets "dev").
+var version string
 
 func main() {
 	outFlag := flag.String("o", "", "write output to this file in replace mode (overrides config)")
@@ -71,7 +77,7 @@ func run(dir, outFlag, configFlag string, useSchema bool) error {
 		return err
 	}
 
-	doc := render.Markdown(mod, file, cfg, "1")
+	doc := render.Markdown(mod, file, cfg, displayVersion())
 
 	if err := output.Write(os.Stdout, file, mode, doc); err != nil {
 		return err
@@ -118,4 +124,21 @@ func resolveOutput(cfg *config.Config, dir, outFlag string) (file, mode string) 
 		mode = config.ModeReplace
 	}
 	return file, mode
+}
+
+// displayVersion returns the version shown in generated docs: the build-time
+// version, else the module version recorded by `go install module@version`,
+// else "dev".
+func displayVersion() string {
+	if version == "dev" {
+		return version
+	}
+	if version != "" {
+		return "v" + strings.TrimPrefix(version, "v")
+	}
+	if bi, ok := debug.ReadBuildInfo(); ok && strings.HasPrefix(bi.Main.Version, "v") &&
+		!strings.Contains(bi.Main.Version, "+dirty") {
+		return bi.Main.Version
+	}
+	return "dev"
 }

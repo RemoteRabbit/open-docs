@@ -1,7 +1,7 @@
 # Module `vpc`
 
 <!-- VERSION-START -->
-This documentation was generated with [open-docs v1](https://github.com/RemoteRabbit/open-docs)
+This documentation was generated with [open-docs dev](https://github.com/RemoteRabbit/open-docs)
 <!-- VERSION-END -->
 
 - **Required core:** `>= 1.5, < 2.0`
@@ -83,38 +83,38 @@ This documentation was generated with [open-docs v1](https://github.com/RemoteRa
 
 ## Managed Resources
 
-| Name | Type | Count | For Each | Depends On | Nested Body | LifeCycle | Comment | Position |
-|------|------|-------|----------|------------|-------------|-----------|---------|----------|
-| this | `aws_vpc` | - | - |  | `cidr_block, enable_dns_hostnames, enable_dns_support, tags` | `prevent_destroy=true; ignore_changes=[tags["CreatedAt"]]` | The VPC itself. Protected from accidental destruction in every environment because subnets, ENIs, and peering all hang off it. | [`./main.tf`](./main.tf#L3) |
-| secondary | `aws_vpc_ipv4_cidr_block_association` | - | `toset(var.secondary_cidr_blocks)` |  | `cidr_block, vpc_id` | - | - | [`./main.tf`](./main.tf#L16) |
-| this | `aws_internet_gateway` | `length(var.public_subnets) > 0 ? 1 : 0` | - |  | `tags, vpc_id` | - | - | [`./main.tf`](./main.tf#L23) |
-| public | `aws_subnet` | - | `local.public_subnets` |  | `availability_zone, cidr_block, map_public_ip_on_launch, tags, vpc_id` | - | - | [`./main.tf`](./main.tf#L32) |
-| private | `aws_subnet` | - | `local.private_subnets` |  | `availability_zone, cidr_block, tags, vpc_id` | - | - | [`./main.tf`](./main.tf#L46) |
-| database | `aws_subnet` | `length(var.database_subnets)` | - |  | `availability_zone, cidr_block, tags, vpc_id` | - | - | [`./main.tf`](./main.tf#L59) |
-| database | `aws_db_subnet_group` | `local.create_database_subnets ? 1 : 0` | - |  | `name, subnet_ids` | - | - | [`./main.tf`](./main.tf#L72) |
-| nat | `aws_eip` | `var.nat_gateway_config.reuse_eips ? 0 : local.nat_gateway_count` | - | aws_internet_gateway.this | `domain, tags` | - | - | [`./main.tf`](./main.tf#L81) |
-| this | `aws_nat_gateway` | `local.nat_gateway_count` | - | aws_internet_gateway.this, aws_eip.nat | `allocation_id, connectivity_type, subnet_id, tags` | `create_before_destroy=true; preconditions=1` | - | [`./main.tf`](./main.tf#L90) |
-| public | `aws_route_table` | - | - |  | `tags, vpc_id` | - | - | [`./main.tf`](./main.tf#L113) |
-| public_internet | `aws_route` | - | - |  | `destination_cidr_block, gateway_id, route_table_id` | - | - | [`./main.tf`](./main.tf#L118) |
-| private | `aws_route_table` | - | `local.private_subnets` |  | `tags, vpc_id` | `ignore_changes=[propagating_vgws]` | - | [`./main.tf`](./main.tf#L128) |
-| public | `aws_route_table_association` | - | `aws_subnet.public` |  | `route_table_id, subnet_id` | - | - | [`./main.tf`](./main.tf#L147) |
-| private | `aws_route_table_association` | - | `aws_subnet.private` |  | `route_table_id, subnet_id` | - | - | [`./main.tf`](./main.tf#L154) |
-| flow_logs | `aws_cloudwatch_log_group` | `var.flow_logs.enabled && var.flow_logs.destination == "cloud-watch-logs" ? 1 : 0` | - |  | `name, retention_in_days` | `prevent_destroy=false` | - | [`./main.tf`](./main.tf#L163) |
-| flow_logs | `aws_iam_role` | `var.flow_logs.enabled ? 1 : 0` | - |  | `assume_role_policy, name_prefix` | - | - | [`./main.tf`](./main.tf#L174) |
-| flow_logs | `aws_iam_role_policy` | `var.flow_logs.enabled ? 1 : 0` | - |  | `policy, role` | - | - | [`./main.tf`](./main.tf#L181) |
-| this | `aws_flow_log` | `var.flow_logs.enabled ? 1 : 0` | - | aws_iam_role_policy.flow_logs | `iam_role_arn, log_destination, log_destination_type, traffic_type, vpc_id` | `replace_triggered_by=[aws_iam_role.flow_logs[0].id]; postconditions=1` | - | [`./main.tf`](./main.tf#L188) |
-| this | `aws_vpn_gateway` | `local.create_vpn ? 1 : 0` | - |  | `vpc_id` | - | - | [`./main.tf`](./main.tf#L211) |
-| vpn_suffix | `random_id` | `local.create_vpn ? 1 : 0` | - |  | `byte_length, keepers` | - | - | [`./main.tf`](./main.tf#L217) |
+| Name | Mode | Type | Count | For Each | Depends On | Nested Body | LifeCycle | Comment | Position |
+|------|------|------|-------|----------|------------|-------------|-----------|---------|----------|
+| this | managed | `aws_vpc` | - | - |  | `cidr_block, enable_dns_hostnames, enable_dns_support, tags` | `prevent_destroy=true; ignore_changes=[tags["CreatedAt"]]` | The VPC itself. Protected from accidental destruction in every environment because subnets, ENIs, and peering all hang off it. | [`./main.tf`](./main.tf#L3) |
+| secondary | managed | `aws_vpc_ipv4_cidr_block_association` | - | `toset(var.secondary_cidr_blocks)` |  | `cidr_block, vpc_id` | - | - | [`./main.tf`](./main.tf#L16) |
+| this | managed | `aws_internet_gateway` | `length(var.public_subnets) > 0 ? 1 : 0` | - |  | `tags, vpc_id` | - | - | [`./main.tf`](./main.tf#L23) |
+| public | managed | `aws_subnet` | - | `local.public_subnets` |  | `availability_zone, cidr_block, map_public_ip_on_launch, tags, vpc_id` | - | - | [`./main.tf`](./main.tf#L32) |
+| private | managed | `aws_subnet` | - | `local.private_subnets` |  | `availability_zone, cidr_block, tags, vpc_id` | - | - | [`./main.tf`](./main.tf#L46) |
+| database | managed | `aws_subnet` | `length(var.database_subnets)` | - |  | `availability_zone, cidr_block, tags, vpc_id` | - | - | [`./main.tf`](./main.tf#L59) |
+| database | managed | `aws_db_subnet_group` | `local.create_database_subnets ? 1 : 0` | - |  | `name, subnet_ids` | - | - | [`./main.tf`](./main.tf#L72) |
+| nat | managed | `aws_eip` | `var.nat_gateway_config.reuse_eips ? 0 : local.nat_gateway_count` | - | aws_internet_gateway.this | `domain, tags` | - | - | [`./main.tf`](./main.tf#L81) |
+| this | managed | `aws_nat_gateway` | `local.nat_gateway_count` | - | aws_internet_gateway.this, aws_eip.nat | `allocation_id, connectivity_type, subnet_id, tags` | `create_before_destroy=true; preconditions=1` | - | [`./main.tf`](./main.tf#L90) |
+| public | managed | `aws_route_table` | - | - |  | `tags, vpc_id` | - | - | [`./main.tf`](./main.tf#L113) |
+| public_internet | managed | `aws_route` | - | - |  | `destination_cidr_block, gateway_id, route_table_id` | - | - | [`./main.tf`](./main.tf#L118) |
+| private | managed | `aws_route_table` | - | `local.private_subnets` |  | `tags, vpc_id` | `ignore_changes=[propagating_vgws]` | - | [`./main.tf`](./main.tf#L128) |
+| public | managed | `aws_route_table_association` | - | `aws_subnet.public` |  | `route_table_id, subnet_id` | - | - | [`./main.tf`](./main.tf#L147) |
+| private | managed | `aws_route_table_association` | - | `aws_subnet.private` |  | `route_table_id, subnet_id` | - | - | [`./main.tf`](./main.tf#L154) |
+| flow_logs | managed | `aws_cloudwatch_log_group` | `var.flow_logs.enabled && var.flow_logs.destination == "cloud-watch-logs" ? 1 : 0` | - |  | `name, retention_in_days` | `prevent_destroy=false` | - | [`./main.tf`](./main.tf#L163) |
+| flow_logs | managed | `aws_iam_role` | `var.flow_logs.enabled ? 1 : 0` | - |  | `assume_role_policy, name_prefix` | - | - | [`./main.tf`](./main.tf#L174) |
+| flow_logs | managed | `aws_iam_role_policy` | `var.flow_logs.enabled ? 1 : 0` | - |  | `policy, role` | - | - | [`./main.tf`](./main.tf#L181) |
+| this | managed | `aws_flow_log` | `var.flow_logs.enabled ? 1 : 0` | - | aws_iam_role_policy.flow_logs | `iam_role_arn, log_destination, log_destination_type, traffic_type, vpc_id` | `replace_triggered_by=[aws_iam_role.flow_logs[0].id]; postconditions=1` | - | [`./main.tf`](./main.tf#L188) |
+| this | managed | `aws_vpn_gateway` | `local.create_vpn ? 1 : 0` | - |  | `vpc_id` | - | - | [`./main.tf`](./main.tf#L211) |
+| vpn_suffix | managed | `random_id` | `local.create_vpn ? 1 : 0` | - |  | `byte_length, keepers` | - | - | [`./main.tf`](./main.tf#L217) |
 
 ## Data Resources
 
-| Name | Type | Count | For Each | Depends On | Nested Body | LifeCycle | Comment | Position |
-|------|------|-------|----------|------------|-------------|-----------|---------|----------|
-| available | `aws_availability_zones` | - | - |  | `state` | - | - | [`./data.tf`](./data.tf#L1) |
-| current | `aws_region` | - | - |  | - | - | - | [`./data.tf`](./data.tf#L10) |
-| current | `aws_caller_identity` | - | - |  | - | - | - | [`./data.tf`](./data.tf#L12) |
-| flow_logs_assume | `aws_iam_policy_document` | - | - |  | - | - | Trust policy that lets the VPC flow-log service assume the delivery role. | [`./data.tf`](./data.tf#L15) |
-| flow_logs_publish | `aws_iam_policy_document` | - | - |  | - | - | - | [`./data.tf`](./data.tf#L33) |
+| Name | Mode | Type | Count | For Each | Depends On | Nested Body | LifeCycle | Comment | Position |
+|------|------|------|-------|----------|------------|-------------|-----------|---------|----------|
+| available | data | `aws_availability_zones` | - | - |  | `state` | - | - | [`./data.tf`](./data.tf#L1) |
+| current | data | `aws_region` | - | - |  | - | - | - | [`./data.tf`](./data.tf#L10) |
+| current | data | `aws_caller_identity` | - | - |  | - | - | - | [`./data.tf`](./data.tf#L12) |
+| flow_logs_assume | data | `aws_iam_policy_document` | - | - |  | - | - | Trust policy that lets the VPC flow-log service assume the delivery role. | [`./data.tf`](./data.tf#L15) |
+| flow_logs_publish | data | `aws_iam_policy_document` | - | - |  | - | - | - | [`./data.tf`](./data.tf#L33) |
 
 ## Module Calls
 

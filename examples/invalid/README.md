@@ -1,7 +1,7 @@
 # Module `invalid`
 
 <!-- VERSION-START -->
-This documentation was generated with [open-docs v1](https://github.com/RemoteRabbit/open-docs)
+This documentation was generated with [open-docs dev](https://github.com/RemoteRabbit/open-docs)
 <!-- VERSION-END -->
 
 
@@ -29,11 +29,11 @@ This documentation was generated with [open-docs v1](https://github.com/RemoteRa
 
 ## Managed Resources
 
-| Name | Type | Count | For Each | Depends On | Nested Body | LifeCycle | Comment | Position |
-|------|------|-------|----------|------------|-------------|-----------|---------|----------|
-| malformed_precondition | `null_resource` | - | - |  | - | - | Lifecycle precondition missing its required attributes. | [`./main.tf`](./main.tf#L51) |
-| valid | `null_resource` | - | - |  | `triggers` | - | A perfectly valid resource, so the healthy parts still render. | [`./main.tf`](./main.tf#L59) |
-| broken | `null_resource` | - | - |  | `triggers` | - | Missing closing brace: a hard HCL syntax error with a source range. | [`./syntax.tf`](./syntax.tf#L2) |
+| Name | Mode | Type | Count | For Each | Depends On | Nested Body | LifeCycle | Comment | Position |
+|------|------|------|-------|----------|------------|-------------|-----------|---------|----------|
+| malformed_precondition | managed | `null_resource` | - | - |  | - | - | Lifecycle precondition missing its required attributes. | [`./main.tf`](./main.tf#L51) |
+| valid | managed | `null_resource` | - | - |  | `triggers` | - | A perfectly valid resource, so the healthy parts still render. | [`./main.tf`](./main.tf#L59) |
+| broken | managed | `null_resource` | - | - |  | `triggers` | - | Missing closing brace: a hard HCL syntax error with a source range. | [`./syntax.tf`](./syntax.tf#L2) |
 
 ## Diagnostics
 
