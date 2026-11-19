@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.0](https://github.com/RemoteRabbit/open-docs/compare/v0.4.1...v0.5.0) (2026-11-19)
+
+
+### Features
+
+* add cli flags for changing mode ([#32](https://github.com/RemoteRabbit/open-docs/issues/32)) ([3baaf07](https://github.com/RemoteRabbit/open-docs/commit/3baaf0756373034a3230a3ced31c8e3ce4c75f9c))
+
 ## [0.4.1](https://github.com/RemoteRabbit/open-docs/compare/v0.4.0...v0.4.1) (2026-11-19)
 
 
