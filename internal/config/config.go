@@ -9,8 +9,11 @@ package config
 import (
 	_ "embed"
 	"fmt"
+	"maps"
 	"os"
 	"path/filepath"
+	"slices"
+	"strings"
 
 	"github.com/hashicorp/hcl/v2/hclsimple"
 )
@@ -233,6 +236,35 @@ func Load(path string) (*Config, error) {
 		return nil, fmt.Errorf("config %s: %w", path, err)
 	}
 	return cfg, nil
+}
+
+// SetRender turns a section on or off by its block name, such as "variables"
+// or "schema_findings", as the -show and -hide flags do.
+func (c *Config) SetRender(section string, render bool) error {
+	switches := map[string]*bool{
+		"required":        &c.Required.Render,
+		"providers":       &c.Providers.Render,
+		"variables":       &c.Variables.Render,
+		"outputs":         &c.Outputs.Render,
+		"locals":          &c.Locals.Render,
+		"resources":       &c.Resources.Render,
+		"data":            &c.Data.Render,
+		"ephemeral":       &c.Ephemeral.Render,
+		"modules":         &c.Modules.Render,
+		"diagnostics":     &c.Diagnostics.Render,
+		"moved":           &c.Moved.Render,
+		"imports":         &c.Imports.Render,
+		"removed":         &c.Removed.Render,
+		"checks":          &c.Checks.Render,
+		"schema_findings": &c.Schema.Render,
+	}
+	sw, ok := switches[section]
+	if !ok {
+		names := slices.Sorted(maps.Keys(switches))
+		return fmt.Errorf("unknown section %q (want one of %s)", section, strings.Join(names, ", "))
+	}
+	*sw = render
+	return nil
 }
 
 func (c *Config) validate() error {

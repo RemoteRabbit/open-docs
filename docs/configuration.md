@@ -25,8 +25,15 @@ main {
 | `replace` | Overwrite `docsfile` with the docs.                                       |
 | `inject`  | Replace the text between `<!-- BEGIN_OPEN_DOC -->` and `<!-- END_OPEN_DOC -->` in `docsfile`, adding the region if it is missing. |
 
-The `-o <file>` flag is a shortcut for `replace` mode to that path and takes
-precedence over the config file.
+The `-m <mode>` flag sets the mode from the command line, and `-o <file>` sets
+the output file. Both take precedence over the config file. `-o` alone is a
+shortcut for `replace` mode to that path; combine it with `-m inject` to update
+the markers in that file instead.
+
+`-show` and `-hide` take comma-separated section block names, such as
+`-hide locals,resources`, and override each section's `render` switch for one
+run; `-hide` wins when both name a section. `-check` renders the docs and exits
+non-zero if writing them would change the docs file, without writing it.
 
 ## Sections and columns
 

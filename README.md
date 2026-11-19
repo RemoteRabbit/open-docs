@@ -117,6 +117,15 @@ open-docs ./examples/vpc
 # write to a file (replace mode)
 open-docs -o ./examples/vpc/README.md ./examples/vpc
 
+# update the marked region of a file (inject mode)
+open-docs -m inject -o ./examples/vpc/README.md ./examples/vpc
+
+# skip sections for one run (block names from .open-docs.hcl)
+open-docs -hide locals,resources ./examples/vpc
+
+# in CI: fail if the README is out of date, without writing it
+open-docs -check -o ./examples/vpc/README.md ./examples/vpc
+
 # enrich with provider schema (deprecated / missing-required findings)
 # requires `tofu` or `terraform` available and the module initialized
 open-docs -schema ./examples/vpc
@@ -163,8 +172,15 @@ Hand-written intro.
 <!-- END_OPEN_DOC -->
 ```
 
-The `-o <file>` flag is a shortcut for `replace` mode to that path and takes
-precedence over the config file.
+The `-m <mode>` flag sets the mode from the command line, and `-o <file>` sets
+the output file. Both take precedence over the config file. `-o` alone is a
+shortcut for `replace` mode to that path; combine it with `-m inject` to update
+the markers in that file instead.
+
+`-show` and `-hide` take comma-separated section block names, such as
+`-hide locals,resources`, and override each section's `render` switch for one
+run; `-hide` wins when both name a section. `-check` renders the docs and exits
+non-zero if writing them would change the docs file, without writing it.
 
 ## Example
 

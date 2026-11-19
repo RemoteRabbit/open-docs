@@ -27,40 +27,35 @@ func Write(w *os.File, file, mode, content string) error {
 		_, err := fmt.Fprint(w, content)
 		return err
 	}
-	switch mode {
-	case config.ModeReplace:
-		return replace(file, content)
-	case config.ModeInject:
-		return inject(file, content)
-	default:
-		return fmt.Errorf("unknown output mode %q", mode)
-	}
-}
-
-func replace(file, content string) error {
-	return os.WriteFile(file, []byte(content), 0o644)
-}
-
-// inject replaces the text between BeginMarker and EndMarker in file with
-// content, leaving the rest of the file untouched. If the file does not exist
-// it is created with a single managed region. If the file exists but has no
-// markers, a managed region is appended to the end.
-func inject(file, content string) error {
-	body := strings.TrimRight(content, "\n")
-
-	existing, err := os.ReadFile(file)
-	if errors.Is(err, fs.ErrNotExist) {
-		return os.WriteFile(file, []byte(region(body)+"\n"), 0o644)
-	}
-	if err != nil {
-		return err
-	}
-
-	updated, err := injectInto(string(existing), body)
+	updated, err := Contents(file, mode, content)
 	if err != nil {
 		return err
 	}
 	return os.WriteFile(file, []byte(updated), 0o644)
+}
+
+// Contents returns what file should contain after writing content in replace
+// or inject mode, without writing it. In inject mode it replaces the text
+// between BeginMarker and EndMarker, leaving the rest of the file untouched.
+// If the file does not exist the result is a single managed region. If the
+// file exists but has no markers, a managed region is appended to the end.
+func Contents(file, mode, content string) (string, error) {
+	switch mode {
+	case config.ModeReplace:
+		return content, nil
+	case config.ModeInject:
+		body := strings.TrimRight(content, "\n")
+		existing, err := os.ReadFile(file)
+		if errors.Is(err, fs.ErrNotExist) {
+			return region(body) + "\n", nil
+		}
+		if err != nil {
+			return "", err
+		}
+		return injectInto(string(existing), body)
+	default:
+		return "", fmt.Errorf("unknown output mode %q", mode)
+	}
 }
 
 // injectInto is the pure string transform behind inject, split out so it can

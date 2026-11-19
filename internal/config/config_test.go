@@ -57,3 +57,21 @@ func TestLoadOverridesDefaults(t *testing.T) {
 		t.Fatalf("Main = %+v, want %+v", cfg.Main, want)
 	}
 }
+
+func TestSetRender(t *testing.T) {
+	cfg := Default()
+	if err := cfg.SetRender("data", false); err != nil {
+		t.Fatal(err)
+	}
+	// data and resources share a type; only the named block may change.
+	if cfg.Data.Render || !cfg.Resources.Render {
+		t.Fatalf("data.render = %v, resources.render = %v; want false, true",
+			cfg.Data.Render, cfg.Resources.Render)
+	}
+	if err := cfg.SetRender("schema_findings", false); err != nil || cfg.Schema.Render {
+		t.Fatalf("SetRender(schema_findings) = %v, render = %v", err, cfg.Schema.Render)
+	}
+	if err := cfg.SetRender("schema", false); err == nil {
+		t.Fatal("SetRender(schema) succeeded; want unknown section error")
+	}
+}

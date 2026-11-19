@@ -23,6 +23,15 @@ open-docs ./examples/vpc
 
 # write to a file (replace mode)
 open-docs -o ./examples/vpc/README.md ./examples/vpc
+
+# update the marked region of a file (inject mode)
+open-docs -m inject -o ./examples/vpc/README.md ./examples/vpc
+
+# skip sections for one run (block names from .open-docs.hcl)
+open-docs -hide locals,resources ./examples/vpc
+
+# in CI: fail if the README is out of date, without writing it
+open-docs -check -o ./examples/vpc/README.md ./examples/vpc
 ```
 
 ## Keep a README up to date
