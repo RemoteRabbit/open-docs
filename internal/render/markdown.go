@@ -46,7 +46,7 @@ func Markdown(m *model.Module, outputFile string, cfg *config.Config, version st
 		if version != "" {
 			fmt.Fprintf(
 				&b,
-				"<!-- VERSION-START -->\nThis documentation was generated with [open-docs v%s](https://github.com/RemoteRabbit/open-docs)\n<!-- VERSION-END -->\n\n",
+				"<!-- VERSION-START -->\nThis documentation was generated with [open-docs %s](https://github.com/RemoteRabbit/open-docs)\n<!-- VERSION-END -->\n\n",
 				version,
 			)
 		}
@@ -63,8 +63,8 @@ func Markdown(m *model.Module, outputFile string, cfg *config.Config, version st
 	renderOutputs(&b, cfg.Outputs, m.Outputs, pos)
 	renderLocals(&b, cfg.Locals, m.Locals, pos)
 	renderResources(&b, "Managed", cfg.Resources, m.ManagedResources, pos)
-	renderResources(&b, "Data", cfg.Resources, m.DataResources, pos)
-	renderResources(&b, "Ephemeral", cfg.Resources, m.EphemeralResources, pos)
+	renderResources(&b, "Data", cfg.Data, m.DataResources, pos)
+	renderResources(&b, "Ephemeral", cfg.Ephemeral, m.EphemeralResources, pos)
 	renderModuleCalls(&b, cfg.Modules, m.ModuleCalls, pos)
 	renderMoved(&b, cfg.Moved, m.Moved, pos)
 	renderImports(&b, cfg.Imports, m.Imports, pos)
@@ -73,5 +73,7 @@ func Markdown(m *model.Module, outputFile string, cfg *config.Config, version st
 	renderSchemaFindings(&b, cfg.Schema, m, pos)
 	renderDiagnostics(&b, cfg.Diagnostics, m.Diagnostics, pos)
 
-	return b.String()
+	// Each section ends with a blank line; end the document with exactly one
+	// newline so the file is stable under end-of-file fixers.
+	return strings.TrimRight(b.String(), "\n") + "\n"
 }

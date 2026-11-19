@@ -105,15 +105,6 @@
       "pinDigests": true
     },
     {
-      "description": "pre-commit hooks - grouped, chore.",
-      "matchManagers": [
-        "pre-commit"
-      ],
-      "groupName": "pre-commit hooks",
-      "semanticCommitType": "chore",
-      "semanticCommitScope": "deps"
-    },
-    {
       "description": "asdf / .tool-versions - grouped, chore (build env, not shipped).",
       "matchManagers": [
         "asdf"
@@ -131,7 +122,6 @@
       ],
       "matchManagers": [
         "github-actions",
-        "pre-commit",
         "asdf"
       ],
       "automerge": true,

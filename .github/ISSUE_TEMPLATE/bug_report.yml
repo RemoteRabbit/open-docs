@@ -1,5 +1,5 @@
 name: Bug report
-description: Report a reproducible problem with open-doc
+description: Report a reproducible problem with open-docs
 title: "[Bug]: "
 labels:
   - bug
@@ -8,7 +8,7 @@ assignees:
 body:
   - type: markdown
     attributes:
-      value: Thanks for helping improve open-doc. Please include enough detail to reproduce the problem.
+      value: Thanks for helping improve open-docs. Please include enough detail to reproduce the problem.
 
   - type: dropdown
     id: area
@@ -48,8 +48,8 @@ body:
       label: Steps to reproduce
       description: Include the command, relevant configuration, and a minimal Terraform/OpenTofu module when possible.
       placeholder: |
-        1. Run `open-doc ...`
-        2. Use this `.open-doc.hcl` configuration: ...
+        1. Run `open-docs ...`
+        2. Use this `.open-docs.hcl` configuration: ...
         3. Observe ...
     validations:
       required: true
@@ -75,7 +75,7 @@ body:
   - type: input
     id: version
     attributes:
-      label: open-doc version or commit
+      label: open-docs version or commit
       placeholder: v0.1.0 or commit SHA
     validations:
       required: true
