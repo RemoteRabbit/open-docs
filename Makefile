@@ -11,11 +11,13 @@ MAKEFLAGS += --warn-undefined-variables --no-builtin-rules
 
 BIN     := bin/open-docs
 PKG     := ./...
-EXAMPLE := ./examples/vpc
+COMPLETE-EX := ./examples/complete
+INVALID-EX := ./examples/invalid
+VPC-EX := ./examples/vpc
 GO_SRC   = $(shell find . -name '*.go' -not -path './.devenv/*' -not -path './.git/*')
 # Go reads GOFLAGS from the environment, e.g. `make build GOFLAGS=-v`.
 
-.PHONY: help all build test vet fmt fmt-check smoke verify tidy clean
+.PHONY: help all build test vet fmt fmt-check smoke readmes verify tidy clean
 
 ## Show this help
 help:
@@ -56,6 +58,11 @@ smoke: build
 	@out="$$(mktemp)"; trap 'rm -f "$$out"' EXIT; \
 	./$(BIN) -o "$$out" $(EXAMPLE); \
 	test -s "$$out"; echo "smoke: ok"
+
+readmes: build
+	./$(BIN) -o $(COMPLETE-EX)/README.md $(COMPLETE-EX)
+	./$(BIN) -o $(INVALID-EX)/README.md $(INVALID-EX)
+	./$(BIN) -o $(VPC-EX)/README.md $(VPC-EX)
 
 ## Run every check: formatting, vet, tests, and smoke test
 verify: fmt-check vet test smoke
