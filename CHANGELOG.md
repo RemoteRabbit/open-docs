@@ -1,5 +1,14 @@
 # Changelog
 
+## [0.4.1](https://github.com/RemoteRabbit/open-docs/compare/v0.4.0...v0.4.1) (2026-11-19)
+
+
+### Documentation
+
+* add make option to update readmes ([#28](https://github.com/RemoteRabbit/open-docs/issues/28)) ([99ad4ec](https://github.com/RemoteRabbit/open-docs/commit/99ad4ec47b2e399450ad6beb8675b9c20a4bfbe2))
+* setup base zensical deploy for docs ([#31](https://github.com/RemoteRabbit/open-docs/issues/31)) ([ab56cea](https://github.com/RemoteRabbit/open-docs/commit/ab56cea30749d12f134e8eec5d9ba9a5d031d97f))
+* update docs across the board and fix some ignore pieces ([#30](https://github.com/RemoteRabbit/open-docs/issues/30)) ([3684b95](https://github.com/RemoteRabbit/open-docs/commit/3684b95a2300fe2f7290ed4ad7d586f78d42a071))
+
 ## [0.4.0](https://github.com/RemoteRabbit/open-docs/compare/v0.3.0...v0.4.0) (2026-11-18)
 
 
