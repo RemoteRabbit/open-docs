@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.0](https://github.com/RemoteRabbit/open-docs/compare/v0.5.0...v0.6.0) (2026-11-23)
+
+
+### Features
+
+* setup ci for homebrew cask ([#34](https://github.com/RemoteRabbit/open-docs/issues/34)) ([2ad8521](https://github.com/RemoteRabbit/open-docs/commit/2ad8521d518166046bc9302b7d2cad4805918a77))
+
 ## [0.5.0](https://github.com/RemoteRabbit/open-docs/compare/v0.4.1...v0.5.0) (2026-11-19)
 
 
