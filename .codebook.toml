@@ -1,11 +1,15 @@
 dictionaries = ["en_us"]
 words = [
+    "Bitbucket",
     "Lifecycle",
     "Postconditions",
     "direnv",
     "docsfile",
+    "gofmt",
     "hcl",
     "heredocs",
+    "natively",
+    "prek",
     "seps",
     "vpc",
 ]
