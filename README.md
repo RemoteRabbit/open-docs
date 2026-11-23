@@ -97,13 +97,45 @@ them into output:
 
 ## Installation
 
+### Binary
 Download a binary for Linux, macOS, or Windows from the
-[latest release](https://github.com/RemoteRabbit/open-docs/releases/latest),
-or install with Go (the version in [`go.mod`](./go.mod) or newer):
+[latest release](https://github.com/RemoteRabbit/open-docs/releases/latest)
+
+### Homebrew
+
+A cask can be found [here](https://github.com/remoterabbit/homebrew-open-docs).
+
+#### All in one
+
+```shell
+brew install remoterabbit/homebrew-open-docs/open-docs
+```
+
+#### Tap then install
+
+```shell
+brew tap remoterabbit/homebrew-open-docs
+brew install remoterabbit/open-docs
+```
+
+#### Brewfile
+
+```Brewfile
+tap "remoterabbit/open-docs"
+cask "open-docs"
+```
+
+> [!NOTE]
+> Eventually this will be a formula in the homebrew-core but it is not ready yet.
+
+### With Go
+Install with Go (the version in [`go.mod`](./go.mod) or newer):
 
 ```bash
 go install github.com/remoterabbit/open-docs@latest
 ```
+
+### Source
 
 To build from source, clone the repository and run `make build`; the binary is
 written to `bin/open-docs`.
