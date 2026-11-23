@@ -1,0 +1,22 @@
+# Builds, archives, and checksums use GoReleaser's defaults.
+version: 2
+
+homebrew_casks:
+  - name: open-docs
+    description: Documentation generator for Terraform/OpenTofu modules, built on open-inspector
+    homepage: https://remoterabbit.github.io/open-docs/
+    license: MPL-2.0
+    repository:
+      owner: remoterabbit
+      name: homebrew-open-docs
+      # GitHub App token from release.yml; GITHUB_TOKEN cannot push to another repo.
+      token: "{{ .Env.HOMEBREW_TAP_TOKEN }}"
+    commit_msg_template: "chore: update {{ .ProjectName }} to {{ .Tag }}"
+    hooks:
+      post:
+        # Homebrew quarantines cask downloads, and Gatekeeper refuses to run
+        # quarantined binaries that are not notarized, which ours are not.
+        install_steps: |
+          on_macos do
+            run "/usr/bin/xattr", args: ["-dr", "com.apple.quarantine", "{{ .StagedPath }}/open-docs"]
+          end
