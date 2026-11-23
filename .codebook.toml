@@ -1,6 +1,7 @@
 dictionaries = ["en_us"]
 words = [
     "Bitbucket",
+    "Homebrew",
     "Lifecycle",
     "Postconditions",
     "direnv",
