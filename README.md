@@ -15,6 +15,29 @@ structured types).
 > reader-facing output and the workflow features below are planned. See the
 > [feature checklist](#features) for what works now vs. what is coming.
 
+# Table of Contents
+- [Why open-docs](#why-open-docs)
+- [Features](#features)
+- [Core rendering](#core-rendering)
+- [Workflow / terraform-docs parity](#workflow-/-terraform-docs-parity)
+- [Differentiators](#differentiators)
+- [Power features (later)](#power-features-(later))
+- [Installation](#installation)
+- [Binary](#binary)
+- [Homebrew](#homebrew)
+  - [All in one](#all-in-one)
+  - [Tap then install](#tap-then-install)
+  - [Brewfile](#brewfile)
+- [With Go](#with-go)
+- [Source](#source)
+- [Usage](#usage)
+- [Configuration (`.open-docs.hcl`)](#configuration-(`.open-docs.hcl`))
+- [Example](#example)
+- [How it works](#how-it-works)
+- [Contributing](#contributing)
+- [Related](#related)
+- [License](#license)
+
 ## Why open-docs
 
 `terraform-docs` renders the fields it understands and throws the rest away.
