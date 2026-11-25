@@ -14,6 +14,7 @@ nav = [
   { "Home" = "index.md" },
   { "Getting started" = "getting-started.md" },
   { "Configuration" = "configuration.md" },
+  { "Contributing" = "contributing.md" },
   { "Example gallery" = [
     "examples/index.md",
     { "vpc" = "examples/vpc.md" },

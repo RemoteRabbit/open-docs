@@ -16,7 +16,7 @@ EXAMPLE := ./examples/complete
 GO_SRC   = $(shell find . -name '*.go' -not -path './.devenv/*' -not -path './.git/*')
 # Go reads GOFLAGS from the environment, e.g. `make build GOFLAGS=-v`.
 
-.PHONY: help all build test vet fmt fmt-check smoke readmes gallery docs docs-serve verify tidy clean
+.PHONY: help all build test vet fmt fmt-check smoke readmes gallery docs docs-serve verify zizmor tidy clean
 
 ## Show this help
 help:
@@ -83,6 +83,10 @@ docs-serve: gallery
 
 ## Run every check: formatting, vet, tests, and smoke test
 verify: fmt-check vet test smoke
+
+## Audit GitHub Actions workflows with zizmor (security.yml runs it in CI)
+zizmor:
+	zizmor .
 
 ## Tidy go.mod and go.sum
 tidy:

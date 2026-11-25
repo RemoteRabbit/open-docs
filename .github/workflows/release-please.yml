@@ -4,13 +4,16 @@ on:
   push:
     branches: [main]
 
-permissions:
-  contents: write
-  pull-requests: write
+permissions: {}
 
 jobs:
   release-please:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    outputs:
+      releases_created: ${{ steps.release.outputs.releases_created }}
     steps:
       - uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
         id: app-token
@@ -20,7 +23,85 @@ jobs:
           permission-contents: write
           permission-pull-requests: write
       - uses: googleapis/release-please-action@45996ed1f6d02564a971a2fa1b5860e934307cf7 # v5
+        id: release
         with:
           token: ${{ steps.app-token.outputs.token }}
           config-file: .github/release-please-config.json
           manifest-file: .github/.release-please-manifest.json
+
+  # Tags this commit as the next release candidate, e.g. v0.7.0-rc.2, using the
+  # version from the open release PR. release-please only tracks the version in
+  # its manifest, so these tags never affect its changelog or version bumps.
+  rc:
+    needs: release-please
+    if: needs.release-please.outputs.releases_created != 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    concurrency:
+      group: rc-tags
+      cancel-in-progress: false
+    steps:
+      # Tags created with GITHUB_TOKEN do not trigger release.yml; an app token does.
+      - uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
+        id: app-token
+        with:
+          client-id: ${{ secrets.RELEASE_PLEASE_APP_ID }}
+          private-key: ${{ secrets.RELEASE_PLEASE_APP_PRIVATE_KEY }}
+          permission-contents: write
+          permission-pull-requests: read
+      - name: Tag release candidate
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          title=$(gh pr list --state open --label "autorelease: pending" --json title --jq '.[0].title // ""')
+          if [[ -z "$title" ]]; then
+            echo "No pending release PR; nothing to release."
+            exit 0
+          fi
+          version=${title##* }
+          if [[ ! "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "::error::Cannot read a version from release PR title: $title"
+            exit 1
+          fi
+          last=$(gh api "repos/$GH_REPO/git/matching-refs/tags/v$version-rc." --paginate \
+            --jq '.[].ref | capture("-rc\\.(?<n>[0-9]+)$").n' | sort -n | tail -1)
+          tag="v$version-rc.$(( ${last:-0} + 1 ))"
+          gh api "repos/$GH_REPO/git/refs" -f ref="refs/tags/$tag" -f sha="$GITHUB_SHA" > /dev/null
+          echo "Tagged $GITHUB_SHA as $tag"
+
+  # A stable release supersedes every release candidate, including ones cut for a
+  # version that was later bumped (v0.6.1-rc.1 before a feat made it 0.7.0).
+  cleanup-rc:
+    needs: release-please
+    if: needs.release-please.outputs.releases_created == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    concurrency:
+      group: rc-tags
+      cancel-in-progress: false
+    steps:
+      - uses: actions/create-github-app-token@64ab729a6294000f5aa4a4bc0b73d1f32bc45510 # v3.3.0
+        id: app-token
+        with:
+          client-id: ${{ secrets.RELEASE_PLEASE_APP_ID }}
+          private-key: ${{ secrets.RELEASE_PLEASE_APP_PRIVATE_KEY }}
+          permission-contents: write
+      - name: Delete release candidates
+        env:
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+          GH_REPO: ${{ github.repository }}
+        run: |
+          tags=$(gh api "repos/$GH_REPO/git/matching-refs/tags/v" --paginate \
+            --jq '.[].ref | ltrimstr("refs/tags/") | select(test("-rc\\.[0-9]+$"))')
+          for tag in $tags; do
+            if gh release view "$tag" > /dev/null 2>&1; then
+              gh release delete "$tag" --cleanup-tag --yes
+            else
+              # The release build failed, so only the tag exists.
+              gh api -X DELETE "repos/$GH_REPO/git/refs/tags/$tag"
+            fi
+            echo "Deleted $tag"
+          done

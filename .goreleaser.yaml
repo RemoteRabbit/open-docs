@@ -1,8 +1,15 @@
 # Builds, archives, and checksums use GoReleaser's defaults.
 version: 2
 
+release:
+  # Release candidates (v1.2.0-rc.1) are tagged by release-please.yml; mark them
+  # as pre-releases on GitHub.
+  prerelease: auto
+
 homebrew_casks:
   - name: open-docs
+    # Only stable releases go to the tap.
+    skip_upload: auto
     description: Documentation generator for Terraform/OpenTofu modules, built on open-inspector
     homepage: https://remoterabbit.github.io/open-docs/
     license: MPL-2.0
