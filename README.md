@@ -16,22 +16,23 @@ structured types).
 > [feature checklist](#features) for what works now vs. what is coming.
 
 # Table of Contents
+
 - [Why open-docs](#why-open-docs)
 - [Features](#features)
-    - [Core rendering](#core-rendering)
-    - [Workflow / terraform-docs parity](#workflow-/-terraform-docs-parity)
-    - [Differentiators](#differentiators)
-    - [Power features (later)](#power-features-(later))
+  - [Core rendering](#core-rendering)
+  - [Workflow / terraform-docs parity](#workflow-/-terraform-docs-parity)
+  - [Differentiators](#differentiators)
+  - [Power features (later)](#power-features-later)
 - [Installation](#installation)
-    - [Binary](#binary)
-    - [Homebrew](#homebrew)
-      - [All in one](#all-in-one)
-      - [Tap then install](#tap-then-install)
-      - [Brewfile](#brewfile)
-    - [With Go](#with-go)
-    - [Source](#source)
+  - [Binary](#binary)
+  - [Homebrew](#homebrew)
+    - [All in one](#all-in-one)
+    - [Tap then install](#tap-then-install)
+    - [Brewfile](#brewfile)
+  - [With Go](#with-go)
+  - [Source](#source)
 - [Usage](#usage)
-    - [Configuration (`.open-docs.hcl`)](#configuration-(`.open-docs.hcl`))
+  - [Configuration (`.open-docs.hcl`)](#configuration-(`.open-docs.hcl`))
 - [Example](#example)
 - [How it works](#how-it-works)
 - [Contributing](#contributing)
@@ -69,10 +70,9 @@ them into output:
       `main { verbose = true }` adds full `line:column:byte` ranges.
 - [x] Doc-comments, structured types, decoded defaults, and expression
       references surfaced in the table view.
-- [~] Curated, reader-facing default layout. *Today most columns are on by
-      default and `main { verbose = true }` is the opt-in debug detail; a
-      curated reader-facing layout is planned.*
-- [~] Section and column toggles: each section has a config block with
+- [X] Curated, reader-facing default layout. *Today most columns are on by
+      default and `main { verbose = true }` is the opt-in debug detail.*
+- [X] Section and column toggles: each section has a config block with
       `render` and per-column switches.
 - [ ] Sort order (by name or source position).
 - [~] Deterministic, diff-stable output across runs and platforms.
@@ -87,7 +87,9 @@ them into output:
       verbose, version }` and per-section toggles work today; formatter, sort,
       and header/footer source are planned.
 - [x] **prek hooks** for file hygiene, gofmt, `go vet`, and `go test`.
+- [X] **Homebrew** installation; right now only via a cask, part of core in the future.
 - [ ] **GitHub Action** wrapper.
+- [ ] **GitLab Component** wrapper.
 - [ ] **CI gate**: `--check` (fail if on-disk docs are stale) and
       `--fail-on warning|error`.
 
@@ -121,6 +123,7 @@ them into output:
 ## Installation
 
 ### Binary
+
 Download a binary for Linux, macOS, or Windows from the
 [latest release](https://github.com/RemoteRabbit/open-docs/releases/latest)
 
@@ -152,6 +155,7 @@ cask "open-docs"
 > Eventually this will be a formula in the homebrew-core but it is not ready yet.
 
 ### With Go
+
 Install with Go (the version in [`go.mod`](./go.mod) or newer):
 
 ```bash
