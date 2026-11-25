@@ -44,6 +44,7 @@ jobs:
       - run: >-
           pip install zensical==0.0.45
           "mike @ git+https://github.com/squidfunk/mike.git@2d4ad799442f4592db8ad53b179bfb33db8c69ac"
+      - run: pip install zensical==0.1.1
       # Gallery source links point at the released tag, not main.
       - run: make gallery DOCS_REF="$GITHUB_REF_NAME"
       - name: Publish version
