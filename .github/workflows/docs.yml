@@ -4,6 +4,9 @@ on:
   push:
     tags:
       - 'v*'
+      # Release candidates (v1.2.0-rc.1) do not publish docs.
+      - '!v*-*'
+  # Run from a stable tag to republish that version.
   workflow_dispatch:
 
 permissions:
@@ -15,26 +18,40 @@ concurrency:
 
 jobs:
   deploy:
+    name: deploy versioned docs
     runs-on: ubuntu-latest
     permissions:
-      pages: write # publish to GitHub Pages
-      id-token: write # verify the deployment source
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+      contents: write # mike commits each version to the gh-pages branch
     steps:
+      - name: Read docs version
+        id: version
+        run: |
+          # v0.7.1 publishes as 0.7, so patch releases replace their minor version.
+          if [[ ! "$GITHUB_REF_NAME" =~ ^v([0-9]+\.[0-9]+)\.[0-9]+$ ]]; then
+            echo "::error::Docs deploy only from a stable release tag, not $GITHUB_REF_NAME"
+            exit 1
+          fi
+          echo "version=${BASH_REMATCH[1]}" >> "$GITHUB_OUTPUT"
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
-          persist-credentials: false
+          fetch-depth: 0 # mike builds on the existing gh-pages branch
+          persist-credentials: true # zizmor: ignore[artipacked] mike pushes gh-pages; no artifacts are uploaded
       - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7
         with:
           python-version: 3.15.2
+      # Zensical has no native versioning yet; its docs point to this mike fork,
+      # which is not on PyPI, so it is pinned to a commit.
+      - run: >-
+          pip install zensical==0.0.45
+          "mike @ git+https://github.com/squidfunk/mike.git@2d4ad799442f4592db8ad53b179bfb33db8c69ac"
       - run: pip install zensical==0.1.1
       # Gallery source links point at the released tag, not main.
-      - run: make docs DOCS_REF="$GITHUB_REF_NAME"
-      - uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6
-      - uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5
-        with:
-          path: site
-      - uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5
-        id: deployment
+      - run: make gallery DOCS_REF="$GITHUB_REF_NAME"
+      - name: Publish version
+        env:
+          VERSION: ${{ steps.version.outputs.version }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          mike deploy --push --update-aliases "$VERSION" latest
+          mike set-default --push latest

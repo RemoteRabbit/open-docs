@@ -9,12 +9,19 @@ on:
 
 # Scorecard rejects published results if the workflow has write permissions
 # at the top level, env/defaults, or steps outside its allowlist.
-permissions: read-all
+permissions: {}
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 
 jobs:
   analysis:
+    name: scorecard analysis
     runs-on: ubuntu-latest
     permissions:
+      contents: read # read the repository being scored
+      actions: read # read workflow runs and settings
       security-events: write # upload SARIF to code scanning
       id-token: write # publish results for the badge / API
     steps:
