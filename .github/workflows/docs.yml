@@ -29,7 +29,7 @@ jobs:
       - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7
         with:
           python-version: 3.15.2
-      - run: pip install zensical==0.0.45
+      - run: pip install zensical==0.1.1
       # Gallery source links point at the released tag, not main.
       - run: make docs DOCS_REF="$GITHUB_REF_NAME"
       - uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6
