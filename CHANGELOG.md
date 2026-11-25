@@ -1,5 +1,27 @@
 # Changelog
 
+## [0.7.0](https://github.com/RemoteRabbit/open-docs/compare/v0.6.0...v0.7.0) (2026-11-25)
+
+
+### Features
+
+* add workflows for making rc tags ([#45](https://github.com/RemoteRabbit/open-docs/issues/45)) ([95f4bc3](https://github.com/RemoteRabbit/open-docs/commit/95f4bc3110e35b7f40090afbad38bcc33abd55bd))
+
+
+### Bug Fixes
+
+* cleanup renovate since dropping some pieces ([#41](https://github.com/RemoteRabbit/open-docs/issues/41)) ([91c077b](https://github.com/RemoteRabbit/open-docs/commit/91c077b6eb65e103f1bc8ee2887fb0f264e51644))
+* readme toc tabs ([#39](https://github.com/RemoteRabbit/open-docs/issues/39)) ([159d4f4](https://github.com/RemoteRabbit/open-docs/commit/159d4f46ef0812ca4230ed712d49ae75320483dd))
+
+
+### Documentation
+
+* add toc to readme ([#37](https://github.com/RemoteRabbit/open-docs/issues/37)) ([b113bb0](https://github.com/RemoteRabbit/open-docs/commit/b113bb0f352e52c9f76375032f4f431dc7139a50))
+* add version flag in docs ([a9c89af](https://github.com/RemoteRabbit/open-docs/commit/a9c89afc5fb847531a9b4821fbf178fe9244009c))
+* update badges in readme ([#47](https://github.com/RemoteRabbit/open-docs/issues/47)) ([021c168](https://github.com/RemoteRabbit/open-docs/commit/021c168108c3aaac48e0d01bb1edb3c00121b656))
+* update readme features ([#40](https://github.com/RemoteRabbit/open-docs/issues/40)) ([0ba089f](https://github.com/RemoteRabbit/open-docs/commit/0ba089ffa4b2f77a6e9b489ad65165c41c7ec84e))
+* update readme with install instructions for homebrew ([#36](https://github.com/RemoteRabbit/open-docs/issues/36)) ([dcace77](https://github.com/RemoteRabbit/open-docs/commit/dcace77907dc7772ea84b5f37aeeee748ef64b3f))
+
 ## [0.6.0](https://github.com/RemoteRabbit/open-docs/compare/v0.5.0...v0.6.0) (2026-11-23)
 
 
