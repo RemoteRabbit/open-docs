@@ -33,6 +33,7 @@ Run `make` to list the available targets. The ones you will use most:
 | `make fmt`        | Formats Go sources with gofmt and golines.                 |
 | `make build`      | Builds `bin/open-docs`.                                    |
 | `make docs-serve` | Previews the docs site ([Zensical](https://zensical.org)). |
+| `make zizmor`     | Audits workflows with [zizmor](https://docs.zizmor.sh).    |
 
 ## Making a change
 
