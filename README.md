@@ -10,6 +10,18 @@ structured types).
 
 **Documentation and example gallery:** <https://remoterabbit.github.io/open-docs/>
 
+[![CI](https://img.shields.io/badge/CI-555555)](https://github.com/RemoteRabbit/open-docs/actions/workflows/ci.yml)
+[![Latest release](https://img.shields.io/github/v/release/RemoteRabbit/open-docs)](https://github.com/RemoteRabbit/open-docs/releases/latest)
+[![Go Version](https://img.shields.io/github/go-mod/go-version/RemoteRabbit/open-docs/main)](./go.mod)
+[![Docs](https://img.shields.io/badge/docs-visit-0d619e?link=https://remoterabbit.github.io/open-docs/)](https://remoterabbit.github.io/open-docs/)
+[![License: MPL 2.0](https://img.shields.io/github/license/RemoteRabbit/open-docs)](./LICENSE)
+
+<!--
+[![Coverage](https://codecov.io/gh/RemoteRabbit/open-docs/branch/main/graph/badge.svg)](https://codecov.io/gh/RemoteRabbit/open-docs)
+[![Downloads](https://img.shields.io/github/downloads/RemoteRabbit/open-docs/total)](https://github.com/RemoteRabbit/open-docs/releases/latest)
+[![Sponsor](https://img.shields.io/github/sponsors/RemoteRabbit)](https://github.com/sponsors/RemoteRabbit)
+-->
+
 > **Status: early / proof-of-concept.** Today open-docs emits a verbose,
 > debug-oriented dump of everything the inspector parses. The curated,
 > reader-facing output and the workflow features below are planned. See the
