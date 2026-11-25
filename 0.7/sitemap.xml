@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+      <url>
+        <loc>https://remoterabbit.github.io/open-docs/0.7/</loc>
+      </url>
+      <url>
+        <loc>https://remoterabbit.github.io/open-docs/0.7/configuration/</loc>
+      </url>
+      <url>
+        <loc>https://remoterabbit.github.io/open-docs/0.7/contributing/</loc>
+      </url>
+      <url>
+        <loc>https://remoterabbit.github.io/open-docs/0.7/examples/</loc>
+      </url>
+      <url>
+        <loc>https://remoterabbit.github.io/open-docs/0.7/examples/complete/</loc>
+      </url>
+      <url>
+        <loc>https://remoterabbit.github.io/open-docs/0.7/examples/invalid/</loc>
+      </url>
+      <url>
+        <loc>https://remoterabbit.github.io/open-docs/0.7/examples/vpc/</loc>
+      </url>
+      <url>
+        <loc>https://remoterabbit.github.io/open-docs/0.7/getting-started/</loc>
+      </url>
+</urlset>

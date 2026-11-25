@@ -1,0 +1,2127 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A documentation generator for Terraform&#x2f;OpenTofu modules.">
+      
+      
+        <meta name="author" content="Tristan Jahnke">
+      
+      
+        <link rel="canonical" href="https://remoterabbit.github.io/open-docs/0.7/examples/vpc/">
+      
+      
+      
+        <link rel="prev" href="../">
+      
+      
+        <link rel="next" href="../complete/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="zensical-0.1.1">
+    
+    
+      
+        <title>vpc - open-docs</title>
+      
+    
+    
+      
+        
+      
+      <link rel="stylesheet" href="../../assets/stylesheets/modern/main.ebb7f775.min.css">
+      
+        
+          
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/modern/palette.b60ce83d.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,500,500i,700,700i%7CJetBrains+Mono:400,400i,700,700i&amp;display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_scope.pathname.endsWith("/")||(__md_scope=new URL(__md_scope.pathname+"/",location)),__md_hash=e=>[...e].reduce(((e,t)=>(e<<5)-e+t.charCodeAt(0)),0),__md_get=(e,t=localStorage,_=__md_scope)=>JSON.parse(t.getItem(_.pathname+"."+e)),__md_set=(e,t,_=localStorage,a=__md_scope)=>{try{_.setItem(a.pathname+"."+e,JSON.stringify(t))}catch(e){}},document.documentElement.setAttribute("data-platform",navigator.platform)</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer" aria-hidden="true"></label>
+    <div data-md-component="skip">
+      <a href="#__skip" class="md-skip">
+        Skip to content
+      </a>
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+          <aside class="md-banner md-banner--warning">
+            <div class="md-banner__inner md-grid md-typeset">
+              
+  You're viewing docs for an older release.
+  <a href="../../..">
+    <strong>Go to the latest version.</strong>
+  </a>
+
+            </div>
+            <script>var el=document.querySelector("[data-md-component=outdated]"),base=new URL("../..",location),outdated=__md_get("__outdated",sessionStorage,base);!0===outdated&&el&&(el.hidden=!1)</script>
+          </aside>
+        
+      </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="open-docs" class="md-header__button md-logo" aria-label="open-docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-file-text" viewBox="0 0 24 24"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5M10 9H8M16 13H8M16 17H8"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-menu" viewBox="0 0 24 24"><path d="M4 5h16M4 12h16M4 19h16"/></svg>
+      <span class="md-visually-hidden">Navigation</span>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            open-docs
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              vpc
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="none" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="none" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-moon" viewBox="0 0 24 24"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-search" viewBox="0 0 24 24"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg>
+          <span class="md-visually-hidden">Search</span>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog" aria-label="Search">
+  <button type="button" class="md-search__button">
+    Search
+  </button>
+</div>
+      
+    
+    <div class="md-header__source">
+      
+        <a href="https://github.com/RemoteRabbit/open-docs" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.3.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2026 Fonticons, Inc.--><path fill="currentColor" d="M216.5 362.5c-66-8-112.5-55.5-112.5-117 0-25 9-52 24-70-6.5-16.5-5.5-51.5 2-66 20-2.5 47 8 63 22.5 19-6 39-9 63.5-9s44.5 3 62.5 8.5c15.5-14 43-24.5 63-22 7 13.5 8 48.5 1.5 65.5 16 19 24.5 44.5 24.5 70.5 0 61.5-46.5 108-113.5 116.5 17 11 28.5 35 28.5 62.5v52c0 15 12.5 23.5 27.5 17.5C441 459.5 512 369 512 257 512 115.5 397 0 255.5 0S0 115.5 0 257c0 111 70.5 203 165.5 237.5 13.5 5 26.5-4 26.5-17.5v-40c-7 3-16 5-24 5-33 0-52.5-18-66.5-51.5-5.5-13.5-11.5-21.5-23-23-6-.5-8-3-8-6 0-6 10-10.5 20-10.5 14.5 0 27 9 40 27.5 10 14.5 20.5 21 33 21s20.5-4.5 32-16c8.5-8.5 15-16 21-21"/></svg>
+  </div>
+  <div class="md-source__repository">
+    RemoteRabbit/open-docs
+  </div>
+</a>
+      
+    </div>
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="open-docs" class="md-nav__button md-logo" aria-label="open-docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-file-text" viewBox="0 0 24 24"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5M10 9H8M16 13H8M16 17H8"/></svg>
+
+    </a>
+    open-docs
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/RemoteRabbit/open-docs" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.3.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2026 Fonticons, Inc.--><path fill="currentColor" d="M216.5 362.5c-66-8-112.5-55.5-112.5-117 0-25 9-52 24-70-6.5-16.5-5.5-51.5 2-66 20-2.5 47 8 63 22.5 19-6 39-9 63.5-9s44.5 3 62.5 8.5c15.5-14 43-24.5 63-22 7 13.5 8 48.5 1.5 65.5 16 19 24.5 44.5 24.5 70.5 0 61.5-46.5 108-113.5 116.5 17 11 28.5 35 28.5 62.5v52c0 15 12.5 23.5 27.5 17.5C441 459.5 512 369 512 257 512 115.5 397 0 255.5 0S0 115.5 0 257c0 111 70.5 203 165.5 237.5 13.5 5 26.5-4 26.5-17.5v-40c-7 3-16 5-24 5-33 0-52.5-18-66.5-51.5-5.5-13.5-11.5-21.5-23-23-6-.5-8-3-8-6 0-6 10-10.5 20-10.5 14.5 0 27 9 40 27.5 10 14.5 20.5 21 33 21s20.5-4.5 32-16c8.5-8.5 15-16 21-21"/></svg>
+  </div>
+  <div class="md-source__repository">
+    RemoteRabbit/open-docs
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Home
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Getting started
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../configuration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Configuration
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../contributing/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Contributing
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Example gallery
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_5" id="__nav_5_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        
+          <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="true">
+            <label class="md-nav__title" for="__nav_5">
+              <span class="md-nav__icon md-icon"></span>
+              
+  
+  Example gallery
+
+            </label>
+            <ul class="md-nav__list" data-md-scrollfix>
+              
+                
+              
+                
+                  
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  vpc
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="././" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  vpc
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+
+<nav class="md-nav md-nav--secondary" aria-label="On this page">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      On this page
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#required-providers" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Required Providers
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#providers" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Providers
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#inputs" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Inputs
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#outputs" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Outputs
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#locals" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Locals
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#managed-resources" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Managed Resources
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#data-resources" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Data Resources
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#module-calls" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Module Calls
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#moved" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Moved
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#imports" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Imports
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#removed" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Removed
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../complete/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  complete
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+                
+                  
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../invalid/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  invalid
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+                
+              
+            </ul>
+          </nav>
+        
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  
+                    
+                    
+                    
+                      
+                    
+                    
+                      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+                      <div class="md-sidebar-button__wrapper">
+                        <label class="md-sidebar-button" for="__toc"></label>
+                      </div>
+                    
+                  
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--secondary" aria-label="On this page">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      On this page
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#required-providers" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Required Providers
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#providers" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Providers
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#inputs" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Inputs
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#outputs" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Outputs
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#locals" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Locals
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#managed-resources" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Managed Resources
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#data-resources" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Data Resources
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#module-calls" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Module Calls
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#moved" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Moved
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#imports" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Imports
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#removed" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Removed
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../.." class="md-path__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      <li class="md-path__item">
+        <a href="../" class="md-path__link">
+          
+  
+  <span class="md-ellipsis">
+    Example gallery
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
+              <article class="md-content__inner md-typeset">
+                <a id="__skip" tabindex="-1"></a>
+                
+                  
+
+  
+    <a href="https://github.com/RemoteRabbit/open-docs/edit/main/docs/examples/vpc.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-file-pen" viewBox="0 0 24 24"><path d="M12.659 22H18a2 2 0 0 0 2-2V8a2.4 2.4 0 0 0-.706-1.706l-3.588-3.588A2.4 2.4 0 0 0 14 2H6a2 2 0 0 0-2 2v9.34"/><path d="M14 2v5a1 1 0 0 0 1 1h5M10.378 12.622a1 1 0 0 1 3 3.003L8.36 20.637a2 2 0 0 1-.854.506l-2.867.837a.5.5 0 0 1-.62-.62l.836-2.869a2 2 0 0 1 .506-.853z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="module-vpc">Module <code>vpc</code><a class="headerlink" href="#module-vpc" title="Permanent link">&para;</a></h1>
+<!-- VERSION-START -->
+<p>This documentation was generated with <a href="https://github.com/RemoteRabbit/open-docs">open-docs dev</a></p>
+<!-- VERSION-END -->
+
+<ul>
+<li><strong>Required core:</strong> <code>&gt;= 1.5, &lt; 2.0</code></li>
+</ul>
+<h2 id="required-providers">Required Providers<a class="headerlink" href="#required-providers" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Source</th>
+<th>Version</th>
+<th>Position</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>aws</code></td>
+<td><code>hashicorp/aws</code></td>
+<td><code>&gt;= 5.0, &lt; 7.0</code></td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.7.0/examples/vpc/versions.tf#L5-L8"><code>./versions.tf</code></a></td>
+</tr>
+<tr>
+<td><code>random</code></td>
+<td><code>hashicorp/random</code></td>
+<td><code>~&gt; 3.6</code></td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.7.0/examples/vpc/versions.tf#L9-L12"><code>./versions.tf</code></a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="providers">Providers<a class="headerlink" href="#providers" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Alias</th>
+<th>Position</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>aws</code></td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.7.0/examples/vpc/providers.tf#L3"><code>./providers.tf</code></a></td>
+</tr>
+<tr>
+<td><code>aws</code></td>
+<td><code>dr</code></td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.7.0/examples/vpc/providers.tf#L12"><code>./providers.tf</code></a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="inputs">Inputs<a class="headerlink" href="#inputs" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+<th>Comment</th>
+<th>Sensitive</th>
+<th>Nullable</th>
+<th>Ephemeral</th>
+<th>Validation Count</th>
+<th>Position</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>name</code></td>
+<td><code>string</code></td>
+<td>-</td>
+<td>Name prefix applied to every resource created by this module.</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>1</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.7.0/examples/vpc/variables.tf#L1"><code>./variables.tf</code></a></td>
+</tr>
+<tr>
+<td><code>environment</code></td>
+<td><code>string</code></td>
+<td><code>"dev"</code></td>
+<td>Deployment environment. Drives tagging and a few cost-related defaults.</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>1</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.7.0/examples/vpc/variables.tf#L11"><code>./variables.tf</code></a></td>
+</tr>
+<tr>
+<td><code>region</code></td>
+<td><code>string</code></td>
+<td>-</td>
+<td>AWS region to deploy into.</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>0</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.7.0/examples/vpc/variables.tf#L22"><code>./variables.tf</code></a></td>
+</tr>
+<tr>
+<td><code>dr_region</code></td>
+<td><code>string</code></td>
+<td><code>"us-west-2"</code></td>
+<td>Secondary region used for disaster-recovery copies of flow logs.</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>0</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.7.0/examples/vpc/variables.tf#L27"><code>./variables.tf</code></a></td>
+</tr>
+<tr>
+<td><code>cidr_block</code></td>
+<td><code>string</code></td>
+<td><code>"10.0.0.0/16"</code></td>
+<td>IPv4 CIDR block for the VPC.</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>2</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.7.0/examples/vpc/variables.tf#L33"><code>./variables.tf</code></a></td>
+</tr>
+<tr>
+<td><code>secondary_cidr_blocks</code></td>
+<td><code>list(string)</code></td>
+<td><code>[]</code></td>
+<td>Additional IPv4 CIDR blocks to associate with the VPC.</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>0</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.7.0/examples/vpc/variables.tf#L49"><code>./variables.tf</code></a></td>
+</tr>
+<tr>
+<td><code>azs</code></td>
+<td><code>list(string)</code></td>
+<td><code>null</code></td>
+<td>Availability zones to spread subnets across. Defaults to the first three available in the region.</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>0</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.7.0/examples/vpc/variables.tf#L55"><code>./variables.tf</code></a></td>
+</tr>
+<tr>
+<td><code>public_subnets</code></td>
+<td><code>list(string)</code></td>
+<td><code>["10.0.0.0/24", "10.0.1.0/24", "10.0.2.0/24"]</code></td>
+<td>CIDR blocks for public subnets, one per availability zone.</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>0</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.7.0/examples/vpc/variables.tf#L61"><code>./variables.tf</code></a></td>
+</tr>
+<tr>
+<td><code>private_subnets</code></td>
+<td><code>list(string)</code></td>
+<td><code>["10.0.10.0/24", "10.0.11.0/24", "10.0.12.0/24"]</code></td>
+<td>CIDR blocks for private subnets, one per availability zone.</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>0</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.7.0/examples/vpc/variables.tf#L67"><code>./variables.tf</code></a></td>
+</tr>
+<tr>
+<td><code>database_subnets</code></td>
+<td><code>list(string)</code></td>
+<td><code>[]</code></td>
+<td>CIDR blocks for isolated database subnets. Leave empty to skip.</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>0</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.7.0/examples/vpc/variables.tf#L73"><code>./variables.tf</code></a></td>
+</tr>
+<tr>
+<td><code>enable_dns_hostnames</code></td>
+<td><code>bool</code></td>
+<td><code>true</code></td>
+<td>Enable DNS hostnames in the VPC.</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>0</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.7.0/examples/vpc/variables.tf#L79"><code>./variables.tf</code></a></td>
+</tr>
+<tr>
+<td><code>enable_dns_support</code></td>
+<td><code>bool</code></td>
+<td><code>true</code></td>
+<td>Enable DNS resolution in the VPC.</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>0</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.7.0/examples/vpc/variables.tf#L85"><code>./variables.tf</code></a></td>
+</tr>
+<tr>
+<td><code>enable_nat_gateway</code></td>
+<td><code>bool</code></td>
+<td><code>true</code></td>
+<td>Provision NAT gateways so private subnets can reach the internet.</td>
+<td>NAT gateways are the single largest cost in this module. In non-prod environments prefer <code>single_nat_gateway = true</code>.</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>0</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.7.0/examples/vpc/variables.tf#L93"><code>./variables.tf</code></a></td>
+</tr>
+<tr>
+<td><code>single_nat_gateway</code></td>
+<td><code>bool</code></td>
+<td><code>false</code></td>
+<td>Share one NAT gateway across all private subnets instead of one per AZ.</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>0</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.7.0/examples/vpc/variables.tf#L99"><code>./variables.tf</code></a></td>
+</tr>
+<tr>
+<td><code>nat_gateway_config</code></td>
+<td><code>object({connectivity_type = optional(string, "public"), eip_allocation_ids = optional(list(string), []), reuse_eips = optional(bool, false), tags = optional(map(string), {})})</code></td>
+<td><code>{}</code></td>
+<td>Advanced NAT gateway settings.</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>0</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.7.0/examples/vpc/variables.tf#L105"><code>./variables.tf</code></a></td>
+</tr>
+<tr>
+<td><code>flow_logs</code></td>
+<td><code>object({destination = optional(string, "cloud-watch-logs"), enabled = bool, replicate_to_dr = optional(bool, false), retention_in_days = optional(number, 30), traffic_type = optional(string, "ALL")})</code></td>
+<td><code>{enabled = true}</code></td>
+<td>VPC flow log configuration.</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>2</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.7.0/examples/vpc/variables.tf#L116"><code>./variables.tf</code></a></td>
+</tr>
+<tr>
+<td><code>vpc_endpoints</code></td>
+<td><code>set(string)</code></td>
+<td><code>["s3", "dynamodb"]</code></td>
+<td>Gateway or interface endpoint services to create, e.g. <code>s3</code>, <code>ecr.api</code>.</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>0</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.7.0/examples/vpc/variables.tf#L140"><code>./variables.tf</code></a></td>
+</tr>
+<tr>
+<td><code>import_existing_vpc_id</code></td>
+<td><code>string</code></td>
+<td><code>""</code></td>
+<td>Adopt an existing VPC into state instead of creating a new one.</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>0</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.7.0/examples/vpc/variables.tf#L146"><code>./variables.tf</code></a></td>
+</tr>
+<tr>
+<td><code>vpn_preshared_key</code></td>
+<td><code>string</code></td>
+<td><code>null</code></td>
+<td>Pre-shared key for the optional site-to-site VPN connection.</td>
+<td>-</td>
+<td>✓</td>
+<td>-</td>
+<td>-</td>
+<td>0</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.7.0/examples/vpc/variables.tf#L152"><code>./variables.tf</code></a></td>
+</tr>
+<tr>
+<td><code>tags</code></td>
+<td><code>map(string)</code></td>
+<td><code>{}</code></td>
+<td>Tags applied to all resources.</td>
+<td>-</td>
+<td>-</td>
+<td>✗</td>
+<td>-</td>
+<td>0</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.7.0/examples/vpc/variables.tf#L159"><code>./variables.tf</code></a></td>
+</tr>
+<tr>
+<td><code>subnet_tags</code></td>
+<td><code>object({database = optional(map(string), {}), private = optional(map(string), {}), public = optional(map(string), {})})</code></td>
+<td><code>{}</code></td>
+<td>Extra tags per subnet tier, merged over <code>tags</code>.</td>
+<td>-</td>
+<td>-</td>
+<td>✗</td>
+<td>-</td>
+<td>0</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.7.0/examples/vpc/variables.tf#L166"><code>./variables.tf</code></a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="outputs">Outputs<a class="headerlink" href="#outputs" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Value</th>
+<th>References</th>
+<th>Description</th>
+<th>Comment</th>
+<th>Sensitive</th>
+<th>Ephemeral</th>
+<th>Depends On</th>
+<th>Position</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>vpc_id</td>
+<td><code>aws_vpc.this.id</code></td>
+<td><code>aws_vpc.this</code></td>
+<td>The ID of the created VPC.</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.7.0/examples/vpc/outputs.tf#L1"><code>./outputs.tf</code></a></td>
+</tr>
+<tr>
+<td>vpc_arn</td>
+<td><code>aws_vpc.this.arn</code></td>
+<td><code>aws_vpc.this</code></td>
+<td>The ARN of the VPC.</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.7.0/examples/vpc/outputs.tf#L6"><code>./outputs.tf</code></a></td>
+</tr>
+<tr>
+<td>vpc_cidr_block</td>
+<td><code>aws_vpc.this.cidr_block</code></td>
+<td><code>aws_vpc.this</code></td>
+<td>The primary IPv4 CIDR block of the VPC.</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.7.0/examples/vpc/outputs.tf#L11"><code>./outputs.tf</code></a></td>
+</tr>
+<tr>
+<td>all_cidr_blocks</td>
+<td><code>concat([aws_vpc.this.cidr_block], [for a in aws_vpc_ipv4_cidr_block_association.secondary : a.cidr_block])</code></td>
+<td><code>aws_vpc.this, aws_vpc_ipv4_cidr_block_association.secondary</code></td>
+<td>Primary and secondary CIDR blocks associated with the VPC.</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.7.0/examples/vpc/outputs.tf#L16"><code>./outputs.tf</code></a></td>
+</tr>
+<tr>
+<td>azs</td>
+<td><code>local.azs</code></td>
+<td><code>local.azs</code></td>
+<td>Availability zones the subnets were spread across.</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.7.0/examples/vpc/outputs.tf#L21"><code>./outputs.tf</code></a></td>
+</tr>
+<tr>
+<td>public_subnet_ids</td>
+<td><code>{ for az, s in aws_subnet.public : az =&gt; s.id }</code></td>
+<td><code>aws_subnet.public</code></td>
+<td>Map of availability zone to public subnet ID.</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.7.0/examples/vpc/outputs.tf#L26"><code>./outputs.tf</code></a></td>
+</tr>
+<tr>
+<td>private_subnet_ids</td>
+<td><code>{ for az, s in aws_subnet.private : az =&gt; s.id }</code></td>
+<td><code>aws_subnet.private</code></td>
+<td>Map of availability zone to private subnet ID.</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.7.0/examples/vpc/outputs.tf#L31"><code>./outputs.tf</code></a></td>
+</tr>
+<tr>
+<td>database_subnet_ids</td>
+<td><code>aws_subnet.database[*].id</code></td>
+<td><code>aws_subnet.database</code></td>
+<td>List of database subnet IDs.</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.7.0/examples/vpc/outputs.tf#L36"><code>./outputs.tf</code></a></td>
+</tr>
+<tr>
+<td>database_subnet_group_name</td>
+<td><code>try(aws_db_subnet_group.database[0].name, null)</code></td>
+<td><code>aws_db_subnet_group.database</code></td>
+<td>Name of the database subnet group, or null when no database subnets were requested.</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.7.0/examples/vpc/outputs.tf#L41"><code>./outputs.tf</code></a></td>
+</tr>
+<tr>
+<td>nat_gateway_ids</td>
+<td><code>aws_nat_gateway.this[*].id</code></td>
+<td><code>aws_nat_gateway.this</code></td>
+<td>NAT gateway IDs, one per AZ (or one total with <code>single_nat_gateway</code>).</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.7.0/examples/vpc/outputs.tf#L46"><code>./outputs.tf</code></a></td>
+</tr>
+<tr>
+<td>nat_public_ips</td>
+<td><code>aws_nat_gateway.this[*].public_ip</code></td>
+<td><code>aws_nat_gateway.this</code></td>
+<td>Elastic IPs attached to the NAT gateways.</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td><code>aws_route_table.private</code></td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.7.0/examples/vpc/outputs.tf#L51"><code>./outputs.tf</code></a></td>
+</tr>
+<tr>
+<td>route_table_ids</td>
+<td><code>{ public = aws_route_table.public.id private = { for az, rt in aws_route_table.private : az =&gt; rt.id } }</code></td>
+<td><code>aws_route_table.public, aws_route_table.private</code></td>
+<td>Route table IDs grouped by tier.</td>
+<td>Callers wiring additional routes need these.</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.7.0/examples/vpc/outputs.tf#L58"><code>./outputs.tf</code></a></td>
+</tr>
+<tr>
+<td>flow_log_id</td>
+<td><code>one(aws_flow_log.this[*].id)</code></td>
+<td><code>aws_flow_log.this</code></td>
+<td>ID of the VPC flow log, if enabled.</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.7.0/examples/vpc/outputs.tf#L66"><code>./outputs.tf</code></a></td>
+</tr>
+<tr>
+<td>endpoint_ids</td>
+<td><code>module.endpoints.endpoints</code></td>
+<td><code>module.endpoints.endpoints</code></td>
+<td>VPC endpoints created by the endpoints submodule.</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.7.0/examples/vpc/outputs.tf#L71"><code>./outputs.tf</code></a></td>
+</tr>
+<tr>
+<td>region</td>
+<td><code>data.aws_region.current.name</code></td>
+<td><code>data.aws_region.current</code></td>
+<td>Region the VPC was deployed into.</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.7.0/examples/vpc/outputs.tf#L76"><code>./outputs.tf</code></a></td>
+</tr>
+<tr>
+<td>vpn_preshared_key</td>
+<td><code>var.vpn_preshared_key</code></td>
+<td><code>var.vpn_preshared_key</code></td>
+<td>Pre-shared key passed through for the VPN connection.</td>
+<td>-</td>
+<td>✓</td>
+<td>-</td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.7.0/examples/vpc/outputs.tf#L81"><code>./outputs.tf</code></a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="locals">Locals<a class="headerlink" href="#locals" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Value</th>
+<th>References</th>
+<th>Position</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>azs</td>
+<td><code>coalesce(var.azs, slice(data.aws_availability_zones.available.names, 0, 3))</code></td>
+<td><code>var.azs, data.aws_availability_zones.available</code></td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.7.0/examples/vpc/locals.tf#L4"><code>./locals.tf</code></a></td>
+</tr>
+<tr>
+<td>create_database_subnets</td>
+<td><code>length(var.database_subnets) &gt; 0</code></td>
+<td><code>var.database_subnets</code></td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.7.0/examples/vpc/locals.tf#L15"><code>./locals.tf</code></a></td>
+</tr>
+<tr>
+<td>create_vpn</td>
+<td><code>var.vpn_preshared_key != null</code></td>
+<td><code>var.vpn_preshared_key</code></td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.7.0/examples/vpc/locals.tf#L17"><code>./locals.tf</code></a></td>
+</tr>
+<tr>
+<td>flow_log_destination_arn</td>
+<td><code>var.flow_logs.destination == "s3" ? module.flow_log_bucket[0].bucket_arn : aws_cloudwatch_log_group.flow_logs[0].arn</code></td>
+<td><code>var.flow_logs, module.flow_log_bucket, aws_cloudwatch_log_group.flow_logs</code></td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.7.0/examples/vpc/locals.tf#L19"><code>./locals.tf</code></a></td>
+</tr>
+<tr>
+<td>name_prefix</td>
+<td><code>"${var.name}-${var.environment}"</code></td>
+<td><code>var.name, var.environment</code></td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.7.0/examples/vpc/locals.tf#L2"><code>./locals.tf</code></a></td>
+</tr>
+<tr>
+<td>nat_gateway_count</td>
+<td><code>var.enable_nat_gateway ? (var.single_nat_gateway ? 1 : length(local.azs)) : 0</code></td>
+<td><code>var.enable_nat_gateway, var.single_nat_gateway, local.azs</code></td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.7.0/examples/vpc/locals.tf#L16"><code>./locals.tf</code></a></td>
+</tr>
+<tr>
+<td>private_subnets</td>
+<td><code>{ for i, cidr in var.private_subnets : local.azs[i] =&gt; cidr }</code></td>
+<td><code>var.private_subnets, local.azs</code></td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.7.0/examples/vpc/locals.tf#L13"><code>./locals.tf</code></a></td>
+</tr>
+<tr>
+<td>public_subnets</td>
+<td><code>{ for i, cidr in var.public_subnets : local.azs[i] =&gt; cidr }</code></td>
+<td><code>var.public_subnets, local.azs</code></td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.7.0/examples/vpc/locals.tf#L12"><code>./locals.tf</code></a></td>
+</tr>
+<tr>
+<td>tags</td>
+<td><code>merge(var.tags, { Module = "vpc" Environment = var.environment ManagedBy = "terraform" })</code></td>
+<td><code>var.tags, var.environment</code></td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.7.0/examples/vpc/locals.tf#L6-L10"><code>./locals.tf</code></a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="managed-resources">Managed Resources<a class="headerlink" href="#managed-resources" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Mode</th>
+<th>Type</th>
+<th>Count</th>
+<th>For Each</th>
+<th>Depends On</th>
+<th>Nested Body</th>
+<th>LifeCycle</th>
+<th>Comment</th>
+<th>Position</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>this</td>
+<td>managed</td>
+<td><code>aws_vpc</code></td>
+<td>-</td>
+<td>-</td>
+<td></td>
+<td><code>cidr_block, enable_dns_hostnames, enable_dns_support, tags</code></td>
+<td><code>prevent_destroy=true; ignore_changes=[tags["CreatedAt"]]</code></td>
+<td>The VPC itself. Protected from accidental destruction in every environment because subnets, ENIs, and peering all hang off it.</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.7.0/examples/vpc/main.tf#L3"><code>./main.tf</code></a></td>
+</tr>
+<tr>
+<td>secondary</td>
+<td>managed</td>
+<td><code>aws_vpc_ipv4_cidr_block_association</code></td>
+<td>-</td>
+<td><code>toset(var.secondary_cidr_blocks)</code></td>
+<td></td>
+<td><code>cidr_block, vpc_id</code></td>
+<td>-</td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.7.0/examples/vpc/main.tf#L16"><code>./main.tf</code></a></td>
+</tr>
+<tr>
+<td>this</td>
+<td>managed</td>
+<td><code>aws_internet_gateway</code></td>
+<td><code>length(var.public_subnets) &gt; 0 ? 1 : 0</code></td>
+<td>-</td>
+<td></td>
+<td><code>tags, vpc_id</code></td>
+<td>-</td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.7.0/examples/vpc/main.tf#L23"><code>./main.tf</code></a></td>
+</tr>
+<tr>
+<td>public</td>
+<td>managed</td>
+<td><code>aws_subnet</code></td>
+<td>-</td>
+<td><code>local.public_subnets</code></td>
+<td></td>
+<td><code>availability_zone, cidr_block, map_public_ip_on_launch, tags, vpc_id</code></td>
+<td>-</td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.7.0/examples/vpc/main.tf#L32"><code>./main.tf</code></a></td>
+</tr>
+<tr>
+<td>private</td>
+<td>managed</td>
+<td><code>aws_subnet</code></td>
+<td>-</td>
+<td><code>local.private_subnets</code></td>
+<td></td>
+<td><code>availability_zone, cidr_block, tags, vpc_id</code></td>
+<td>-</td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.7.0/examples/vpc/main.tf#L46"><code>./main.tf</code></a></td>
+</tr>
+<tr>
+<td>database</td>
+<td>managed</td>
+<td><code>aws_subnet</code></td>
+<td><code>length(var.database_subnets)</code></td>
+<td>-</td>
+<td></td>
+<td><code>availability_zone, cidr_block, tags, vpc_id</code></td>
+<td>-</td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.7.0/examples/vpc/main.tf#L59"><code>./main.tf</code></a></td>
+</tr>
+<tr>
+<td>database</td>
+<td>managed</td>
+<td><code>aws_db_subnet_group</code></td>
+<td><code>local.create_database_subnets ? 1 : 0</code></td>
+<td>-</td>
+<td></td>
+<td><code>name, subnet_ids</code></td>
+<td>-</td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.7.0/examples/vpc/main.tf#L72"><code>./main.tf</code></a></td>
+</tr>
+<tr>
+<td>nat</td>
+<td>managed</td>
+<td><code>aws_eip</code></td>
+<td><code>var.nat_gateway_config.reuse_eips ? 0 : local.nat_gateway_count</code></td>
+<td>-</td>
+<td>aws_internet_gateway.this</td>
+<td><code>domain, tags</code></td>
+<td>-</td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.7.0/examples/vpc/main.tf#L81"><code>./main.tf</code></a></td>
+</tr>
+<tr>
+<td>this</td>
+<td>managed</td>
+<td><code>aws_nat_gateway</code></td>
+<td><code>local.nat_gateway_count</code></td>
+<td>-</td>
+<td>aws_internet_gateway.this, aws_eip.nat</td>
+<td><code>allocation_id, connectivity_type, subnet_id, tags</code></td>
+<td><code>create_before_destroy=true; preconditions=1</code></td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.7.0/examples/vpc/main.tf#L90"><code>./main.tf</code></a></td>
+</tr>
+<tr>
+<td>public</td>
+<td>managed</td>
+<td><code>aws_route_table</code></td>
+<td>-</td>
+<td>-</td>
+<td></td>
+<td><code>tags, vpc_id</code></td>
+<td>-</td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.7.0/examples/vpc/main.tf#L113"><code>./main.tf</code></a></td>
+</tr>
+<tr>
+<td>public_internet</td>
+<td>managed</td>
+<td><code>aws_route</code></td>
+<td>-</td>
+<td>-</td>
+<td></td>
+<td><code>destination_cidr_block, gateway_id, route_table_id</code></td>
+<td>-</td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.7.0/examples/vpc/main.tf#L118"><code>./main.tf</code></a></td>
+</tr>
+<tr>
+<td>private</td>
+<td>managed</td>
+<td><code>aws_route_table</code></td>
+<td>-</td>
+<td><code>local.private_subnets</code></td>
+<td></td>
+<td><code>tags, vpc_id</code></td>
+<td><code>ignore_changes=[propagating_vgws]</code></td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.7.0/examples/vpc/main.tf#L128"><code>./main.tf</code></a></td>
+</tr>
+<tr>
+<td>public</td>
+<td>managed</td>
+<td><code>aws_route_table_association</code></td>
+<td>-</td>
+<td><code>aws_subnet.public</code></td>
+<td></td>
+<td><code>route_table_id, subnet_id</code></td>
+<td>-</td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.7.0/examples/vpc/main.tf#L147"><code>./main.tf</code></a></td>
+</tr>
+<tr>
+<td>private</td>
+<td>managed</td>
+<td><code>aws_route_table_association</code></td>
+<td>-</td>
+<td><code>aws_subnet.private</code></td>
+<td></td>
+<td><code>route_table_id, subnet_id</code></td>
+<td>-</td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.7.0/examples/vpc/main.tf#L154"><code>./main.tf</code></a></td>
+</tr>
+<tr>
+<td>flow_logs</td>
+<td>managed</td>
+<td><code>aws_cloudwatch_log_group</code></td>
+<td><code>var.flow_logs.enabled &amp;&amp; var.flow_logs.destination == "cloud-watch-logs" ? 1 : 0</code></td>
+<td>-</td>
+<td></td>
+<td><code>name, retention_in_days</code></td>
+<td><code>prevent_destroy=false</code></td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.7.0/examples/vpc/main.tf#L163"><code>./main.tf</code></a></td>
+</tr>
+<tr>
+<td>flow_logs</td>
+<td>managed</td>
+<td><code>aws_iam_role</code></td>
+<td><code>var.flow_logs.enabled ? 1 : 0</code></td>
+<td>-</td>
+<td></td>
+<td><code>assume_role_policy, name_prefix</code></td>
+<td>-</td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.7.0/examples/vpc/main.tf#L174"><code>./main.tf</code></a></td>
+</tr>
+<tr>
+<td>flow_logs</td>
+<td>managed</td>
+<td><code>aws_iam_role_policy</code></td>
+<td><code>var.flow_logs.enabled ? 1 : 0</code></td>
+<td>-</td>
+<td></td>
+<td><code>policy, role</code></td>
+<td>-</td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.7.0/examples/vpc/main.tf#L181"><code>./main.tf</code></a></td>
+</tr>
+<tr>
+<td>this</td>
+<td>managed</td>
+<td><code>aws_flow_log</code></td>
+<td><code>var.flow_logs.enabled ? 1 : 0</code></td>
+<td>-</td>
+<td>aws_iam_role_policy.flow_logs</td>
+<td><code>iam_role_arn, log_destination, log_destination_type, traffic_type, vpc_id</code></td>
+<td><code>replace_triggered_by=[aws_iam_role.flow_logs[0].id]; postconditions=1</code></td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.7.0/examples/vpc/main.tf#L188"><code>./main.tf</code></a></td>
+</tr>
+<tr>
+<td>this</td>
+<td>managed</td>
+<td><code>aws_vpn_gateway</code></td>
+<td><code>local.create_vpn ? 1 : 0</code></td>
+<td>-</td>
+<td></td>
+<td><code>vpc_id</code></td>
+<td>-</td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.7.0/examples/vpc/main.tf#L211"><code>./main.tf</code></a></td>
+</tr>
+<tr>
+<td>vpn_suffix</td>
+<td>managed</td>
+<td><code>random_id</code></td>
+<td><code>local.create_vpn ? 1 : 0</code></td>
+<td>-</td>
+<td></td>
+<td><code>byte_length, keepers</code></td>
+<td>-</td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.7.0/examples/vpc/main.tf#L217"><code>./main.tf</code></a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="data-resources">Data Resources<a class="headerlink" href="#data-resources" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Mode</th>
+<th>Type</th>
+<th>Count</th>
+<th>For Each</th>
+<th>Depends On</th>
+<th>Nested Body</th>
+<th>LifeCycle</th>
+<th>Comment</th>
+<th>Position</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>available</td>
+<td>data</td>
+<td><code>aws_availability_zones</code></td>
+<td>-</td>
+<td>-</td>
+<td></td>
+<td><code>state</code></td>
+<td>-</td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.7.0/examples/vpc/data.tf#L1"><code>./data.tf</code></a></td>
+</tr>
+<tr>
+<td>current</td>
+<td>data</td>
+<td><code>aws_region</code></td>
+<td>-</td>
+<td>-</td>
+<td></td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.7.0/examples/vpc/data.tf#L10"><code>./data.tf</code></a></td>
+</tr>
+<tr>
+<td>current</td>
+<td>data</td>
+<td><code>aws_caller_identity</code></td>
+<td>-</td>
+<td>-</td>
+<td></td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.7.0/examples/vpc/data.tf#L12"><code>./data.tf</code></a></td>
+</tr>
+<tr>
+<td>flow_logs_assume</td>
+<td>data</td>
+<td><code>aws_iam_policy_document</code></td>
+<td>-</td>
+<td>-</td>
+<td></td>
+<td>-</td>
+<td>-</td>
+<td>Trust policy that lets the VPC flow-log service assume the delivery role.</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.7.0/examples/vpc/data.tf#L15"><code>./data.tf</code></a></td>
+</tr>
+<tr>
+<td>flow_logs_publish</td>
+<td>data</td>
+<td><code>aws_iam_policy_document</code></td>
+<td>-</td>
+<td>-</td>
+<td></td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.7.0/examples/vpc/data.tf#L33"><code>./data.tf</code></a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="module-calls">Module Calls<a class="headerlink" href="#module-calls" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Source</th>
+<th>Version</th>
+<th>Count</th>
+<th>For Each</th>
+<th>Depends On</th>
+<th>Providers</th>
+<th>Inputs</th>
+<th>Comment</th>
+<th>Position</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>endpoints</td>
+<td>terraform-aws-modules/vpc/aws//modules/vpc-endpoints</td>
+<td>~&gt; 5.8</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td><code>endpoints, security_group_ids, subnet_ids, tags, vpc_id</code></td>
+<td>Gateway and interface endpoints so private subnets reach AWS APIs without traversing the NAT gateway.</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.7.0/examples/vpc/modules.tf#L3"><code>./modules.tf</code></a></td>
+</tr>
+<tr>
+<td>flow_log_bucket</td>
+<td>./modules/log-bucket</td>
+<td></td>
+<td><code>var.flow_logs.enabled &amp;&amp; var.flow_logs.destination == "s3" ? 1 : 0</code></td>
+<td>-</td>
+<td>-</td>
+<td><code>aws=aws, aws.replica=aws.dr</code></td>
+<td><code>account_id, bucket_prefix, expiration_days, replicate</code></td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.7.0/examples/vpc/modules.tf#L22"><code>./modules.tf</code></a></td>
+</tr>
+<tr>
+<td>subnet_labels</td>
+<td>cloudposse/label/null</td>
+<td>0.25.0</td>
+<td>-</td>
+<td><code>toset(local.azs)</code></td>
+<td><code>aws_subnet.public, aws_subnet.private</code></td>
+<td>-</td>
+<td><code>attributes, environment, namespace</code></td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.7.0/examples/vpc/modules.tf#L37"><code>./modules.tf</code></a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="moved">Moved<a class="headerlink" href="#moved" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>From</th>
+<th>To</th>
+<th>Position</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>aws_subnet.public[0]</code></td>
+<td><code>aws_subnet.public["us-east-1a"]</code></td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.7.0/examples/vpc/refactor.tf#L2"><code>./refactor.tf</code></a></td>
+</tr>
+<tr>
+<td><code>aws_subnet.public[1]</code></td>
+<td><code>aws_subnet.public["us-east-1b"]</code></td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.7.0/examples/vpc/refactor.tf#L7"><code>./refactor.tf</code></a></td>
+</tr>
+<tr>
+<td><code>aws_nat_gateway.main</code></td>
+<td><code>aws_nat_gateway.this[0]</code></td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.7.0/examples/vpc/refactor.tf#L12"><code>./refactor.tf</code></a></td>
+</tr>
+<tr>
+<td><code>module.endpoints_legacy</code></td>
+<td><code>module.endpoints</code></td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.7.0/examples/vpc/refactor.tf#L17"><code>./refactor.tf</code></a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="imports">Imports<a class="headerlink" href="#imports" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>To</th>
+<th>ID</th>
+<th>Provider</th>
+<th>Position</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>aws_vpc.this</code></td>
+<td><code>var.import_existing_vpc_id</code></td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.7.0/examples/vpc/refactor.tf#L22"><code>./refactor.tf</code></a></td>
+</tr>
+<tr>
+<td><code>aws_internet_gateway.this[0]</code></td>
+<td><code>"igw-0123456789abcdef0"</code></td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.7.0/examples/vpc/refactor.tf#L27"><code>./refactor.tf</code></a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="removed">Removed<a class="headerlink" href="#removed" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>From</th>
+<th>Destroy on Drop</th>
+<th>Position</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>aws_default_security_group.this</code></td>
+<td>✗</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.7.0/examples/vpc/refactor.tf#L32"><code>./refactor.tf</code></a></td>
+</tr>
+<tr>
+<td><code>aws_vpn_connection.legacy</code></td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.7.0/examples/vpc/refactor.tf#L40"><code>./refactor.tf</code></a></td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-circle-arrow-up" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m16 12-4-4-4 4M12 16V8"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../" class="md-footer__link md-footer__link--prev" aria-label="Previous: Example gallery">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-arrow-left" viewBox="0 0 24 24"><path d="m12 19-7-7 7-7M19 12H5"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                Example gallery
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../complete/" class="md-footer__link md-footer__link--next" aria-label="Next: complete">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                complete
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Released under the Mozilla Public License 2.0
+    </div>
+  
+  
+    Made with
+    <a href="https://zensical.org/" target="_blank" rel="noopener">
+      Zensical
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/RemoteRabbit/open-docs" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.3.1 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2026 Fonticons, Inc.--><path fill="currentColor" d="M216.5 362.5c-66-8-112.5-55.5-112.5-117 0-25 9-52 24-70-6.5-16.5-5.5-51.5 2-66 20-2.5 47 8 63 22.5 19-6 39-9 63.5-9s44.5 3 62.5 8.5c15.5-14 43-24.5 63-22 7 13.5 8 48.5 1.5 65.5 16 19 24.5 44.5 24.5 70.5 0 61.5-46.5 108-113.5 116.5 17 11 28.5 35 28.5 62.5v52c0 15 12.5 23.5 27.5 17.5C441 459.5 512 369 512 257 512 115.5 397 0 255.5 0S0 115.5 0 257c0 111 70.5 203 165.5 237.5 13.5 5 26.5-4 26.5-17.5v-40c-7 3-16 5-24 5-33 0-52.5-18-66.5-51.5-5.5-13.5-11.5-21.5-23-23-6-.5-8-3-8-6 0-6 10-10.5 20-10.5 14.5 0 27 9 40 27.5 10 14.5 20.5 21 33 21s20.5-4.5 32-16c8.5-8.5 15-16 21-21"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog" role="status" aria-atomic="true">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      
+      
+        
+        
+      <script id="__config" type="application/json">{"annotate":null,"base":"../..","features":["content.action.edit","content.code.annotate","content.code.copy","content.tabs.link","navigation.footer","navigation.indexes","navigation.instant","navigation.path","navigation.sections","navigation.top","navigation.tracking","search.highlight"],"redirect":null,"search":"../../assets/javascripts/workers/search.719e0d91.min.js","tags":null,"translations":{"clipboard.copied":"Copied to clipboard","clipboard.copy":"Copy to clipboard","clipboard.error":"Could not copy to clipboard","search.result.more.one":"1 more on this page","search.result.more.other":"# more on this page","search.result.none":"No matching documents","search.result.one":"1 matching document","search.result.other":"# matching documents","search.result.placeholder":"Type to start searching","search.result.term.missing":"Missing","select.version":"Select version"},"version":{"alias":true,"default":"latest","provider":"mike"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.3cb411a8.min.js"></script>
+      
+    
+  </body>
+</html>
