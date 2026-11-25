@@ -12,9 +12,12 @@ structured types).
 
 [![CI](https://img.shields.io/badge/CI-555555)](https://github.com/RemoteRabbit/open-docs/actions/workflows/ci.yml)
 [![Latest release](https://img.shields.io/github/v/release/RemoteRabbit/open-docs)](https://github.com/RemoteRabbit/open-docs/releases/latest)
+![Latest RC](https://img.shields.io/github/v/tag/remoterabbit/open-docs?include_prereleases&sort=semver&label=Latest%20RC)
 [![Go Version](https://img.shields.io/github/go-mod/go-version/RemoteRabbit/open-docs/main)](./go.mod)
 [![Docs](https://img.shields.io/badge/docs-visit-0d619e?link=https://remoterabbit.github.io/open-docs/)](https://remoterabbit.github.io/open-docs/)
 [![License: MPL 2.0](https://img.shields.io/github/license/RemoteRabbit/open-docs)](./LICENSE)
+[![OpenSSF Best Practices](https://www.bestpractices.dev/projects/17117/badge)](https://www.bestpractices.dev/projects/17117)
+![Github Downloads](https://img.shields.io/github/downloads/remoterabbit/open-docs/total?label=Downloads)
 
 <!--
 [![Coverage](https://codecov.io/gh/RemoteRabbit/open-docs/branch/main/graph/badge.svg)](https://codecov.io/gh/RemoteRabbit/open-docs)
