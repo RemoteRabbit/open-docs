@@ -9,12 +9,16 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number }}
+  cancel-in-progress: true
+
 jobs:
   conventional-title:
     name: conventional PR title
     runs-on: ubuntu-latest
     permissions:
-      pull-requests: read
+      pull-requests: read # read the PR title
     steps:
       # Squash merges use the PR title as the commit message, which
       # release-please turns into the changelog and version bump.

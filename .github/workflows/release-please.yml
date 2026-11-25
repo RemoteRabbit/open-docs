@@ -6,12 +6,18 @@ on:
 
 permissions: {}
 
+# Never cancel a run partway through creating a release PR or tag.
+concurrency:
+  group: ${{ github.workflow }}
+  cancel-in-progress: false
+
 jobs:
   release-please:
+    name: release-please
     runs-on: ubuntu-latest
     permissions:
-      contents: write
-      pull-requests: write
+      contents: write # create release commits, tags, and GitHub Releases
+      pull-requests: write # open and update the release PR
     outputs:
       releases_created: ${{ steps.release.outputs.releases_created }}
     steps:
@@ -33,6 +39,7 @@ jobs:
   # version from the open release PR. release-please only tracks the version in
   # its manifest, so these tags never affect its changelog or version bumps.
   rc:
+    name: tag release candidate
     needs: release-please
     if: needs.release-please.outputs.releases_created != 'true'
     runs-on: ubuntu-latest
@@ -74,6 +81,7 @@ jobs:
   # A stable release supersedes every release candidate, including ones cut for a
   # version that was later bumped (v0.6.1-rc.1 before a feat made it 0.7.0).
   cleanup-rc:
+    name: delete release candidates
     needs: release-please
     if: needs.release-please.outputs.releases_created == 'true'
     runs-on: ubuntu-latest

@@ -5,13 +5,20 @@ on:
     tags:
       - 'v*'
 
-permissions:
-  contents: write # publish GitHub Releases + upload assets
-  id-token: write # cosign keyless signing (Sigstore Fulcio)
+permissions: {}
+
+# Never cancel a release partway through publishing assets.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
 
 jobs:
   goreleaser:
+    name: goreleaser
     runs-on: ubuntu-latest
+    permissions:
+      contents: write # publish GitHub Releases + upload assets
+      id-token: write # cosign keyless signing (Sigstore Fulcio)
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:

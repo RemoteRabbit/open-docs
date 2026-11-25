@@ -16,6 +16,7 @@ concurrency:
 
 jobs:
   govulncheck:
+    name: govulncheck
     runs-on: ubuntu-latest
     steps:
       - uses: golang/govulncheck-action@032d45514ae346b1db93c04b0c90b841c370344f # v1.1.0
@@ -23,10 +24,11 @@ jobs:
           go-version-file: go.mod
 
   codeql:
+    name: codeql
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      security-events: write
+      security-events: write # upload CodeQL results to code scanning
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
@@ -45,7 +47,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: read
-      security-events: write
+      security-events: write # upload zizmor SARIF to code scanning
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
         with:
