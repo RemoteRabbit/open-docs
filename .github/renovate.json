@@ -33,12 +33,6 @@
     "gomodTidy",
     "gomodUpdateImportPaths"
   ],
-  "lockFileMaintenance": {
-    "enabled": true,
-    "schedule": [
-      "before 06:00 on the first day of the month"
-    ]
-  },
   "vulnerabilityAlerts": {
     "enabled": true,
     "labels": [
@@ -84,7 +78,7 @@
       ]
     },
     {
-      "description": "Group hashicorp/hcl + zclconf/go-cty - they release in lockstep.",
+      "description": "Group hashicorp/hcl + zclconf/go-cty - they release in lockstep. go-cty is indirect, so force the deps type to keep the group's commit type consistent.",
       "matchManagers": [
         "gomod"
       ],
@@ -92,7 +86,9 @@
         "github.com/hashicorp/hcl/v2",
         "github.com/zclconf/go-cty"
       ],
-      "groupName": "hcl + cty"
+      "groupName": "hcl + cty",
+      "semanticCommitType": "deps",
+      "semanticCommitScope": "{{depName}}"
     },
     {
       "description": "GitHub Actions: pin to commit SHA, group all together, ship as ci(deps).",
@@ -101,34 +97,23 @@
       ],
       "groupName": "github actions",
       "semanticCommitType": "ci",
-      "semanticCommitScope": "deps",
-      "pinDigests": true
-    },
-    {
-      "description": "asdf / .tool-versions - grouped, chore (build env, not shipped).",
-      "matchManagers": [
-        "asdf"
-      ],
-      "groupName": "asdf tool-versions",
-      "semanticCommitType": "chore",
       "semanticCommitScope": "deps"
     },
     {
-      "description": "Auto-merge patch + digest + pin updates for dev tooling once CI is green.",
+      "description": "Auto-merge patch + digest + pin updates for GitHub Actions once CI is green.",
       "matchUpdateTypes": [
         "patch",
         "digest",
         "pin"
       ],
       "matchManagers": [
-        "github-actions",
-        "asdf"
+        "github-actions"
       ],
       "automerge": true,
       "platformAutomerge": true
     },
     {
-      "description": "Auto-merge indirect Go bumps and patch-level gomod updates.",
+      "description": "Auto-merge patch and digest gomod updates.",
       "matchManagers": [
         "gomod"
       ],
@@ -165,15 +150,15 @@
   ],
   "customManagers": [
     {
-      "description": "Keep `go run github.com/<x>@vX.Y.Z` pins in the Makefile fresh (e.g. addlicense).",
+      "description": "Keep `pip install <pkg>==<version>` pins in workflows fresh (e.g. zensical).",
       "customType": "regex",
       "managerFilePatterns": [
-        "/(^|/)Makefile$/"
+        "/(^|/)\\.github/workflows/[^/]+\\.ya?ml$/"
       ],
       "matchStrings": [
-        "go run (?<depName>github\\.com/[^@\\s]+)@(?<currentValue>v\\d+\\.\\d+\\.\\d+)"
+        "pip install (?<depName>[A-Za-z0-9._-]+)==(?<currentValue>[^\\s]+)"
       ],
-      "datasourceTemplate": "go"
+      "datasourceTemplate": "pypi"
     }
   ]
 }
