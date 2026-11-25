@@ -1,0 +1,2598 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="A documentation generator for Terraform/OpenTofu modules.">
+      
+      
+        <meta name="author" content="Tristan Jahnke">
+      
+      
+        <link rel="canonical" href="https://remoterabbit.github.io/open-docs/0.5/examples/complete/">
+      
+      
+        <link rel="prev" href="../vpc/">
+      
+      
+        <link rel="next" href="../invalid/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="zensical-0.0.45">
+    
+    
+      
+        <title>Module complete - open-docs</title>
+      
+    
+    
+      
+        
+      
+      <link rel="stylesheet" href="../../assets/stylesheets/modern/main.fba56155.min.css">
+      
+        
+          
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/modern/palette.dfe2e883.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Inter:300,300i,400,400i,500,500i,700,700i%7CJetBrains+Mono:400,400i,700,700i&amp;display=fallback">
+        <style>:root{--md-text-font:"Inter";--md-code-font:"JetBrains Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_scope.pathname.endsWith("/")||(__md_scope=new URL(__md_scope.pathname+"/",location)),__md_hash=e=>[...e].reduce(((e,t)=>(e<<5)-e+t.charCodeAt(0)),0),__md_get=(e,t=localStorage,_=__md_scope)=>JSON.parse(t.getItem(_.pathname+"."+e)),__md_set=(e,t,_=localStorage,a=__md_scope)=>{try{_.setItem(a.pathname+"."+e,JSON.stringify(t))}catch(e){}},document.documentElement.setAttribute("data-platform",navigator.platform)</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer" aria-label="Navigation"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#module-complete" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+      <div data-md-color-scheme="default" data-md-component="outdated" hidden>
+        
+          <aside class="md-banner md-banner--warning">
+            <div class="md-banner__inner md-grid md-typeset">
+              
+  You're viewing docs for an older release.
+  <a href="../../..">
+    <strong>Go to the latest version.</strong>
+  </a>
+
+            </div>
+            <script>var el=document.querySelector("[data-md-component=outdated]"),base=new URL("../.."),outdated=__md_get("__outdated",sessionStorage,base);!0===outdated&&el&&(el.hidden=!1)</script>
+          </aside>
+        
+      </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="../.." title="open-docs" class="md-header__button md-logo" aria-label="open-docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-file-text" viewBox="0 0 24 24"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5M10 9H8M16 13H8M16 17H8"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer" aria-label="Navigation">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-menu" viewBox="0 0 24 24"><path d="M4 5h16M4 12h16M4 19h16"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            open-docs
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Module complete
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="none" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to dark mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Switch to dark mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="none" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Switch to light mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Switch to light mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-moon" viewBox="0 0 24 24"><path d="M20.985 12.486a9 9 0 1 1-9.473-9.472c.405-.022.617.46.402.803a6 6 0 0 0 8.268 8.268c.344-.215.825-.004.803.401"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search" aria-label="Search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-search" viewBox="0 0 24 24"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog" aria-label="Search">
+  <button type="button" class="md-search__button">
+    Search
+  </button>
+</div>
+      
+    
+    <div class="md-header__source">
+      
+        <a href="https://github.com/RemoteRabbit/open-docs" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2026 Fonticons, Inc.--><path fill="currentColor" d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    RemoteRabbit/open-docs
+  </div>
+</a>
+      
+    </div>
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="open-docs" class="md-nav__button md-logo" aria-label="open-docs" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-file-text" viewBox="0 0 24 24"><path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z"/><path d="M14 2v5a1 1 0 0 0 1 1h5M10 9H8M16 13H8M16 17H8"/></svg>
+
+    </a>
+    open-docs
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/RemoteRabbit/open-docs" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2026 Fonticons, Inc.--><path fill="currentColor" d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    RemoteRabbit/open-docs
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Home
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../getting-started/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Getting started
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../configuration/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Configuration
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" checked>
+        
+          
+          <div class="md-nav__link md-nav__container">
+            <a href="../" class="md-nav__link ">
+              
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  Example gallery
+
+    
+  </span>
+  
+  
+
+            </a>
+            
+              
+              <label class="md-nav__link " for="__nav_4" id="__nav_4_label" tabindex="">
+                <span class="md-nav__icon md-icon"></span>
+              </label>
+            
+          </div>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+  Example gallery
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../vpc/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  vpc
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  complete
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="././" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  complete
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+
+<nav class="md-nav md-nav--secondary" aria-label="On this page">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      On this page
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#required-providers" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Required Providers
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#providers" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Providers
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#inputs" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Inputs
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#outputs" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Outputs
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#locals" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Locals
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#managed-resources" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Managed Resources
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#data-resources" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Data Resources
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ephemeral-resources" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Ephemeral Resources
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#module-calls" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Module Calls
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#moved" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Moved
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#imports" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Imports
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#removed" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Removed
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#checks" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Checks
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../invalid/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+  invalid
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  
+                    
+                    
+                    
+                      
+                    
+                    
+                      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+                      <div class="md-sidebar-button__wrapper">
+                        <label class="md-sidebar-button" for="__toc"></label>
+                      </div>
+                    
+                  
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--secondary" aria-label="On this page">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      On this page
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#required-providers" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Required Providers
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#providers" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Providers
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#inputs" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Inputs
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#outputs" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Outputs
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#locals" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Locals
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#managed-resources" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Managed Resources
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#data-resources" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Data Resources
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ephemeral-resources" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Ephemeral Resources
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#module-calls" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Module Calls
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#moved" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Moved
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#imports" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Imports
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#removed" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Removed
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#checks" class="md-nav__link">
+    <span class="md-ellipsis">
+      <span class="md-typeset">
+        Checks
+      </span>
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+                
+
+
+
+  
+
+
+  <nav class="md-path" aria-label="Navigation" >
+    <ol class="md-path__list">
+      
+        
+  
+  
+    <li class="md-path__item">
+      <a href="../.." class="md-path__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+
+      </a>
+    </li>
+  
+
+      
+      
+        
+  
+  
+    
+    
+      
+        
+          
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+    
+    
+      <li class="md-path__item">
+        <a href="../" class="md-path__link">
+          
+  
+  <span class="md-ellipsis">
+    Example gallery
+  </span>
+
+        </a>
+      </li>
+    
+  
+
+      
+    </ol>
+  </nav>
+
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+  
+    <a href="https://github.com/RemoteRabbit/open-docs/edit/main/docs/examples/complete.md" title="Edit this page" class="md-content__button md-icon" rel="edit">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-file-pen" viewBox="0 0 24 24"><path d="M12.659 22H18a2 2 0 0 0 2-2V8a2.4 2.4 0 0 0-.706-1.706l-3.588-3.588A2.4 2.4 0 0 0 14 2H6a2 2 0 0 0-2 2v9.34"/><path d="M14 2v5a1 1 0 0 0 1 1h5M10.378 12.622a1 1 0 0 1 3 3.003L8.36 20.637a2 2 0 0 1-.854.506l-2.867.837a.5.5 0 0 1-.62-.62l.836-2.869a2 2 0 0 1 .506-.853z"/></svg>
+    </a>
+  
+  
+
+
+<h1 id="module-complete">Module <code>complete</code><a class="headerlink" href="#module-complete" title="Permanent link">&para;</a></h1>
+<!-- VERSION-START -->
+<p>This documentation was generated with <a href="https://github.com/RemoteRabbit/open-docs">open-docs dev</a></p>
+<!-- VERSION-END -->
+
+<ul>
+<li><strong>Required core:</strong> <code>&gt;= 1.10.0, != 1.10.1</code></li>
+</ul>
+<h2 id="required-providers">Required Providers<a class="headerlink" href="#required-providers" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Source</th>
+<th>Version</th>
+<th>Position</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>aws</code></td>
+<td><code>hashicorp/aws</code></td>
+<td><code>~&gt; 5.70</code></td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/versions.tf#L9-L13"><code>./versions.tf</code></a></td>
+</tr>
+<tr>
+<td><code>http</code></td>
+<td><code>hashicorp/http</code></td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/versions.tf#L26-L28"><code>./versions.tf</code></a></td>
+</tr>
+<tr>
+<td><code>local</code></td>
+<td><code>registry.opentofu.org/hashicorp/local</code></td>
+<td><code>2.5.2</code></td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/versions.tf#L29-L32"><code>./versions.tf</code></a></td>
+</tr>
+<tr>
+<td><code>null</code></td>
+<td><code>hashicorp/null</code></td>
+<td><code>~&gt; 3.2</code></td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/versions.tf#L18-L21"><code>./versions.tf</code></a></td>
+</tr>
+<tr>
+<td><code>random</code></td>
+<td><code>hashicorp/random</code></td>
+<td><code>&gt;= 3.6.0, &lt; 4.0.0</code></td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/versions.tf#L14-L17"><code>./versions.tf</code></a></td>
+</tr>
+<tr>
+<td><code>time</code></td>
+<td>-</td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/versions.tf#L34"><code>./versions.tf</code></a></td>
+</tr>
+<tr>
+<td><code>tls</code></td>
+<td><code>hashicorp/tls</code></td>
+<td><code>~&gt; 4.0</code></td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/versions.tf#L22-L25"><code>./versions.tf</code></a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="providers">Providers<a class="headerlink" href="#providers" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Alias</th>
+<th>Position</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>aws</code></td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/providers.tf#L1"><code>./providers.tf</code></a></td>
+</tr>
+<tr>
+<td><code>aws</code></td>
+<td><code>by_region</code></td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/providers.tf#L6"><code>./providers.tf</code></a></td>
+</tr>
+<tr>
+<td><code>aws</code></td>
+<td><code>audit</code></td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/providers.tf#L12"><code>./providers.tf</code></a></td>
+</tr>
+<tr>
+<td><code>random</code></td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/providers.tf#L21"><code>./providers.tf</code></a></td>
+</tr>
+<tr>
+<td><code>http</code></td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/providers.tf#L23"><code>./providers.tf</code></a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="inputs">Inputs<a class="headerlink" href="#inputs" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Type</th>
+<th>Default</th>
+<th>Description</th>
+<th>Comment</th>
+<th>Sensitive</th>
+<th>Nullable</th>
+<th>Ephemeral</th>
+<th>Validation Count</th>
+<th>Position</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>json_variable</code></td>
+<td><code>string</code></td>
+<td><code>"from-json"</code></td>
+<td>A variable declared in a .tf.json file.</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>0</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/extra.tf.json#L4"><code>./extra.tf.json</code></a></td>
+</tr>
+<tr>
+<td><code>json_object</code></td>
+<td><code>object({name = string, size = optional(number, 1)})</code></td>
+<td><code>{name = "json"}</code></td>
+<td>An object-typed variable declared in JSON.</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>0</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/extra.tf.json#L9"><code>./extra.tf.json</code></a></td>
+</tr>
+<tr>
+<td><code>string_required</code></td>
+<td><code>string</code></td>
+<td>-</td>
+<td>A required string with no default.</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>0</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/variables.tf#L3"><code>./variables.tf</code></a></td>
+</tr>
+<tr>
+<td><code>string_default</code></td>
+<td><code>string</code></td>
+<td><code>"hello"</code></td>
+<td>A string with a default.</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>0</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/variables.tf#L8"><code>./variables.tf</code></a></td>
+</tr>
+<tr>
+<td><code>string_empty</code></td>
+<td><code>string</code></td>
+<td><code>""</code></td>
+<td>A string whose default is the empty string.</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>0</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/variables.tf#L14"><code>./variables.tf</code></a></td>
+</tr>
+<tr>
+<td><code>number_default</code></td>
+<td><code>number</code></td>
+<td><code>42</code></td>
+<td>A number.</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>0</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/variables.tf#L20"><code>./variables.tf</code></a></td>
+</tr>
+<tr>
+<td><code>number_float</code></td>
+<td><code>number</code></td>
+<td><code>3.14159</code></td>
+<td>A floating point number.</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>0</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/variables.tf#L26"><code>./variables.tf</code></a></td>
+</tr>
+<tr>
+<td><code>number_negative</code></td>
+<td><code>number</code></td>
+<td><code>-1</code></td>
+<td>A negative number.</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>0</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/variables.tf#L32"><code>./variables.tf</code></a></td>
+</tr>
+<tr>
+<td><code>bool_true</code></td>
+<td><code>bool</code></td>
+<td><code>true</code></td>
+<td>A bool defaulting to true.</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>0</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/variables.tf#L38"><code>./variables.tf</code></a></td>
+</tr>
+<tr>
+<td><code>bool_false</code></td>
+<td><code>bool</code></td>
+<td><code>false</code></td>
+<td>A bool defaulting to false.</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>0</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/variables.tf#L44"><code>./variables.tf</code></a></td>
+</tr>
+<tr>
+<td><code>null_default</code></td>
+<td><code>string</code></td>
+<td><code>null</code></td>
+<td>Optional because the default is null.</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>0</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/variables.tf#L50"><code>./variables.tf</code></a></td>
+</tr>
+<tr>
+<td><code>untyped</code></td>
+<td>-</td>
+<td>-</td>
+<td>No type constraint at all.</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>0</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/variables.tf#L56"><code>./variables.tf</code></a></td>
+</tr>
+<tr>
+<td><code>any_type</code></td>
+<td><code>any</code></td>
+<td><code>{anything = ["goes", 1, true]}</code></td>
+<td>Type <code>any</code> with a mixed default.</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>0</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/variables.tf#L60"><code>./variables.tf</code></a></td>
+</tr>
+<tr>
+<td><code>list_of_strings</code></td>
+<td><code>list(string)</code></td>
+<td><code>["a", "b", "c"]</code></td>
+<td>A list of strings.</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>0</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/variables.tf#L68"><code>./variables.tf</code></a></td>
+</tr>
+<tr>
+<td><code>list_empty</code></td>
+<td><code>list(number)</code></td>
+<td><code>[]</code></td>
+<td>An empty list.</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>0</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/variables.tf#L74"><code>./variables.tf</code></a></td>
+</tr>
+<tr>
+<td><code>set_of_strings</code></td>
+<td><code>set(string)</code></td>
+<td><code>["x", "y"]</code></td>
+<td>A set of strings.</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>0</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/variables.tf#L80"><code>./variables.tf</code></a></td>
+</tr>
+<tr>
+<td><code>map_of_numbers</code></td>
+<td><code>map(number)</code></td>
+<td><code>{large = 100, medium = 10, small = 1}</code></td>
+<td>A map of numbers.</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>0</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/variables.tf#L86"><code>./variables.tf</code></a></td>
+</tr>
+<tr>
+<td><code>map_empty</code></td>
+<td><code>map(string)</code></td>
+<td><code>{}</code></td>
+<td>An empty map.</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>0</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/variables.tf#L96"><code>./variables.tf</code></a></td>
+</tr>
+<tr>
+<td><code>tuple_type</code></td>
+<td><code>tuple([string, number, bool])</code></td>
+<td><code>["one", 2, true]</code></td>
+<td>A tuple with mixed element types.</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>0</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/variables.tf#L102"><code>./variables.tf</code></a></td>
+</tr>
+<tr>
+<td><code>list_of_lists</code></td>
+<td><code>list(list(string))</code></td>
+<td><code>[["a", "b"], ["c"]]</code></td>
+<td>Nested collections.</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>0</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/variables.tf#L108"><code>./variables.tf</code></a></td>
+</tr>
+<tr>
+<td><code>map_of_lists</code></td>
+<td><code>map(list(string))</code></td>
+<td><code>{admins = ["alice", "bob"], readers = []}</code></td>
+<td>A map whose values are lists.</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>0</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/variables.tf#L114"><code>./variables.tf</code></a></td>
+</tr>
+<tr>
+<td><code>regions</code></td>
+<td><code>set(string)</code></td>
+<td><code>["us-east-1", "us-west-2", "eu-west-1"]</code></td>
+<td>Regions for the multi-instance <code>aws.by_region</code> provider.</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>0</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/variables.tf#L123"><code>./variables.tf</code></a></td>
+</tr>
+<tr>
+<td><code>simple_object</code></td>
+<td><code>object({enabled = bool, name = string, port = number})</code></td>
+<td><code>{enabled = true, name = "svc", port = 8080}</code></td>
+<td>An object with only required attributes.</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>0</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/variables.tf#L131"><code>./variables.tf</code></a></td>
+</tr>
+<tr>
+<td><code>optional_object</code></td>
+<td><code>object({image = optional(string), labels = optional(map(string), {}), name = string, ports = optional(list(number), [80, 443]), replicas = optional(number, 1)})</code></td>
+<td>-</td>
+<td>An object with optional attributes and defaults. Required, so no default.</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>0</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/variables.tf#L145"><code>./variables.tf</code></a></td>
+</tr>
+<tr>
+<td><code>nested_object</code></td>
+<td><code>object({database = optional(object({engine = optional(string, "postgres"), storage = optional(object({encrypted = optional(bool, true), iops = optional(number), size_gb = optional(number, 20)}), {encrypted = null, iops = null, size_gb = null}), version = optional(string, "16")}), {engine = null, storage = null, version = null}), network = object({cidr = string, subnets = list(object({cidr = string, name = string, public = optional(bool, false)}))})})</code></td>
+<td><code>{network = {cidr = "10.0.0.0/16", subnets = [{cidr = "10.0.1.0/24", name = "a", public = true}, {cidr = "10.0.2.0/24", name = "b"}]}}</code></td>
+<td>Deeply nested objects with optional attributes at several levels.</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>0</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/variables.tf#L156"><code>./variables.tf</code></a></td>
+</tr>
+<tr>
+<td><code>list_of_objects</code></td>
+<td><code>list(object({name = string, value = string}))</code></td>
+<td><code>[{name = "first", value = "1"}, {name = "second", value = "2"}]</code></td>
+<td>A list of objects.</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>0</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/variables.tf#L188"><code>./variables.tf</code></a></td>
+</tr>
+<tr>
+<td><code>map_of_objects</code></td>
+<td><code>map(object({instance_type = string, max_size = optional(number, 3), min_size = optional(number, 1)}))</code></td>
+<td><code>{web = {instance_type = "t3.small"}, worker = {instance_type = "c6i.large", max_size = 10}}</code></td>
+<td>A map of objects, the classic node-group shape.</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>0</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/variables.tf#L200"><code>./variables.tf</code></a></td>
+</tr>
+<tr>
+<td><code>sensitive_string</code></td>
+<td><code>string</code></td>
+<td><code>"hunter2"</code></td>
+<td>A sensitive variable with a default.</td>
+<td>-</td>
+<td>✓</td>
+<td>-</td>
+<td>-</td>
+<td>0</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/variables.tf#L215"><code>./variables.tf</code></a></td>
+</tr>
+<tr>
+<td><code>state_passphrase</code></td>
+<td><code>string</code></td>
+<td>-</td>
+<td>Passphrase for OpenTofu state encryption.</td>
+<td>-</td>
+<td>✓</td>
+<td>-</td>
+<td>-</td>
+<td>0</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/variables.tf#L222"><code>./variables.tf</code></a></td>
+</tr>
+<tr>
+<td><code>nullable_false</code></td>
+<td><code>string</code></td>
+<td><code>"never-null"</code></td>
+<td>Explicitly not nullable.</td>
+<td>-</td>
+<td>-</td>
+<td>✗</td>
+<td>-</td>
+<td>0</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/variables.tf#L228"><code>./variables.tf</code></a></td>
+</tr>
+<tr>
+<td><code>nullable_true</code></td>
+<td><code>string</code></td>
+<td><code>null</code></td>
+<td>Explicitly nullable.</td>
+<td>-</td>
+<td>-</td>
+<td>✓</td>
+<td>-</td>
+<td>0</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/variables.tf#L235"><code>./variables.tf</code></a></td>
+</tr>
+<tr>
+<td><code>ephemeral_token</code></td>
+<td><code>string</code></td>
+<td>-</td>
+<td>An ephemeral, sensitive input that is never persisted.</td>
+<td>-</td>
+<td>✓</td>
+<td>-</td>
+<td>✓</td>
+<td>0</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/variables.tf#L242"><code>./variables.tf</code></a></td>
+</tr>
+<tr>
+<td><code>many_validations</code></td>
+<td><code>string</code></td>
+<td><code>"abc-123"</code></td>
+<td>Three validation blocks.</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>3</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/variables.tf#L249"><code>./variables.tf</code></a></td>
+</tr>
+<tr>
+<td><code>pipe_in_description</code></td>
+<td><code>string</code></td>
+<td><code>"a\|b"</code></td>
+<td>Contains a pipe | character that would break a Markdown table | if unescaped.</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>0</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/variables.tf#L272"><code>./variables.tf</code></a></td>
+</tr>
+<tr>
+<td><code>markdown_in_description</code></td>
+<td><code>string</code></td>
+<td><code>"*"</code></td>
+<td>Has <strong>bold</strong>, <em>italic</em>, <code>code</code>, a <a href="https://opentofu.org">link</a>, and <b>raw HTML</b>.</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>0</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/variables.tf#L278"><code>./variables.tf</code></a></td>
+</tr>
+<tr>
+<td><code>multiline_description</code></td>
+<td><code>string</code></td>
+<td><code>"x"</code></td>
+<td>A heredoc description spanning several lines. - It has a bullet list - and a blank line above And a trailing paragraph.</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>0</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/variables.tf#L284"><code>./variables.tf</code></a></td>
+</tr>
+<tr>
+<td><code>unicode_description</code></td>
+<td><code>string</code></td>
+<td><code>"héllo wörld ✓"</code></td>
+<td>Unicode: 日本語, emoji 🚀, arrows → ←, and accents café.</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>0</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/variables.tf#L297"><code>./variables.tf</code></a></td>
+</tr>
+<tr>
+<td><code>long_description</code></td>
+<td><code>string</code></td>
+<td><code>"long"</code></td>
+<td>This description is intentionally very long so that table cells wrap or overflow in renderers. Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>0</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/variables.tf#L303"><code>./variables.tf</code></a></td>
+</tr>
+<tr>
+<td><code>long_default</code></td>
+<td><code>list(string)</code></td>
+<td><code>["10.0.0.0/24", "10.0.1.0/24", "10.0.2.0/24", "10.0.3.0/24", "10.0.4.0/24", "10.0.5.0/24", "10.0.6.0/24", "10.0.7.0/24", "10.0.8.0/24", "10.0.9.0/24"]</code></td>
+<td>A default value long enough to stress column widths.</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>0</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/variables.tf#L309"><code>./variables.tf</code></a></td>
+</tr>
+<tr>
+<td><code>quotes_in_default</code></td>
+<td><code>string</code></td>
+<td><code>"she said \"hi\" and left</code>quickly<code>"</code></td>
+<td>Escaped quotes and backticks inside a default.</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>0</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/variables.tf#L315"><code>./variables.tf</code></a></td>
+</tr>
+<tr>
+<td><code>heredoc_default</code></td>
+<td><code>string</code></td>
+<td><code>"#!/bin/bash\necho \"user data\"\n"</code></td>
+<td>A multi-line heredoc default.</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>0</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/variables.tf#L321"><code>./variables.tf</code></a></td>
+</tr>
+<tr>
+<td><code>interpolated_default_like</code></td>
+<td><code>string</code></td>
+<td><code>"${not_interpolated}"</code></td>
+<td>A literal that looks like interpolation.</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>0</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/variables.tf#L330"><code>./variables.tf</code></a></td>
+</tr>
+<tr>
+<td><code>comment_only</code></td>
+<td><code>string</code></td>
+<td><code>"c"</code></td>
+<td>-</td>
+<td>Leading doc-comment, no description attribute. The renderer should surface this in the Comment column.</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>0</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/variables.tf#L338"><code>./variables.tf</code></a></td>
+</tr>
+<tr>
+<td><code>comment_and_description</code></td>
+<td><code>string</code></td>
+<td><code>"both"</code></td>
+<td>Has both a description and a leading block comment.</td>
+<td>Block-style doc-comment above a variable that also has a description.</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>0</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/variables.tf#L346"><code>./variables.tf</code></a></td>
+</tr>
+<tr>
+<td><code>slash_comment</code></td>
+<td><code>number</code></td>
+<td><code>0</code></td>
+<td>-</td>
+<td>Double-slash comment style.</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>0</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/variables.tf#L353"><code>./variables.tf</code></a></td>
+</tr>
+<tr>
+<td><code>no_description</code></td>
+<td><code>string</code></td>
+<td><code>"undocumented"</code></td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>0</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/variables.tf#L358"><code>./variables.tf</code></a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="outputs">Outputs<a class="headerlink" href="#outputs" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Value</th>
+<th>References</th>
+<th>Description</th>
+<th>Comment</th>
+<th>Sensitive</th>
+<th>Ephemeral</th>
+<th>Depends On</th>
+<th>Position</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>json_output</td>
+<td><code>"${null_resource.from_json.id}"</code></td>
+<td><code>null_resource.from_json</code></td>
+<td>An output declared in a .tf.json file.</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/extra.tf.json#L28"><code>./extra.tf.json</code></a></td>
+</tr>
+<tr>
+<td>literal</td>
+<td><code>"constant"</code></td>
+<td>-</td>
+<td>A literal string output.</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/outputs.tf#L1"><code>./outputs.tf</code></a></td>
+</tr>
+<tr>
+<td>simple_ref</td>
+<td><code>null_resource.empty.id</code></td>
+<td><code>null_resource.empty</code></td>
+<td>A single attribute reference.</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/outputs.tf#L6"><code>./outputs.tf</code></a></td>
+</tr>
+<tr>
+<td>splat</td>
+<td><code>random_pet.names[*].id</code></td>
+<td><code>random_pet.names</code></td>
+<td>A splat expression over a counted resource.</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/outputs.tf#L11"><code>./outputs.tf</code></a></td>
+</tr>
+<tr>
+<td>for_expression</td>
+<td><code>{ for k, v in random_string.per_key : k =&gt; v.result }</code></td>
+<td><code>random_string.per_key</code></td>
+<td>A for expression over a for_each resource.</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/outputs.tf#L16"><code>./outputs.tf</code></a></td>
+</tr>
+<tr>
+<td>many_references</td>
+<td><code>{ vars = [var.string_default, var.number_default, var.bool_true] locals = [local.literal_string, local.interpolated] data = data.aws_caller_identity.current.account_id module = module.child.passthrough managed = aws_s3_bucket.replica.arn }</code></td>
+<td><code>var.string_default, var.number_default, var.bool_true, local.literal_string, local.interpolated, data.aws_caller_identity.current, module.child.passthrough, aws_s3_bucket.replica</code></td>
+<td>References every kind of address: var, local, data, module, managed resource.</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/outputs.tf#L21"><code>./outputs.tf</code></a></td>
+</tr>
+<tr>
+<td>conditional</td>
+<td><code>var.bool_true ? module.child.passthrough : null</code></td>
+<td><code>var.bool_true, module.child.passthrough</code></td>
+<td>A conditional referencing a module output.</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/outputs.tf#L32"><code>./outputs.tf</code></a></td>
+</tr>
+<tr>
+<td>sensitive_value</td>
+<td><code>random_password.db.result</code></td>
+<td><code>random_password.db</code></td>
+<td>A sensitive output.</td>
+<td>-</td>
+<td>✓</td>
+<td>-</td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/outputs.tf#L37"><code>./outputs.tf</code></a></td>
+</tr>
+<tr>
+<td>ephemeral_value</td>
+<td><code>ephemeral.random_password.session.result</code></td>
+<td><code>ephemeral.random_password.session</code></td>
+<td>An ephemeral output (only valid in a child module).</td>
+<td>-</td>
+<td>✓</td>
+<td>✓</td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/outputs.tf#L43"><code>./outputs.tf</code></a></td>
+</tr>
+<tr>
+<td>with_depends_on</td>
+<td><code>"done"</code></td>
+<td>-</td>
+<td>An output with explicit depends_on.</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td><code>time_sleep.wait, module.registry_for_each</code></td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/outputs.tf#L50"><code>./outputs.tf</code></a></td>
+</tr>
+<tr>
+<td>with_precondition</td>
+<td><code>local.primary</code></td>
+<td><code>local.primary</code></td>
+<td>An output with a precondition block.</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/outputs.tf#L56"><code>./outputs.tf</code></a></td>
+</tr>
+<tr>
+<td>pipe_in_value</td>
+<td><code>"a \| b \| c"</code></td>
+<td>-</td>
+<td>Pipe characters in the value and description | here.</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/outputs.tf#L66"><code>./outputs.tf</code></a></td>
+</tr>
+<tr>
+<td>heredoc</td>
+<td><code>&lt;&lt;-EOT multi line EOT</code></td>
+<td>-</td>
+<td>A heredoc value.</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/outputs.tf#L71"><code>./outputs.tf</code></a></td>
+</tr>
+<tr>
+<td>comment_only</td>
+<td><code>local.literal_number</code></td>
+<td><code>local.literal_number</code></td>
+<td>-</td>
+<td>Comment-only output with no description.</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/outputs.tf#L80"><code>./outputs.tf</code></a></td>
+</tr>
+<tr>
+<td>no_description</td>
+<td><code>local.literal_list</code></td>
+<td><code>local.literal_list</code></td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/outputs.tf#L84"><code>./outputs.tf</code></a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="locals">Locals<a class="headerlink" href="#locals" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Value</th>
+<th>References</th>
+<th>Position</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>conditional</td>
+<td><code>var.bool_true ? "yes" : "no"</code></td>
+<td><code>var.bool_true</code></td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/locals.tf#L11"><code>./locals.tf</code></a></td>
+</tr>
+<tr>
+<td>for_list</td>
+<td><code>[for s in var.list_of_strings : upper(s)]</code></td>
+<td><code>var.list_of_strings</code></td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/locals.tf#L12"><code>./locals.tf</code></a></td>
+</tr>
+<tr>
+<td>for_map</td>
+<td><code>{ for k, v in var.map_of_numbers : k =&gt; v * 2 if v &gt; 1 }</code></td>
+<td><code>var.map_of_numbers</code></td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/locals.tf#L13"><code>./locals.tf</code></a></td>
+</tr>
+<tr>
+<td>from_var</td>
+<td><code>var.string_default</code></td>
+<td><code>var.string_default</code></td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/locals.tf#L9"><code>./locals.tf</code></a></td>
+</tr>
+<tr>
+<td>function_chain</td>
+<td><code>join(",", sort(distinct(concat(var.list_of_strings, ["z"]))))</code></td>
+<td><code>var.list_of_strings</code></td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/locals.tf#L15"><code>./locals.tf</code></a></td>
+</tr>
+<tr>
+<td>heredoc_value</td>
+<td><code>&lt;&lt;-EOT line one line two EOT</code></td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/locals.tf#L18-L21"><code>./locals.tf</code></a></td>
+</tr>
+<tr>
+<td>interpolated</td>
+<td><code>"${var.string_default}-${local.literal_number}"</code></td>
+<td><code>var.string_default, local.literal_number</code></td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/locals.tf#L10"><code>./locals.tf</code></a></td>
+</tr>
+<tr>
+<td>json_local</td>
+<td><code>"${var.json_variable}-local"</code></td>
+<td><code>var.json_variable</code></td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/extra.tf.json#L16"><code>./extra.tf.json</code></a></td>
+</tr>
+<tr>
+<td>literal_bool</td>
+<td><code>true</code></td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/locals.tf#L4"><code>./locals.tf</code></a></td>
+</tr>
+<tr>
+<td>literal_list</td>
+<td><code>[1, 2, 3]</code></td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/locals.tf#L6"><code>./locals.tf</code></a></td>
+</tr>
+<tr>
+<td>literal_map</td>
+<td><code>{ a = 1, b = "two" }</code></td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/locals.tf#L7"><code>./locals.tf</code></a></td>
+</tr>
+<tr>
+<td>literal_null</td>
+<td><code>null</code></td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/locals.tf#L5"><code>./locals.tf</code></a></td>
+</tr>
+<tr>
+<td>literal_number</td>
+<td><code>7</code></td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/locals.tf#L3"><code>./locals.tf</code></a></td>
+</tr>
+<tr>
+<td>literal_string</td>
+<td><code>"plain"</code></td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/locals.tf#L2"><code>./locals.tf</code></a></td>
+</tr>
+<tr>
+<td>many_refs</td>
+<td><code>merge(var.map_of_objects, { extra = { instance_type = local.literal_string } }, module.child.passthrough)</code></td>
+<td><code>var.map_of_objects, local.literal_string, module.child.passthrough</code></td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/locals.tf#L16"><code>./locals.tf</code></a></td>
+</tr>
+<tr>
+<td>pipe_value</td>
+<td><code>"left \| right"</code></td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/locals.tf#L17"><code>./locals.tf</code></a></td>
+</tr>
+<tr>
+<td>primary</td>
+<td><code>local.regions_list[0]</code></td>
+<td><code>local.regions_list</code></td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/locals.tf#L27"><code>./locals.tf</code></a></td>
+</tr>
+<tr>
+<td>regions_list</td>
+<td><code>tolist(var.regions)</code></td>
+<td><code>var.regions</code></td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/locals.tf#L26"><code>./locals.tf</code></a></td>
+</tr>
+<tr>
+<td>splat</td>
+<td><code>random_pet.names[*].id</code></td>
+<td><code>random_pet.names</code></td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/locals.tf#L14"><code>./locals.tf</code></a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="managed-resources">Managed Resources<a class="headerlink" href="#managed-resources" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Mode</th>
+<th>Type</th>
+<th>Count</th>
+<th>For Each</th>
+<th>Depends On</th>
+<th>Nested Body</th>
+<th>LifeCycle</th>
+<th>Comment</th>
+<th>Position</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>from_json</td>
+<td>managed</td>
+<td><code>null_resource</code></td>
+<td>-</td>
+<td>-</td>
+<td></td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/extra.tf.json#L20"><code>./extra.tf.json</code></a></td>
+</tr>
+<tr>
+<td>empty</td>
+<td>managed</td>
+<td><code>null_resource</code></td>
+<td>-</td>
+<td>-</td>
+<td></td>
+<td>-</td>
+<td>-</td>
+<td>Minimal resource: no attributes, no meta-arguments.</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/resources.tf#L4"><code>./resources.tf</code></a></td>
+</tr>
+<tr>
+<td>names</td>
+<td>managed</td>
+<td><code>random_pet</code></td>
+<td><code>3</code></td>
+<td>-</td>
+<td></td>
+<td><code>length, prefix, separator</code></td>
+<td>-</td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/resources.tf#L6"><code>./resources.tf</code></a></td>
+</tr>
+<tr>
+<td>per_key</td>
+<td>managed</td>
+<td><code>random_string</code></td>
+<td>-</td>
+<td><code>var.map_of_numbers</code></td>
+<td></td>
+<td><code>length, special</code></td>
+<td>-</td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/resources.tf#L14"><code>./resources.tf</code></a></td>
+</tr>
+<tr>
+<td>db</td>
+<td>managed</td>
+<td><code>random_password</code></td>
+<td>-</td>
+<td>-</td>
+<td></td>
+<td><code>length, override_special, special</code></td>
+<td>-</td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/resources.tf#L21"><code>./resources.tf</code></a></td>
+</tr>
+<tr>
+<td>kitchen_sink</td>
+<td>managed</td>
+<td><code>aws_s3_bucket</code></td>
+<td>-</td>
+<td><code>{ for name, cfg in var.map_of_objects : name =&gt; cfg if cfg.max_size &gt; 1 }</code></td>
+<td>random_pet.names, null_resource.empty, module.child</td>
+<td><code>bucket, force_destroy, tags</code></td>
+<td><code>create_before_destroy=true; prevent_destroy=true; ignore_changes=[tags,force_destroy]; replace_triggered_by=[random_password.db.id,null_resource.empty]; preconditions=2; postconditions=1</code></td>
+<td>Resource with every meta-argument and a full lifecycle block.</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/resources.tf#L30"><code>./resources.tf</code></a></td>
+</tr>
+<tr>
+<td>replica</td>
+<td>managed</td>
+<td><code>aws_s3_bucket</code></td>
+<td>-</td>
+<td>-</td>
+<td></td>
+<td><code>bucket</code></td>
+<td>-</td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/resources.tf#L71"><code>./resources.tf</code></a></td>
+</tr>
+<tr>
+<td>ignore_all</td>
+<td>managed</td>
+<td><code>aws_iam_role</code></td>
+<td>-</td>
+<td>-</td>
+<td></td>
+<td><code>assume_role_policy, name</code></td>
+<td><code>ignore_changes=[all]</code></td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/resources.tf#L76"><code>./resources.tf</code></a></td>
+</tr>
+<tr>
+<td>nested</td>
+<td>managed</td>
+<td><code>aws_security_group</code></td>
+<td>-</td>
+<td>-</td>
+<td></td>
+<td><code>description, name_prefix</code></td>
+<td>-</td>
+<td>Nested blocks, dynamic blocks, and provisioners.</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/resources.tf#L95"><code>./resources.tf</code></a></td>
+</tr>
+<tr>
+<td>ca</td>
+<td>managed</td>
+<td><code>tls_private_key</code></td>
+<td>-</td>
+<td>-</td>
+<td></td>
+<td><code>algorithm, ecdsa_curve</code></td>
+<td>-</td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/resources.tf#L138"><code>./resources.tf</code></a></td>
+</tr>
+<tr>
+<td>rendered</td>
+<td>managed</td>
+<td><code>local_file</code></td>
+<td>-</td>
+<td>-</td>
+<td></td>
+<td><code>content, file_permission, filename</code></td>
+<td>-</td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/resources.tf#L143"><code>./resources.tf</code></a></td>
+</tr>
+<tr>
+<td>wait</td>
+<td>managed</td>
+<td><code>time_sleep</code></td>
+<td>-</td>
+<td>-</td>
+<td>aws_s3_bucket.kitchen_sink</td>
+<td><code>create_duration</code></td>
+<td>-</td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/resources.tf#L149"><code>./resources.tf</code></a></td>
+</tr>
+<tr>
+<td>replacement</td>
+<td>managed</td>
+<td><code>terraform_data</code></td>
+<td>-</td>
+<td>-</td>
+<td></td>
+<td><code>input, triggers_replace</code></td>
+<td>-</td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/resources.tf#L154"><code>./resources.tf</code></a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="data-resources">Data Resources<a class="headerlink" href="#data-resources" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Mode</th>
+<th>Type</th>
+<th>Count</th>
+<th>For Each</th>
+<th>Depends On</th>
+<th>Nested Body</th>
+<th>LifeCycle</th>
+<th>Comment</th>
+<th>Position</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>current</td>
+<td>data</td>
+<td><code>aws_caller_identity</code></td>
+<td>-</td>
+<td>-</td>
+<td></td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/resources.tf#L161"><code>./resources.tf</code></a></td>
+</tr>
+<tr>
+<td>per_region</td>
+<td>data</td>
+<td><code>aws_iam_policy_document</code></td>
+<td>-</td>
+<td><code>var.regions</code></td>
+<td></td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/resources.tf#L163"><code>./resources.tf</code></a></td>
+</tr>
+<tr>
+<td>health</td>
+<td>data</td>
+<td><code>http</code></td>
+<td><code>var.bool_true ? 1 : 0</code></td>
+<td>-</td>
+<td></td>
+<td><code>request_headers, url</code></td>
+<td><code>postconditions=1</code></td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/resources.tf#L173"><code>./resources.tf</code></a></td>
+</tr>
+<tr>
+<td>readme</td>
+<td>data</td>
+<td><code>local_file</code></td>
+<td>-</td>
+<td>-</td>
+<td>local_file.rendered</td>
+<td><code>filename</code></td>
+<td>-</td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/resources.tf#L190"><code>./resources.tf</code></a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="ephemeral-resources">Ephemeral Resources<a class="headerlink" href="#ephemeral-resources" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Mode</th>
+<th>Type</th>
+<th>Count</th>
+<th>For Each</th>
+<th>Depends On</th>
+<th>Nested Body</th>
+<th>LifeCycle</th>
+<th>Comment</th>
+<th>Position</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>session</td>
+<td>ephemeral</td>
+<td><code>random_password</code></td>
+<td>-</td>
+<td>-</td>
+<td></td>
+<td><code>length, special</code></td>
+<td>-</td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/resources.tf#L197"><code>./resources.tf</code></a></td>
+</tr>
+<tr>
+<td>db</td>
+<td>ephemeral</td>
+<td><code>aws_secretsmanager_secret_version</code></td>
+<td><code>var.bool_true ? 1 : 0</code></td>
+<td>-</td>
+<td>aws_iam_role.ignore_all</td>
+<td><code>secret_id</code></td>
+<td>-</td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/resources.tf#L202"><code>./resources.tf</code></a></td>
+</tr>
+<tr>
+<td>per_region</td>
+<td>ephemeral</td>
+<td><code>tls_private_key</code></td>
+<td>-</td>
+<td><code>var.regions</code></td>
+<td></td>
+<td><code>algorithm</code></td>
+<td>-</td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/resources.tf#L211"><code>./resources.tf</code></a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="module-calls">Module Calls<a class="headerlink" href="#module-calls" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Source</th>
+<th>Version</th>
+<th>Count</th>
+<th>For Each</th>
+<th>Depends On</th>
+<th>Providers</th>
+<th>Inputs</th>
+<th>Comment</th>
+<th>Position</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>child</td>
+<td>./modules/child</td>
+<td></td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td><code>aws=aws.audit, aws.replica=aws.replica</code></td>
+<td><code>count_value, enabled, name, objects, tags</code></td>
+<td>Local module with explicit provider mapping and several input shapes.</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/modules.tf#L2"><code>./modules.tf</code></a></td>
+</tr>
+<tr>
+<td>registry_count</td>
+<td>terraform-aws-modules/s3-bucket/aws</td>
+<td>4.1.2</td>
+<td><code>var.bool_false ? 1 : 0</code></td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td><code>bucket</code></td>
+<td>Registry module with count.</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/modules.tf#L18"><code>./modules.tf</code></a></td>
+</tr>
+<tr>
+<td>registry_for_each</td>
+<td>cloudposse/label/null</td>
+<td>&gt;= 0.25.0, &lt; 1.0.0</td>
+<td>-</td>
+<td><code>toset(var.list_of_strings)</code></td>
+<td><code>module.child, random_pet.names</code></td>
+<td>-</td>
+<td><code>name</code></td>
+<td>Registry module with for_each and depends_on.</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/modules.tf#L27"><code>./modules.tf</code></a></td>
+</tr>
+<tr>
+<td>git_source</td>
+<td>git::https://github.com/example/terraform-modules.git//network?ref=v1.2.3</td>
+<td></td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>Git source pinned to a ref, no version argument.</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/modules.tf#L38"><code>./modules.tf</code></a></td>
+</tr>
+<tr>
+<td>github_shorthand</td>
+<td>github.com/example/terraform-module-foo</td>
+<td></td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>GitHub shorthand and an HTTP archive.</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/modules.tf#L43"><code>./modules.tf</code></a></td>
+</tr>
+<tr>
+<td>http_archive</td>
+<td>https://example.com/modules/vpc-module.zip</td>
+<td></td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/modules.tf#L47"><code>./modules.tf</code></a></td>
+</tr>
+<tr>
+<td>dynamic_source</td>
+<td></td>
+<td></td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>OpenTofu early evaluation: non-literal source and version.</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/modules.tf#L52"><code>./modules.tf</code></a></td>
+</tr>
+<tr>
+<td>no_inputs</td>
+<td>./modules/child</td>
+<td></td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>-</td>
+<td>Module call with no inputs at all.</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/modules.tf#L58"><code>./modules.tf</code></a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="moved">Moved<a class="headerlink" href="#moved" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>From</th>
+<th>To</th>
+<th>Position</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>null_resource.old_name</code></td>
+<td><code>null_resource.empty</code></td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/blocks.tf#L3"><code>./blocks.tf</code></a></td>
+</tr>
+<tr>
+<td><code>random_pet.single</code></td>
+<td><code>random_pet.names[0]</code></td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/blocks.tf#L8"><code>./blocks.tf</code></a></td>
+</tr>
+<tr>
+<td><code>module.old_child</code></td>
+<td><code>module.child</code></td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/blocks.tf#L13"><code>./blocks.tf</code></a></td>
+</tr>
+<tr>
+<td><code>module.child.aws_s3_bucket.legacy</code></td>
+<td><code>module.child.aws_s3_bucket.this</code></td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/blocks.tf#L18"><code>./blocks.tf</code></a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="imports">Imports<a class="headerlink" href="#imports" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>To</th>
+<th>ID</th>
+<th>Provider</th>
+<th>Position</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>null_resource.empty</code></td>
+<td><code>"static-id-123"</code></td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/blocks.tf#L25"><code>./blocks.tf</code></a></td>
+</tr>
+<tr>
+<td><code>aws_iam_role.ignore_all</code></td>
+<td><code>"complete-audit"</code></td>
+<td><code>aws.audit</code></td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/blocks.tf#L30"><code>./blocks.tf</code></a></td>
+</tr>
+<tr>
+<td><code>aws_s3_bucket.replica</code></td>
+<td><code>"${local.literal_string}-replica"</code></td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/blocks.tf#L36"><code>./blocks.tf</code></a></td>
+</tr>
+<tr>
+<td><code>aws_s3_bucket.kitchen_sink[each.key]</code></td>
+<td><code>"complete-${each.key}"</code></td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/blocks.tf#L42"><code>./blocks.tf</code></a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="removed">Removed<a class="headerlink" href="#removed" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>From</th>
+<th>Destroy on Drop</th>
+<th>Position</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>null_resource.gone</code></td>
+<td>-</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/blocks.tf#L50"><code>./blocks.tf</code></a></td>
+</tr>
+<tr>
+<td><code>aws_s3_bucket.retired</code></td>
+<td>✗</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/blocks.tf#L54"><code>./blocks.tf</code></a></td>
+</tr>
+<tr>
+<td><code>module.deprecated_child</code></td>
+<td>✓</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/blocks.tf#L62"><code>./blocks.tf</code></a></td>
+</tr>
+</tbody>
+</table>
+<h2 id="checks">Checks<a class="headerlink" href="#checks" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Data Source</th>
+<th>Assertions</th>
+<th>Position</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>health_endpoint</code></td>
+<td><code>http.probe</code></td>
+<td>2</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/blocks.tf#L72"><code>./blocks.tf</code></a></td>
+</tr>
+<tr>
+<td><code>inputs_sane</code></td>
+<td>-</td>
+<td>1</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/blocks.tf#L89"><code>./blocks.tf</code></a></td>
+</tr>
+<tr>
+<td><code>three_assertions</code></td>
+<td>-</td>
+<td>3</td>
+<td><a href="https://github.com/RemoteRabbit/open-docs/blob/v0.5.0/examples/complete/blocks.tf#L96"><code>./blocks.tf</code></a></td>
+</tr>
+</tbody>
+</table>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+  <script>var tabs=__md_get("__tabs");if(Array.isArray(tabs))e:for(var set of document.querySelectorAll(".tabbed-set")){var labels=set.querySelector(".tabbed-labels");for(var tab of tabs)for(var label of labels.getElementsByTagName("label"))if(label.innerText.trim()===tab){var input=document.getElementById(label.htmlFor);input.checked=!0;continue e}}</script>
+
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-circle-arrow-up" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><path d="m16 12-4-4-4 4M12 16V8"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+    
+      
+      <nav class="md-footer__inner md-grid" aria-label="Footer" >
+        
+          
+          <a href="../vpc/" class="md-footer__link md-footer__link--prev" aria-label="Previous: vpc">
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-arrow-left" viewBox="0 0 24 24"><path d="m12 19-7-7 7-7M19 12H5"/></svg>
+            </div>
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Previous
+              </span>
+              <div class="md-ellipsis">
+                vpc
+              </div>
+            </div>
+          </a>
+        
+        
+          
+          <a href="../invalid/" class="md-footer__link md-footer__link--next" aria-label="Next: invalid">
+            <div class="md-footer__title">
+              <span class="md-footer__direction">
+                Next
+              </span>
+              <div class="md-ellipsis">
+                invalid
+              </div>
+            </div>
+            <div class="md-footer__button md-icon">
+              
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="lucide lucide-arrow-right" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </div>
+          </a>
+        
+      </nav>
+    
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+    <div class="md-copyright__highlight">
+      Released under the Mozilla Public License 2.0
+    </div>
+  
+  
+    Made with
+    <a href="https://zensical.org/" target="_blank" rel="noopener">
+      Zensical
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/RemoteRabbit/open-docs" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.2.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2026 Fonticons, Inc.--><path fill="currentColor" d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate":null,"base":"../..","features":["content.action.edit","content.code.annotate","content.code.copy","content.tabs.link","navigation.footer","navigation.indexes","navigation.instant","navigation.path","navigation.sections","navigation.top","navigation.tracking","search.highlight"],"search":"../../assets/javascripts/workers/search.e2d2d235.min.js","tags":null,"translations":{"clipboard.copied":"Copied to clipboard","clipboard.copy":"Copy to clipboard","search.result.more.one":"1 more on this page","search.result.more.other":"# more on this page","search.result.none":"No matching documents","search.result.one":"1 matching document","search.result.other":"# matching documents","search.result.placeholder":"Type to start searching","search.result.term.missing":"Missing","select.version":"Select version"},"version":{"alias":true,"default":"latest","provider":"mike"}}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.6e5f0216.min.js"></script>
+      
+    
+  </body>
+</html>
