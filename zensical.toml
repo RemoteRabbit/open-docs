@@ -24,6 +24,8 @@ nav = [
 ]
 
 [project.theme]
+# Template overrides, e.g. the outdated-version banner.
+custom_dir = "overrides"
 language = "en"
 features = [
   "content.action.edit",
@@ -57,6 +59,12 @@ toggle.name = "Switch to light mode"
 [[project.extra.social]]
 icon = "fontawesome/brands/github"
 link = "https://github.com/RemoteRabbit/open-docs"
+
+# Version selector; docs.yml publishes each release with mike.
+[project.extra.version]
+provider = "mike"
+default = "latest"
+alias = true
 
 [project.markdown_extensions.admonition]
 [project.markdown_extensions.attr_list]
